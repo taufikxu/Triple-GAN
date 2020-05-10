@@ -89,9 +89,9 @@ for i in range(max_iter):
 
     if (i + 1) % image_interval == 0:
         with torch.no_grad():
-            sample_z = torch.randn(64, FLAGS.g_z_dim).to(device)
+            sample_z = torch.randn(batch_size, FLAGS.g_z_dim).to(device)
             x_fake = netG(sample_z, label)
-            logger.add_imgs(x_fake, "img{:08d}.png".format(i + 1))
+            logger.add_imgs(x_fake, "img{:08d}".format(i + 1))
 
     if (i + 1) % FLAGS.save_every == 0:
         logger.save_stats("{:08d}.pkl".format(i))
