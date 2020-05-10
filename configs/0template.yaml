@@ -1,0 +1,39 @@
+# arguments for G
+g_model_name: Resnet_RegGAN
+g_z_dim: 256
+g_embed_size: 256
+g_nfilter: 64
+g_nfilter_max: 512
+g_actvn: relu
+
+g_optim: adam
+g_lr: 0.0001
+g_beta1: 0.
+g_beta2: 0.99
+
+# arguments for D
+d_model_name: Resnet_RegGAN
+d_z_dim: 256
+d_embed_size: 256
+d_nfilter: 64
+d_nfilter_max: 512
+d_actvn: relu
+
+d_optim: adam
+d_lr: 0.0001
+d_beta1: 0.
+d_beta2: 0.99
+
+# arguments for D
+c_model_name: cifar10_cnn
+
+c_optim: adam
+c_lr: 0.0001
+c_beta1: 0.
+c_beta2: 0.99
+
+# training arguments:
+n_iter: 10000
+batch_size: 100
+clip_value: -1
+save_every: 1000

@@ -1,0 +1,6 @@
+[submodule "Utils"]
+	path = Utils
+	url = git@github.com:taufikxu/Utils
+[submodule "Torture"]
+	path = Torture
+	url = git@github.com:taufikxu/Torture
