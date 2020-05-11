@@ -1,6 +1,6 @@
 [submodule "Utils"]
 	path = Utils
-	url = git@github.com:taufikxu/Utils
+	url = https://github.com/taufikxu/Utils.git
 [submodule "Torture"]
 	path = Torture
-	url = git@github.com:taufikxu/Torture
+	url = https://github.com/taufikxu/Torture.git
