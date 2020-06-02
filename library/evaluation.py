@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-import TripleGAN.inputs as inputs
+import library.inputs as inputs
 import Torture
 
 

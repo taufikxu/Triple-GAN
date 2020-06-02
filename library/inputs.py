@@ -2,10 +2,10 @@ import torch
 from torch import nn
 
 
-import TripleGAN.data_iters as dataset_iters
-from TripleGAN.generators import generator_dict
-from TripleGAN.discriminators import discriminator_dict
-from TripleGAN.classifiers import classifier_dict
+import library.data_iters as dataset_iters
+from library.generators import generator_dict
+from library.discriminators import discriminator_dict
+from library.classifiers import classifier_dict
 
 
 from Utils import flags

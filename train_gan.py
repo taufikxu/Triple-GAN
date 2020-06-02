@@ -2,27 +2,24 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from TripleGAN import inputs
+from library import inputs
 from Utils.checkpoints import save_context, Logger
 from Utils import flags
 from Utils import config
 
 import Torture
-from TripleGAN import evaluation, gan_loss
+from library import evaluation, gan_loss
 
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
-FILES_TO_BE_SAVED = ["./", "./configs", "./TripleGAN", "./TripleGAN/mean_teacher"]
-CONFIG = {"FILES_TO_BE_SAVED": FILES_TO_BE_SAVED, "KEY_ARGUMENTS": KEY_ARGUMENTS}
-text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, CONFIG)
+text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
 torch.manual_seed(1234)
-# torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = True
-np.random.seed(1235)
-torch.cuda.manual_seed(1236)
-device = Torture.device
-logger = Logger(log_dir=SUMMARIES_FOLDER)
+torch.cuda.manual_seed(1235)
+np.random.seed(1236)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 itr = inputs.get_data_iter()
 netG, optim_G = inputs.get_generator_optimizer()
@@ -34,6 +31,7 @@ netD = nn.DataParallel(netD)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
 checkpoint_io.register_modules(netG=netG, netD=netD, optim_G=optim_G, optim_D=optim_D)
+logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
 print_interval = 50

@@ -1,4 +1,5 @@
 # User defined ignored files
+allresults
 results
 .vscode
 # Byte-compiled / optimized / DLL files

@@ -7,7 +7,7 @@ from torch import nn
 from torch.nn import functional as F
 from torch.autograd import Variable, Function
 from torch.nn.utils import weight_norm
-from TripleGAN.mean_teacher.utils import export, parameter_count
+from library.mean_teacher.utils import export, parameter_count
 
 
 @export
