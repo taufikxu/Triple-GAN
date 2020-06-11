@@ -23,6 +23,7 @@ torch.cuda.manual_seed(1236)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 itr = inputs.get_data_iter(subset=FLAGS.n_labels)
+itr_u = inputs.get_data_iter()
 netC, optim_c = inputs.get_classifier_optimizer()
 netC = netC.to(device)
 netC = nn.DataParallel(netC)
@@ -39,8 +40,10 @@ loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 for i in range(max_iter):
     data, label = itr.__next__()
     data, label = data.to(device), label.to(device)
+    data_u, _ = itr_u.__next__()
+    data_u = data_u.to(device)
 
-    tloss = loss_func(netC, data, label)
+    tloss = loss_func(netC, data, label, data_u)
     optim_c.zero_grad()
     tloss.backward()
     if FLAGS.clip_value > 0:
