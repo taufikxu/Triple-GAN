@@ -37,32 +37,11 @@ def loss_hinge_gen(netD, netG, z_rand, label):
     loss_fake = -torch.mean(d_fake)
     return loss_fake.mean(), d_fake.mean()
 
-
-def loss_triple_hinge_dis(netD, netG, netC, x_real, z_rand, label):
-    with torch.no_grad():
-        x_fake = netG(z_rand, label).detach()
-
-    d_real = netD(x_real, label)
-    d_fake = netD(x_fake, label)
-    loss_real = torch.mean(torch.relu(1.0 - d_real))
-    loss_fake = torch.mean(torch.relu(1.0 + d_fake))
-    return (loss_real + loss_fake).mean(), d_real.mean(), d_fake.mean()
-
-
-def loss_triple_hinge_gen(netD, netG, netC, z_rand, label):
-    x_fake = netG(z_rand, label)
-    d_fake = netD(x_fake, label)
-    loss_fake = -torch.mean(d_fake)
-    return loss_fake.mean(), d_fake.mean()
-
-
 g_loss_dict = {
     "dcgan": loss_dcgan_gen,
     "hinge": loss_hinge_gen,
-    "triple-hinge": loss_triple_hinge_gen,
 }
 d_loss_dict = {
     "dcgan": loss_dcgan_dis,
     "hinge": loss_hinge_dis,
-    "triple-hinge": loss_triple_hinge_dis,
 }
