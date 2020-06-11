@@ -2,10 +2,10 @@ import torch
 import numpy as np
 import library.inputs as inputs
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 def test_classifier(netC):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     loss_func = torch.nn.CrossEntropyLoss()
     testloader = inputs.get_data_iter_test()
     correct = 0
