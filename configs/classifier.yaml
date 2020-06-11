@@ -1,10 +1,15 @@
+dataset: CIFAR10
+
 # arguments for D
 c_model_name: cifar10_cnn
 
+c_loss: crossentropy
 c_optim: adam
 c_lr: 0.0001
 c_beta1: 0.
 c_beta2: 0.99
+
+data_augment: data_augment_cifar.yaml
 
 # training arguments:
 n_iter: 10000

@@ -11,12 +11,7 @@ from library.classifiers import classifier_dict
 from Utils import flags
 
 FLAGS = flags.FLAGS
-iter_func = {
-    "cifar10": dataset_iters.inf_train_gen_cifar,
-    "svhn": dataset_iters.inf_train_gen_svhn,
-    "mnist": dataset_iters.inf_train_gen_mnist,
-    "fashionmnist": dataset_iters.inf_train_gen_fashionmnist,
-}
+
 hw_dict = {
     "cifar10": (32, 3, 10),
     "svhn": (32, 3, 10),
@@ -32,14 +27,16 @@ def get_optimizer(params, opt_name, lr, beta1, beta2):
     return optim
 
 
-def get_data_iter():
-    return iter_func[FLAGS.dataset.lower()](FLAGS.batch_size)
+def get_data_iter(train=True, infinity=True, subset=0):
+    return dataset_iters.inf_train_gen(FLAGS.batch_size, train, infinity, subset)
 
 
-def get_data_iter_test():
-    return iter_func[FLAGS.dataset.lower()](
-        FLAGS.batch_size, train=False, infinity=False
-    )
+def get_data_iter_twice(train=True, infinity=True, subset=0):
+    return dataset_iters.inf_train_gen_twice(FLAGS.batch_size, train, infinity, subset)
+
+
+def get_data_iter_test(infinity=False):
+    return dataset_iters.inf_train_gen(FLAGS.batch_size, train=False, infinity=infinity)
 
 
 def get_generator_optimizer():

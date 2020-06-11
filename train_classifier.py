@@ -9,6 +9,7 @@ from Utils import config
 
 import Torture
 from library import evaluation
+from library import loss_classifier
 
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
@@ -33,15 +34,14 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 print_interval = 50
 test_interval = 500
 max_iter = FLAGS.n_iter
-loss_func = nn.CrossEntropyLoss()
+loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 
 for i in range(max_iter):
     data, label = itr.__next__()
     data, label = data.to(device), label.to(device)
 
-    label_pre = netC(data)
+    tloss = loss_func(netC, data, label)
     optim_c.zero_grad()
-    tloss = loss_func(label_pre, label)
     tloss.backward()
     if FLAGS.clip_value > 0:
         torch.nn.utils.clip_grad_norm_(netC.parameters(), FLAGS.clip_value)
@@ -50,7 +50,7 @@ for i in range(max_iter):
     logger.add("training", "loss", tloss.item(), i + 1)
 
     if (i + 1) % test_interval == 0:
-        total_t, correct_t, loss_t = evaluation.test_classifier(netC, loss_func)
+        total_t, correct_t, loss_t = evaluation.test_classifier(netC)
         str_meg = "Iteration {}/{} ({:.0f}%), train loss {:.5f}, test_loss {:.5f},"
         str_meg += " test: total tested {:05d}, corrected {:05d}, accuracy {:.5f}"
         text_logger.info(

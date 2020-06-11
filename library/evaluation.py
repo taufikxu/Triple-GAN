@@ -1,10 +1,12 @@
 import torch
 import numpy as np
 import library.inputs as inputs
-import Torture
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def test_classifier(netC, loss_func):
+def test_classifier(netC):
+    loss_func = torch.nn.CrossEntropyLoss()
     testloader = inputs.get_data_iter_test()
     correct = 0
     total = 0
@@ -12,7 +14,7 @@ def test_classifier(netC, loss_func):
     with torch.no_grad():
         for data in testloader:
             images, labels = data
-            images, labels = images.to(Torture.device), labels.to(Torture.device)
+            images, labels = images.to(device), labels.to(device)
             outputs = netC(images)
             _, predicted = torch.max(outputs.data, 1)
             loss_list.append(loss_func(outputs, labels).item())
