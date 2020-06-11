@@ -33,7 +33,7 @@ def loss_entropy_ssl(netC, x_l, l, x_u):
     return loss_l + loss_u
 
 
-loss_dict = {
+c_loss_dict = {
     "crossentropy": loss_cross_entropy,
     "entropyreg": loss_entropy_reg,
     "entropyssl": loss_entropy_ssl,

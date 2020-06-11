@@ -24,10 +24,10 @@ torch.backends.cudnn.benchmark = True
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-itr = inputs.get_data_iter(subset=1000)
-itr_t = inputs.get_data_iter_twice(subset=1000)
-itr_u = inputs.get_data_iter()
-itr_ut = inputs.get_data_iter_twice()
+itr = inputs.get_data_iter(batch_size=FLAGS.bs_c, subset=1000)
+itr_u = inputs.get_data_iter(batch_size=FLAGS.bs_c)
+# itr_t = inputs.get_data_iter_twice(subset=1000)
+# itr_ut = inputs.get_data_iter_twice()
 netG, optim_G = inputs.get_generator_optimizer()
 netD, optim_D = inputs.get_discriminator_optimizer()
 netC, optim_c = inputs.get_classifier_optimizer()
@@ -50,9 +50,9 @@ loss_func_d = loss_triplegan.d_loss_dict[FLAGS.gan_type]
 loss_func_c_adv = loss_triplegan.c_loss_dict[FLAGS.gan_type]
 loss_func_c_ssl = loss_classifier.c_loss_dict[FLAGS.c_loss]
 
-x_real, x_real2, label = itr_t.__next__()
-logger.add_imgs(x_real, "real1", "RealImages")
-logger.add_imgs(x_real2, "real2", "RealImages")
+# x_real, x_real2, label = itr_t.__next__()
+# logger.add_imgs(x_real, "real1", "RealImages")
+# logger.add_imgs(x_real2, "real2", "RealImages")
 
 for i in range(max_iter):
     data, label = itr.__next__()
@@ -61,16 +61,10 @@ for i in range(max_iter):
     data_u_d, _ = itr_u.__next__()
     data_u, data_u_d = data_u.to(device), data_u_d.to(device)
 
-    # bs_g: 200
-    # bs_u_for_c: 100
-    # bs_l_for_c: 100
-    # bs_c_for_d: 200
-    # bs_l_for_d: 20
-    # bs_u_for_d: 180
-        
-
-    sample_z = torch.randn(bs_g, FLAGS.g_z_dim).to(device)
-    loss_d, dreal, dfake_g, dfake_c = loss_func_d(netD, netG, netC, x_real, sample_z, label, data_u, data_u_d)
+    sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
+    loss_d, dreal, dfake_g, dfake_c = loss_func_d(
+        netD, netG, netC, data, sample_z, label, data_u, data_u_d
+    )
     optim_D.zero_grad()
     loss_d.backward()
     if FLAGS.clip_value > 0:
@@ -97,10 +91,14 @@ for i in range(max_iter):
     loss_c_ssl = loss_func_c_ssl(netC, data, label, data_u)
     if i > FLAGS.psl_iters:
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-        loss_c_pdl = loss_triplegan.pseudo_discriminative_loss(netC, netG, sample_z, label)
+        loss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
+            netC, netG, sample_z, label
+        )
     else:
         loss_c_pdl = torch.zeros_like(loss_c_ssl)
-    loss_c = FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl *loss_c_pdl + loss_c_ssl
+    loss_c = (
+        FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
+    )
     optim_c.zero_grad()
     loss_c.backward()
     if FLAGS.clip_value > 0:

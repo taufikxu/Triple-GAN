@@ -4,9 +4,9 @@ ssl_seed: 1
 
 # training arguments:
 n_iter: 1000000
+batch_size: 200
 bs_g: 200
-bs_u_for_c: 100
-bs_l_for_c: 100
+bs_c: 200
 bs_c_for_d: 200
 bs_l_for_d: 20
 bs_u_for_d: 180

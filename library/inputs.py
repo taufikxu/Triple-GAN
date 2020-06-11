@@ -27,15 +27,21 @@ def get_optimizer(params, opt_name, lr, beta1, beta2):
     return optim
 
 
-def get_data_iter(train=True, infinity=True, subset=0):
+def get_data_iter(batch_size=None, train=True, infinity=True, subset=0):
+    if batch_size is None:
+        batch_size = FLAGS.batch_size
     return dataset_iters.inf_train_gen(FLAGS.batch_size, train, infinity, subset)
 
 
-def get_data_iter_twice(train=True, infinity=True, subset=0):
+def get_data_iter_twice(batch_size=None, train=True, infinity=True, subset=0):
+    if batch_size is None:
+        batch_size = FLAGS.batch_size
     return dataset_iters.inf_train_gen_twice(FLAGS.batch_size, train, infinity, subset)
 
 
-def get_data_iter_test(infinity=False):
+def get_data_iter_test(batch_size=None, infinity=False):
+    if batch_size is None:
+        batch_size = FLAGS.batch_size
     return dataset_iters.inf_train_gen(FLAGS.batch_size, train=False, infinity=infinity)
 
 
