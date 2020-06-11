@@ -45,7 +45,7 @@ class Discriminator(nn.Module):
         self.resnet = nn.Sequential(*blocks)
         self.fc = nn.Linear(self.nf0 * s0 * s0, n_label)
 
-    def forward(self, x, y):
+    def forward(self, x, y=None):
         batch_size = x.size(0)
 
         out = self.conv_img(x)
@@ -53,12 +53,14 @@ class Discriminator(nn.Module):
         out = out.view(batch_size, self.nf0 * self.s0 * self.s0)
         out = self.fc(self.actvn(out))
 
+        if y is None:
+            return out
+
         index = torch.LongTensor(range(out.size(0)))
         if x.is_cuda:
             index = index.cuda()
             y = y.cuda()
         out = out[index, y]
-
         return out
 
 
