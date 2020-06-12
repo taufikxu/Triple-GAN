@@ -1,5 +1,6 @@
 import torch
-from torch.nn import functional as F
+
+# from torch.nn import functional as F
 
 from Utils.flags import FLAGS
 from library.loss_classifier import loss_cross_entropy
@@ -10,7 +11,8 @@ softmax = torch.nn.Softmax(1)
 def loss_hinge_dis(netD, netG, netC, x_l, z_rand, label, x_u, x_u_d):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()
-        _, l_fake = torch.max(netC(x_u).detach(), 1)
+        logits_c = netC(x_u).detach()
+        _, l_fake = torch.max(logits_c, 1)
         _, l_d = torch.max(netC(x_u_d).detach(), 1)
 
     x_real_for_d = torch.cat([x_l[: FLAGS.bs_l_for_d], x_u_d[: FLAGS.bs_u_for_d]], 0)
@@ -19,12 +21,19 @@ def loss_hinge_dis(netD, netG, netC, x_l, z_rand, label, x_u, x_u_d):
     )
     d_real = netD(x_real_for_d, label_real_for_d)
     d_fake_g = netD(x_fake, label)
-    d_fake_c = netD(x_u, l_fake)
     loss_real = torch.mean(torch.relu(1.0 - d_real))
     loss_fake_g = torch.mean(torch.relu(1.0 + d_fake_g))
-    loss_fake_c = torch.mean(torch.relu(1.0 + d_fake_c))
+
+    if FLAGS.gan_traind_c == "argmax":
+        d_fake_c = netD(x_u, l_fake)
+        loss_fake_c = torch.mean(torch.relu(1.0 + d_fake_c))
+    elif FLAGS.gan_traind_c == "int":
+        d_fake_c = netD(x_u)
+        loss_fake_c = torch.mean(
+            torch.sum(torch.relu(1.0 + d_fake_c) * softmax(logits_c), dim=1)
+        )
     return (
-        (loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c).mean(),
+        loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c,
         d_real.mean(),
         d_fake_g.mean(),
         d_fake_c.mean(),
@@ -48,7 +57,7 @@ def loss_hinge_gen(netD, netG, z_rand, label):
     x_fake = netG(z_rand, label)
     d_fake = netD(x_fake, label)
     loss_fake = -torch.mean(d_fake)
-    return loss_fake.mean(), d_fake.mean()
+    return loss_fake, d_fake.mean()
 
 
 g_loss_dict = {

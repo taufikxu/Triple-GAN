@@ -1,5 +1,5 @@
 # Data autmentation:
-data_augment: data_augment_cifar.yaml
+data_augment: data_augment_svhn.yaml
 ssl_seed: 1
 
 # training arguments:
@@ -13,6 +13,7 @@ bs_u_for_d: 180
 clip_value: -1
 save_every: 1000
 gan_type: hinge
+gan_traind_c: int
 
 # arguments for C
 c_model_name: cifar10_cnn

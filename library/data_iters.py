@@ -49,7 +49,6 @@ def get_augmentation_twice(train):
 
 
 def get_dataset(train, subset, transf):
-    print(FLAGS.dataset, train, subset, transf)
     if FLAGS.dataset.lower() == "svhn":
         if train is True:
             split = "train"

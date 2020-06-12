@@ -38,7 +38,9 @@ netD = nn.DataParallel(netD)
 netC = nn.DataParallel(netC)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
-checkpoint_io.register_modules(netG=netG, netD=netD, optim_G=optim_G, optim_D=optim_D)
+checkpoint_io.register_modules(
+    netG=netG, netD=netD, netC=netC, optim_G=optim_G, optim_D=optim_D, optim_c=optim_c
+)
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
@@ -50,10 +52,7 @@ loss_func_d = loss_triplegan.d_loss_dict[FLAGS.gan_type]
 loss_func_c_adv = loss_triplegan.c_loss_dict[FLAGS.gan_type]
 loss_func_c_ssl = loss_classifier.c_loss_dict[FLAGS.c_loss]
 
-# x_real, x_real2, label = itr_t.__next__()
-# logger.add_imgs(x_real, "real1", "RealImages")
-# logger.add_imgs(x_real2, "real2", "RealImages")
-
+logger_prefix = "Itera {}/{} ({:.0f}%)"
 for i in range(max_iter):
     data, label = itr.__next__()
     data, label = data.to(device), label.to(device)
@@ -111,49 +110,25 @@ for i in range(max_iter):
     logger.add("training_c", "fake_c", fake_c.item(), i + 1)
 
     if (i + 1) % print_interval == 0:
-        str_meg = "Iteration {}/{} ({:.0f}%), D: loss {:.5f}, real/fake_g/fake_c {:.5f}/{:.5f}/{:.5f}"
-        str_meg += " G: loss {:.5f}, fake_g {:.5f}"
-        str_meg += " C: loss {:.5f}, adv/ssl/pdl {:.5f}/{:.5f}/{:.5f}, fake_c {:.5f}"
-        str_meg = str_meg.format(
-            i + 1,
-            max_iter,
-            100 * ((i + 1) / max_iter),
-            loss_d.item(),
-            dreal.item(),
-            dfake_g.item(),
-            dfake_c.item(),
-            loss_g.item(),
-            fake_g.item(),
-            loss_c.item(),
-            loss_c_adv.item(),
-            loss_c_ssl.item(),
-            loss_c_pdl.item(),
-            fake_c.item(),
-        )
-        text_logger.info(str_meg)
+        prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
+        cats = ["training_d", "training_g", "training_c"]
+        logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % image_interval == 0:
         with torch.no_grad():
             sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-            x_fake = netG(sample_z, label)
-            logger.add_imgs(x_fake, "img{:08d}".format(i + 1))
-
+            tlabel = label[: FLAGS.bs_g // 10]
+            tlabel = torch.cat([tlabel for _ in range(10)], 0)
+            x_fake = netG(sample_z, tlabel)
+            logger.add_imgs(x_fake, "img{:08d}".format(i + 1), nrow=FLAGS.bs_g // 10)
             total_t, correct_t, loss_t = evaluation.test_classifier(netC)
-            str_meg = "Iteration {}/{} ({:.0f}%), test_loss {:.5f},"
-            str_meg += " test: total tested {:05d}, corrected {:05d}, accuracy {:.5f}"
-            text_logger.info(
-                str_meg.format(
-                    i + 1,
-                    max_iter,
-                    100 * ((i + 1) / max_iter),
-                    loss_t,
-                    total_t,
-                    correct_t,
-                    100 * (correct_t / total_t),
-                )
-            )
-            logger.add("testing", "loss", loss_t.item(), i + 1)
-            logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
+
+        logger.add("testing", "loss", loss_t.item(), i + 1)
+        logger.add("testing", "total_test", total_t, i + 1)
+        logger.add("testing", "correct_test", correct_t, i + 1)
+        logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
+        str_meg = logger_prefix.format(i + 1, max_iter, 100 * ((i + 1) / max_iter))
+        logger.log_info(str_meg, text_logger.info, ["testing"])
 
     if (i + 1) % FLAGS.save_every == 0:
         logger.save_stats("Model_stats.pkl")
