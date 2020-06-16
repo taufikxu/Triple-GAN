@@ -10,7 +10,7 @@ c_beta1: 0.
 c_beta2: 0.99
 alpha_entropy: 0.3
 
-data_augment: data_augment_cifar.yaml
+data_augment: data_augment_svhn.yaml
 ssl_seed: 1
 
 # training arguments:

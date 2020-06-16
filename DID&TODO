@@ -1,12 +1,27 @@
-- C SSL
-    > DA
+1. Triple-GAN 93  
+    87 ssl -> 90 tgan -> 93 gen2cla
+    convergence lrelu sn achitecture
+    anneal lr / moving average
+    average 10 times
+    alpha_adv 0 0.01 0.03 0.1
+    cifar10
 
-    > Methods
-        - MT
-        - 
+2. svhn and cifar10 reproduce MT
+    add DA
+    order of DA, ZCA / zero mean
+
+    related to a flag or a dataset
 
 
-- GAN UL and SSL
+3. Add MT to Triple-GAN
+    debug of pre and da
+    g -> cla preprocessing
+    add a new iter
 
+4. Add advanced GAN to Triple-GAN
 
-- Triple-GAN SSL
+5. ResNet MT
+
+6. SWA MixMatch VAT
+
+7. CIFAR100 and STL10

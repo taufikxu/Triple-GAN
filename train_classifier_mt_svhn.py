@@ -28,6 +28,9 @@ itr_u = inputs.get_data_iter()
 netC, optim_c = inputs.get_classifier_optimizer()
 netC = netC.to(device)
 netC = nn.DataParallel(netC)
+netC_T, _ = inputs.get_classifier_optimizer()
+netC_T = netC_T.to(device)
+netC_T = nn.DataParallel(netC_T)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
 checkpoint_io.register_modules(netC=netC)
@@ -38,80 +41,6 @@ test_interval = 500
 max_iter = FLAGS.n_iter
 loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 
-# tf implementation
-# DEFAULT_HYPERPARAMS = {
-#         # Consistency hyperparameters
-#         'max_consistency_cost': 50.0
-#         'ema_decay_during_rampup': 0.99,
-#         'ema_decay_after_rampup': 0.999,
-
-#         # Optimizer hyperparameters
-#         'max_learning_rate': 0.003,
-#         'adam_beta_1_before_rampdown': 0.9,
-#         'adam_beta_1_after_rampdown': 0.5,
-#         'adam_beta_2_during_rampup': 0.99,
-#         'adam_beta_2_after_rampup': 0.999,
-#         'adam_epsilon': 1e-8,
-
-#         # Training schedule
-#         'rampup_length': 5000/40000,
-#         'rampdown_length': 0/25000,
-#         'training_length': 40000/150000,
-#         # Input augmentation
-#         'translate': True,
-#         'normalize_input': True,
-#     }
-
-# def step_rampup(global_step, rampup_length):
-#     result = tf.cond(global_step < rampup_length,
-#                      lambda: tf.constant(0.0),
-#                      lambda: tf.constant(1.0))
-#     return tf.identity(result, name="step_rampup")
-
-# def sigmoid_rampup(global_step, rampup_length):
-#     global_step = tf.to_float(global_step)
-#     rampup_length = tf.to_float(rampup_length)
-#     def ramp():
-#         phase = 1.0 - tf.maximum(0.0, global_step) / rampup_length
-#         return tf.exp(-5.0 * phase * phase)
-#     result = tf.cond(global_step < rampup_length, ramp, lambda: tf.constant(1.0))
-#     return tf.identity(result, name="sigmoid_rampup")
-
-# def sigmoid_rampdown(global_step, rampdown_length, training_length):
-#     global_step = tf.to_float(global_step)
-#     rampdown_length = tf.to_float(rampdown_length)
-#     training_length = tf.to_float(training_length)
-#     def ramp():
-#         phase = 1.0 - tf.maximum(0.0, training_length - global_step) / rampdown_length
-#         return tf.exp(-12.5 * phase * phase)
-
-#     result = tf.cond(global_step >= training_length - rampdown_length,
-#                      ramp,
-#                      lambda: tf.constant(1.0))
-#     return tf.identity(result, name="sigmoid_rampdown")
-
-# sigmoid_rampup_value = sigmoid_rampup(self.global_step, self.hyper['rampup_length'])
-# sigmoid_rampdown_value = sigmoid_rampdown(self.global_step,
-#                                           self.hyper['rampdown_length'],
-#                                           self.hyper['training_length'])
-# self.learning_rate = tf.multiply(sigmoid_rampup_value * sigmoid_rampdown_value,
-#                                  self.hyper['max_learning_rate'],
-#                                  name='learning_rate')
-# self.adam_beta_1 = tf.add(sigmoid_rampdown_value * self.hyper['adam_beta_1_before_rampdown'],
-#                           (1 - sigmoid_rampdown_value) * self.hyper['adam_beta_1_after_rampdown'],
-#                           name='adam_beta_1')
-# self.cons_coefficient = tf.multiply(sigmoid_rampup_value,
-#                                     self.hyper['max_consistency_cost'],
-#                                     name='consistency_coefficient')
-
-# step_rampup_value = step_rampup(self.global_step, self.hyper['rampup_length'])
-# self.adam_beta_2 = tf.add((1 - step_rampup_value) * self.hyper['adam_beta_2_during_rampup'],
-#                           step_rampup_value * self.hyper['adam_beta_2_after_rampup'],
-#                           name='adam_beta_2')
-# self.ema_decay = tf.add((1 - step_rampup_value) * self.hyper['ema_decay_during_rampup'],
-#                         step_rampup_value * self.hyper['ema_decay_after_rampup'],
-#                         name='ema_decay')
-
 
 for i in range(max_iter):
     data, label = itr.__next__()
@@ -119,17 +48,15 @@ for i in range(max_iter):
     data_u, _ = itr_u.__next__()
     data_u = data_u.to(device)
 
-    tloss = loss_func(netC, data, label, data_u)
-    optim_c.zero_grad()
-    tloss.backward()
-    if FLAGS.clip_value > 0:
-        torch.nn.utils.clip_grad_norm_(netC.parameters(), FLAGS.clip_value)
-    optim_c.step()
+    tloss, l_loss, u_loss = loss_func(netC, necC_T, i, data, label, data_u)
+    loss_classifier.MT_step(optim_c, netC, netC_T, i, t_loss)
 
     logger.add("training", "loss", tloss.item(), i + 1)
+    logger.add("training", "l_loss", l_loss.item(), i + 1)
+    logger.add("training", "u_loss", u_loss.item(), i + 1)
 
     if (i + 1) % test_interval == 0:
-        total_t, correct_t, loss_t = evaluation.test_classifier(netC)
+        total_t, correct_t, loss_t = evaluation.test_classifier(netC_T)
         str_meg = "Iteration {}/{} ({:.0f}%), train loss {:.5f}, test_loss {:.5f},"
         str_meg += " test: total tested {:05d}, corrected {:05d}, accuracy {:.5f}"
         text_logger.info(
