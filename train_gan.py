@@ -41,6 +41,7 @@ batch_size = FLAGS.batch_size
 loss_func_g = loss_gan.g_loss_dict[FLAGS.gan_type]
 loss_func_d = loss_gan.d_loss_dict[FLAGS.gan_type]
 
+logger_prefix = "Itera {}/{} ({:.0f}%)"
 for i in range(max_iter):
     x_real, label = itr.__next__()
     x_real, label = x_real.to(device), label.to(device)
@@ -69,19 +70,9 @@ for i in range(max_iter):
     logger.add("training_g", "dfake", dfake_g.item(), i + 1)
 
     if (i + 1) % print_interval == 0:
-        str_meg = "Iteration {}/{} ({:.0f}%), D: loss {:.5f}, real/fake {:.5f}/{:.5f}"
-        str_meg += " G: loss {:.5f}, dfake {:.5f}"
-        str_meg = str_meg.format(
-            i + 1,
-            max_iter,
-            100 * ((i + 1) / max_iter),
-            loss_d.item(),
-            dreal.item(),
-            dfake.item(),
-            loss_g.item(),
-            dfake_g.item(),
-        )
-        text_logger.info(str_meg)
+        prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
+        cats = ["training_d", "training_g"]
+        logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % image_interval == 0:
         with torch.no_grad():

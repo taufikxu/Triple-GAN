@@ -3,19 +3,19 @@ dataset: SVHN
 # arguments for D
 c_model_name: cifar10_cnn
 
-c_loss: entropyssl
+c_loss: mtssl
 c_optim: adam
 c_lr: 0.0001
 c_beta1: 0.
 c_beta2: 0.99
 
 # Consistency hyperparameters
+lr: 0.003
 max_consistency_cost: 50.0
 ema_decay_during_rampup: 0.99
 ema_decay_after_rampup: 0.999
 
 # Optimizer hyperparameters
-max_learning_rate: 0.003
 adam_beta_1_before_rampdown: 0.9
 adam_beta_1_after_rampdown: 0.5
 adam_beta_2_during_rampup: 0.99
@@ -34,4 +34,3 @@ batch_size: 100
 clip_value: -1
 save_every: 1000
 n_labels: 1000
-

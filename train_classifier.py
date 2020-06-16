@@ -36,6 +36,7 @@ test_interval = 500
 max_iter = FLAGS.n_iter
 loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 
+logger_prefix = "Itera {}/{} ({:.0f}%)"
 for i in range(max_iter):
     data, label = itr.__next__()
     data, label = data.to(device), label.to(device)
@@ -51,27 +52,16 @@ for i in range(max_iter):
 
     if (i + 1) % test_interval == 0:
         total_t, correct_t, loss_t = evaluation.test_classifier(netC)
-        str_meg = "Iteration {}/{} ({:.0f}%), train loss {:.5f}, test_loss {:.5f},"
-        str_meg += " test: total tested {:05d}, corrected {:05d}, accuracy {:.5f}"
-        text_logger.info(
-            str_meg.format(
-                i + 1,
-                max_iter,
-                100 * ((i + 1) / max_iter),
-                tloss.item(),
-                loss_t,
-                total_t,
-                correct_t,
-                100 * (correct_t / total_t),
-            )
-        )
         logger.add("testing", "loss", loss_t.item(), i + 1)
         logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
+
+        prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
+        cats = ["training", "testing"]
+        logger.log_info(prefix, text_logger.info, cats=cats)
     elif (i + 1) % print_interval == 0:
-        str_meg = "Iteration {}/{} ({:.0f}%), train loss {:.5f}"
-        text_logger.info(
-            str_meg.format(i + 1, max_iter, 100 * ((i + 1) / max_iter), tloss.item())
-        )
+        prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
+        cats = ["training"]
+        logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % FLAGS.save_every == 0:
         logger.save_stats("{:08d}.pkl".format(i))
