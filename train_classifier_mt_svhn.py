@@ -38,41 +38,12 @@ test_interval = 500
 max_iter = FLAGS.n_iter
 loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 
-
-# torch implementation 
-# from mean_teacher import ramps
-# def adjust_learning_rate(lr, epoch, step_in_epoch, total_steps_in_epoch):
-#     epoch = epoch + step_in_epoch / total_steps_in_epoch
-
-#     # LR warm-up to handle large minibatch sizes from https://arxiv.org/abs/1706.02677
-#     lr = ramps.linear_rampup(epoch, FLAGS.lr_rampup) * (FLAGS.lr - FLAGS.initial_lr) + FLAGS.initial_lr
-
-#     # Cosine LR rampdown from https://arxiv.org/abs/1608.03983 (but one cycle only)
-#     if FLAGS.lr_rampdown_epochs:
-#         assert FLAGS.lr_rampdown_epochs >= FLAGS.epochs
-#         lr *= ramps.cosine_rampdown(epoch, FLAGS.lr_rampdown_epochs)
-#     return lr
-
-# def get_current_consistency_weight(epoch):
-#     # Consistency ramp-up from https://arxiv.org/abs/1610.02242
-#     return FLAGS.consistency * ramps.sigmoid_rampup(epoch, FLAGS.consistency_rampup)
-
 # tf implementation
-# model['rampdown_length'] = 0
-# model['rampup_length'] = 5000
-# model['training_length'] = 40000
-# model['max_consistency_cost'] = 50.0
-
 # DEFAULT_HYPERPARAMS = {
 #         # Consistency hyperparameters
-#         'ema_consistency': True,
-#         'apply_consistency_to_labeled': True,
-#         'max_consistency_cost': 100.0,
+#         'max_consistency_cost': 50.0
 #         'ema_decay_during_rampup': 0.99,
 #         'ema_decay_after_rampup': 0.999,
-#         'consistency_trust': 0.0,
-#         'num_logits': 1, # Either 1 or 2
-#         'logit_distance_cost': 0.0, # Matters only with 2 outputs
 
 #         # Optimizer hyperparameters
 #         'max_learning_rate': 0.003,
@@ -82,27 +53,13 @@ loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 #         'adam_beta_2_after_rampup': 0.999,
 #         'adam_epsilon': 1e-8,
 
-#         # Architecture hyperparameters
-#         'input_noise': 0.15,
-#         'student_dropout_probability': 0.5,
-#         'teacher_dropout_probability': 0.5,
-
 #         # Training schedule
-#         'rampup_length': 40000,
-#         'rampdown_length': 25000,
-#         'training_length': 150000,
-
+#         'rampup_length': 5000/40000,
+#         'rampdown_length': 0/25000,
+#         'training_length': 40000/150000,
 #         # Input augmentation
-#         'flip_horizontally': False,
 #         'translate': True,
-
-#         # Whether to scale each input image to mean=0 and std=1 per channel
-#         # Use False if input is already normalized in some other way
 #         'normalize_input': True,
-
-#         # Output schedule
-#         'print_span': 20,
-#         'evaluation_span': 500,
 #     }
 
 # def step_rampup(global_step, rampup_length):
@@ -117,7 +74,6 @@ loss_func = loss_classifier.loss_dict[FLAGS.c_loss]
 #     def ramp():
 #         phase = 1.0 - tf.maximum(0.0, global_step) / rampup_length
 #         return tf.exp(-5.0 * phase * phase)
-
 #     result = tf.cond(global_step < rampup_length, ramp, lambda: tf.constant(1.0))
 #     return tf.identity(result, name="sigmoid_rampup")
 
