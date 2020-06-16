@@ -31,7 +31,7 @@ class ResnetBlock(nn.Module):
         x_s = self._shortcut(x)
         dx = self.conv_0(self.actvn(x))
         dx = self.conv_1(self.actvn(dx))
-        out = x_s + dx
+        out = x_s + 0.1 * dx
 
         return out
 

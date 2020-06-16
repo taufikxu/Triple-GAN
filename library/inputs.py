@@ -18,7 +18,11 @@ hw_dict = {
     "mnist": (32, 1, 10),
     "fashionmnist": (32, 1, 10),
 }
-actvn_dict = {"relu": nn.ReLU, "softplus": nn.Softplus}
+actvn_dict = {
+    "relu": nn.ReLU,
+    "softplus": nn.Softplus,
+    "lrelu": lambda: nn.LeakyReLU(0.2),
+}
 
 
 def get_optimizer(params, opt_name, lr, beta1, beta2):
