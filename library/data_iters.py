@@ -118,9 +118,24 @@ def get_dataset(train, subset):
 
     if subset > 0:
         generator = np.random.default_rng(FLAGS.ssl_seed)
-        indices = list(range(len(sets)))
-        generator.shuffle(indices)
-        sets = torch.utils.data.Subset(sets, indices[:subset])
+        labels, indexs = [], []
+        for i in range(len(sets)):
+            _, lab = sets.__getitem__(i)
+            labels.append(lab)
+            indexs.append(i)
+        labels = np.array(labels)
+        indexs = np.array(indexs)
+        num_labels = np.max(labels) + 1
+
+        assert subset % num_labels == 0
+
+        final_indices = []
+        for i in range(num_labels):
+            tind = list(indexs[labels == i])
+            generator.shuffle(tind)
+            final_indices.extend(tind[: (subset // num_labels)])
+
+        sets = torch.utils.data.Subset(sets, final_indices)
         assert len(sets) == subset
     return sets
 

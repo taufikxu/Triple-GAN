@@ -1,8 +1,11 @@
 # baseline
 python train_classifier.py ./configs/classifier.yaml -dataset svhn -subfolder baseline -gpu 1
 python train_classifier_ssl.py ./configs/classifier_ssl.yaml -dataset svhn -subfolder baseline -gpu 2
-python train_classifier_mt_svhn.py ./configs/classifier_mt_svhn.yaml -dataset svhn -key debug -gpu 0
-python train_classifier_mt_svhn.py ./configs/classifier_mt_cifar10.yaml -dataset cifar10 -key debug -gpu 0 -translate 5 -flip_horizontal false
+python train_classifier_mt.py ./configs/classifier_mt_svhn.yaml -dataset svhn -subfolder baseline -translate 2 -gpu 0
+python train_classifier_mt.py ./configs/classifier_mt_svhn.yaml -dataset svhn -subfolder baseline -translate 0 -gpu 1
+python train_classifier_mt.py ./configs/classifier_mt_cifar10.yaml -dataset cifar10 -subfolder baseline -translate 2 -flip_horizontal true -gpu 2
+python train_classifier_mt.py ./configs/classifier_mt_cifar10.yaml -dataset cifar10 -subfolder baseline -translate 0 -flip_horizontal false -gpu 3
+
 
 python train_gan.py ./configs/gan.yaml -dataset cifar10 -key test -gpu 1
 python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key fix_aug.addcgen.testlog -gpu 5
