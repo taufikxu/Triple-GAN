@@ -1,3 +1,5 @@
+old_model: None
+
 # arguments for G
 g_model_name: Resnet_RegGAN
 g_z_dim: 256
