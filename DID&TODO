@@ -1,5 +1,5 @@
 1. Triple-GAN 93  
-    87 ssl -> 90 tgan -> 93 gen2cla
+    87 ssl -> 90 tgan -> 93 gen2cla < 94.2
     convergence lrelu sn achitecture
     anneal lr / moving average
     average 10 times
@@ -7,21 +7,23 @@
     cifar10
 
 2. svhn and cifar10 reproduce MT
+    93.7 < 94.7
+    seed 
+    data 
+    not finished
+    teacher train mode bn and dropout
+    zero mean std
+
     add DA
     order of DA, ZCA / zero mean
 
     related to a flag or a dataset
 
+    svhn
+    2-2 trans
+    mean std
 
-3. Add MT to Triple-GAN
-    debug of pre and da
-    g -> cla preprocessing
-    add a new iter
-
-4. Add advanced GAN to Triple-GAN
-
-5. ResNet MT
-
-6. SWA MixMatch VAT
-
-7. CIFAR100 and STL10
+    cifar10
+    2-2
+    flip
+    ZCA

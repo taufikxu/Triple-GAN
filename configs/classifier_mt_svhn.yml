@@ -25,7 +25,10 @@ adam_beta_2_after_rampup: 0.999
 rampup_length: 40000
 rampdown_length: 0
 
-data_augment: data_augment_svhn.yaml
+# Preprocessing
+zca: false
+translate: 2
+flip_horizontal: false
 ssl_seed: 1
 
 # training arguments:

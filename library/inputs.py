@@ -37,12 +37,6 @@ def get_data_iter(batch_size=None, train=True, infinity=True, subset=0):
     return dataset_iters.inf_train_gen(FLAGS.batch_size, train, infinity, subset)
 
 
-def get_data_iter_twice(batch_size=None, train=True, infinity=True, subset=0):
-    if batch_size is None:
-        batch_size = FLAGS.batch_size
-    return dataset_iters.inf_train_gen_twice(FLAGS.batch_size, train, infinity, subset)
-
-
 def get_data_iter_test(batch_size=None, infinity=False):
     if batch_size is None:
         batch_size = FLAGS.batch_size
@@ -90,10 +84,22 @@ def get_discriminator_optimizer():
     return D, optim
 
 
+class classifier_wrapper(nn.Module):
+    def __init__(self, classifier):
+        super().__init__()
+        self.cla = classifier
+        self.trans = dataset_iters.AugmentWrapper()
+
+    def forward(self, dat):
+        dat = self.trans(dat).to(dat.device)
+        return self.cla(dat)
+
+
 def get_classifier_optimizer():
     module = classifier_dict[FLAGS.c_model_name]
     _, _, nlabel = hw_dict[FLAGS.dataset]
     C = module(num_classes=nlabel)
+    C = classifier_wrapper(C)
     optim = get_optimizer(
         C.parameters(), FLAGS.c_optim, FLAGS.c_lr, FLAGS.c_beta1, FLAGS.c_beta2
     )
