@@ -9,7 +9,7 @@ bs_c_for_d: 200
 bs_l_for_d: 20
 bs_u_for_d: 180
 clip_value: -1
-save_every: 1000
+save_every: 10000
 gan_type: hinge
 gan_traind_c: int
 
@@ -17,26 +17,28 @@ gan_traind_c: int
 c_model_name: cifar10_cnn
 
 c_loss: mtssl
+c_step: ramp
 c_optim: adam
-c_lr: 0.0001
-c_beta1: 0.
-c_beta2: 0.99
+c_lr: 0.003
+c_beta1: 0.5
+c_beta2: 0.999
 alpha_c_adv: 0.01
 alpha_c_pdl: 0.03
 psl_iters: 150000
 
+# Lr schdule:
+lr_anneal_num: 1000000
+lr_anneal_interval: 500
+lr_anneal_coe: 1
 # Consistency hyperparameters
-lr: 0.003
 max_consistency_cost: 50.0
 ema_decay_during_rampup: 0.99
 ema_decay_after_rampup: 0.999
-
 # Optimizer hyperparameters
 adam_beta_1_before_rampdown: 0.9
 adam_beta_1_after_rampdown: 0.5
 adam_beta_2_during_rampup: 0.99
 adam_beta_2_after_rampup: 0.999
-
 # Training schedule
 rampup_length: 40000
 rampdown_length: 0

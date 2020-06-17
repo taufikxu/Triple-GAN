@@ -22,7 +22,7 @@ class ZCA(object):
         m = np.mean(x, axis=0)
         x -= m
         sigma = np.dot(x.T, x) / x.shape[0]
-        sigma += np.eye(sigma.shape[0], sigma.shape[1]) * self.regularization
+        sigma += np.eye(sigma.shape[0], sigma.shape[1]) * 0.1
         U, S, V = linalg.svd(sigma)
         tmp = np.dot(U, np.diag(1.0 / np.sqrt(S + self.regularization)))
         tmp2 = np.dot(U, np.diag(np.sqrt(S + self.regularization)))

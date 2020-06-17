@@ -31,19 +31,15 @@ itr_u = inputs.get_data_iter(batch_size=FLAGS.bs_c)
 netG, optim_G = inputs.get_generator_optimizer()
 netD, optim_D = inputs.get_discriminator_optimizer()
 netC, optim_c = inputs.get_classifier_optimizer()
+
 netG, netD, netC = netG.to(device), netD.to(device), netC.to(device)
 netG = nn.DataParallel(netG)
 netD = nn.DataParallel(netD)
 netC = nn.DataParallel(netC)
-netC_T, _ = inputs.get_classifier_optimizer()
-netC_T = netC_T.to(device)
-netC_T = nn.DataParallel(netC_T)
-# netC.train()
-# netC_T.train()
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
 checkpoint_io.register_modules(
-    netG=netG, netD=netD, netC=netC, netC_T=netC_T, optim_G=optim_G, optim_D=optim_D, optim_c=optim_c
+    netG=netG, netD=netD, netC=netC, optim_G=optim_G, optim_D=optim_D, optim_c=optim_c
 )
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
@@ -91,7 +87,7 @@ for i in range(max_iter):
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
     loss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
-    loss_c_ssl, l_c_loss, u_c_loss = loss_func_c_ssl(netC, netC_T, i, data, label, data_u)
+    loss_c_ssl = loss_func_c_ssl(netC, data, label, data_u)
     if i > FLAGS.psl_iters:
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
         loss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
@@ -102,9 +98,11 @@ for i in range(max_iter):
     loss_c = (
         FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
     )
-    
-    loss_classifier.step_MT(optim_c, netC, netC_T, i, loss_c)
-
+    optim_c.zero_grad()
+    loss_c.backward()
+    if FLAGS.clip_value > 0:
+        torch.nn.utils.clip_grad_norm_(netC.parameters(), FLAGS.clip_value)
+    optim_c.step()
     logger.add("training_c", "loss", loss_c.item(), i + 1)
     logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
     logger.add("training_c", "loss_ssl", loss_c_ssl.item(), i + 1)
@@ -124,12 +122,11 @@ for i in range(max_iter):
             x_fake = netG(sample_z, tlabel)
             logger.add_imgs(x_fake, "img{:08d}".format(i + 1), nrow=FLAGS.bs_g // 10)
             total_t, correct_t, loss_t = evaluation.test_classifier(netC)
-            total_tt, correct_tt, loss_tt = evaluation.test_classifier(netC_T)
 
         logger.add("testing", "loss", loss_t.item(), i + 1)
+        logger.add("testing", "total_test", total_t, i + 1)
+        logger.add("testing", "correct_test", correct_t, i + 1)
         logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
-        logger.add("testing", "loss_t", loss_tt.item(), i + 1)
-        logger.add("testing", "accuracy_t", 100 * (correct_tt / total_tt), i + 1)
         str_meg = logger_prefix.format(i + 1, max_iter, 100 * ((i + 1) / max_iter))
         logger.log_info(str_meg, text_logger.info, ["testing"])
 
