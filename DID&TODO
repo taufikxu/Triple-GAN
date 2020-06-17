@@ -27,3 +27,18 @@
     2-2
     flip
     ZCA
+
+3. combine mt and tgan
+
+    ratios and learning rates
+
+    rampup
+
+    how to use data from g
+
+    
+
+4. debug 
+    check eval and train mode for all classifier (c and c_t)
+        triple-gan 
+        mt

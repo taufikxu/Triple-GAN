@@ -1,6 +1,6 @@
 dataset: SVHN
 
-# arguments for D
+# arguments for C
 c_model_name: cifar10_cnn
 
 c_loss: entropyssl
