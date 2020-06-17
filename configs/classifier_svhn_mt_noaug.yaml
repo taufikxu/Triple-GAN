@@ -37,4 +37,4 @@ n_iter: 150000
 batch_size: 100
 clip_value: -1
 save_every: 10000
-n_labels: 4000
+n_labels: 1000

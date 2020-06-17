@@ -59,7 +59,7 @@ max_iter = FLAGS.n_iter
 loss_func_g = loss_triplegan.g_loss_dict[FLAGS.gan_type]
 loss_func_d = loss_triplegan.d_loss_dict[FLAGS.gan_type]
 loss_func_c_adv = loss_triplegan.c_loss_dict[FLAGS.gan_type]
-loss_func_c_normal = loss_classifier.c_loss_dict[FLAGS.c_loss]
+loss_func_c = loss_classifier.c_loss_dict[FLAGS.c_loss]
 step_func = loss_classifier.c_step_func[FLAGS.c_step]
 
 logger_prefix = "Itera {}/{} ({:.0f}%)"
@@ -97,7 +97,7 @@ for i in range(max_iter):
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
     loss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
-    loss_c_ssl, l_c_loss, u_c_loss = loss_func(netC, netC_T, i, itr, itr_u, device)
+    loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
     if i > FLAGS.psl_iters:
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
         loss_c_pdl = loss_triplegan.pseudo_discriminative_loss(

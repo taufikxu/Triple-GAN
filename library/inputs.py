@@ -3,9 +3,9 @@ from torch import nn
 
 
 import library.data_iters as dataset_iters
-from library.generators import generator_dict
-from library.discriminators import discriminator_dict
-from library.classifiers import classifier_dict
+from library.model_generators import generator_dict
+from library.model_discriminators import discriminator_dict
+from library.model_classifiers import classifier_dict
 
 
 from Utils import flags
@@ -45,7 +45,7 @@ def get_data_iter_test(batch_size=None, infinity=False):
 
 def get_generator_optimizer():
     module = generator_dict[FLAGS.g_model_name.lower()]
-    hw, c, nlabel = hw_dict[FLAGS.dataset]
+    hw, c, nlabel = hw_dict[FLAGS.dataset.lower()]
     actvn = actvn_dict[FLAGS.g_actvn]()
     G = module(
         z_dim=FLAGS.g_z_dim,
@@ -65,7 +65,7 @@ def get_generator_optimizer():
 
 def get_discriminator_optimizer():
     module = discriminator_dict[FLAGS.g_model_name.lower()]
-    hw, c, nlabel = hw_dict[FLAGS.dataset]
+    hw, c, nlabel = hw_dict[FLAGS.dataset.lower()]
     D = module(
         z_dim=FLAGS.d_z_dim,
         n_label=nlabel,
@@ -98,14 +98,14 @@ class classifier_wrapper(nn.Module):
         self.cla.eval()
         self.trans.eval()
 
-    def train(self):
-        self.cla.train()
-        self.trans.train()
+    def train(self, mode=True):
+        self.cla.train(mode)
+        self.trans.train(mode)
 
 
 def get_classifier_optimizer():
     module = classifier_dict[FLAGS.c_model_name]
-    _, _, nlabel = hw_dict[FLAGS.dataset]
+    _, _, nlabel = hw_dict[FLAGS.dataset.lower()]
     C = module(num_classes=nlabel)
     C = classifier_wrapper(C)
     optim = get_optimizer(

@@ -3,7 +3,7 @@ import torch
 # from torch.nn import functional as F
 
 from Utils.flags import FLAGS
-from library.loss_classifier import loss_cross_entropy
+from library.loss_cla import loss_cross_entropy
 
 softmax = torch.nn.Softmax(1)
 
@@ -50,7 +50,8 @@ def loss_hinge_cla(netD, netC, x_u):
 def pseudo_discriminative_loss(netC, netG, z_rand, label):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()
-    return loss_cross_entropy(netC, x_fake, label)
+    logit = netC(x_fake)
+    return loss_cross_entropy(logit, label)
 
 
 def loss_hinge_gen(netD, netG, z_rand, label):

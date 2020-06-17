@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 import numpy as np
-from library.layers import ResnetBlock
+from library.model_layers import ResnetBlock
 
 
 class Generator(nn.Module):

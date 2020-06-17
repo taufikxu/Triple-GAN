@@ -66,8 +66,8 @@ class AugmentWrapper(object):
     def eval(self):
         self.eval = True
 
-    def train(self):
-        self.eval = False
+    def train(self, mode=True):
+        self.eval = not mode
 
     def __call__(self, tensor):
         assert isinstance(tensor, torch.Tensor)
