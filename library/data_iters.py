@@ -46,6 +46,7 @@ class ZCA(object):
 class AugmentWrapper(object):
     def __init__(self):
         zca = FLAGS.zca
+        self.eval = False
 
         if zca is True:
             self.zca = ZCA()
@@ -62,6 +63,12 @@ class AugmentWrapper(object):
         else:
             self.zca = None
 
+    def eval(self):
+        self.eval = True
+
+    def train(self):
+        self.eval = False
+
     def __call__(self, tensor):
         assert isinstance(tensor, torch.Tensor)
         assert len(tensor.shape) == 4
@@ -72,7 +79,7 @@ class AugmentWrapper(object):
         else:
             tensor = tensor.data.cpu().numpy()
 
-        if FLAGS.translate > 0:
+        if self.eval is True and FLAGS.translate > 0:
             bs, lenx, leny = tensor.shape[0], tensor.shape[2], tensor.shape[3]
             pad = FLAGS.translate
             tensor = np.pad(

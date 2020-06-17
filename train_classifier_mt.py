@@ -33,6 +33,8 @@ netC = nn.DataParallel(netC)
 netC_T, _ = inputs.get_classifier_optimizer()
 netC_T = netC_T.to(device)
 netC_T = nn.DataParallel(netC_T)
+netC.train()
+netC_T.train()
 
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
@@ -64,6 +66,7 @@ for i in range(max_iter):
         logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % test_interval == 0:
+        netC.eval()
         total_t, correct_t, loss_t = evaluation.test_classifier(netC_T)
         logger.add("testing", "loss_t", loss_t.item(), i + 1)
         logger.add("testing", "accuracy_t", 100 * (correct_t / total_t), i + 1)
@@ -75,6 +78,7 @@ for i in range(max_iter):
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
         cats = ["testing"]
         logger.log_info(prefix, text_logger.info, cats=cats)
+        netC.train()
 
     if (i + 1) % FLAGS.save_every == 0:
         logger.save_stats("{:08d}.pkl".format(i))

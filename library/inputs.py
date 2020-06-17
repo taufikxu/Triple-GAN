@@ -94,6 +94,14 @@ class classifier_wrapper(nn.Module):
         dat = self.trans(dat).to(dat.device)
         return self.cla(dat)
 
+    def eval(self):
+        self.cla.eval()
+        self.trans.eval()
+
+    def train(self):
+        self.cla.train()
+        self.trans.train()
+
 
 def get_classifier_optimizer():
     module = classifier_dict[FLAGS.c_model_name]
