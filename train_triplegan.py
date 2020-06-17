@@ -39,6 +39,7 @@ netC_T = netC_T.to(device)
 netC_T = nn.DataParallel(netC_T)
 netC.train()
 netC_T.train()
+Torture.update_average(netC_T, netC, 0)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
 checkpoint_io.register_modules(
