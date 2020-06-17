@@ -123,6 +123,8 @@ for i in range(max_iter):
         logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % image_interval == 0:
+        netC.eval()
+        netC_T.eval()
         with torch.no_grad():
             sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
             tlabel = label[: FLAGS.bs_g // 10]
@@ -131,6 +133,8 @@ for i in range(max_iter):
             logger.add_imgs(x_fake, "img{:08d}".format(i + 1), nrow=FLAGS.bs_g // 10)
             total_t, correct_t, loss_t = evaluation.test_classifier(netC)
             total_tt, correct_tt, loss_tt = evaluation.test_classifier(netC_T)
+        netC.train()
+        netC_T.train()
 
         logger.add("testing", "loss", loss_t.item(), i + 1)
         logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
