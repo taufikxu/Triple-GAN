@@ -1,16 +1,17 @@
-import torch
 import numpy as np
-
+import torch
 import torch.nn.functional as F
-from torchvision import datasets, transforms
-
 from PIL import Image
 from scipy import linalg
+import torchvision
+from torchvision import datasets, transforms
+
+import Utils
 from Utils.flags import FLAGS
 
 
 class ZCA(object):
-    def __init__(self, regularization=1e-5, x=None):
+    def __init__(self, regularization=1e-3, x=None):
         self.regularization = regularization
         if x is not None:
             self.fit(x)
@@ -21,6 +22,7 @@ class ZCA(object):
         m = np.mean(x, axis=0)
         x -= m
         sigma = np.dot(x.T, x) / x.shape[0]
+        sigma += np.eye(sigma.shape[0], sigma.shape[1]) * self.regularization
         U, S, V = linalg.svd(sigma)
         tmp = np.dot(U, np.diag(1.0 / np.sqrt(S + self.regularization)))
         tmp2 = np.dot(U, np.diag(np.sqrt(S + self.regularization)))
@@ -91,7 +93,7 @@ class AugmentWrapper(object):
                     indexy[i] : indexy[i] + leny,
                 ]
                 if FLAGS.flip_horizontal is True and np.random.randint(0, 2) == 1:
-                    ten = ten[:, :, ::-1, :]
+                    ten = ten[:, :, :, ::-1]
                 new_tensor_list.append(ten)
             tensor = np.concatenate(new_tensor_list, 0)
 
@@ -156,3 +158,22 @@ def inf_train_gen(batch_size, train=True, infinity=True, subset=0):
     else:
         for img, labels in loader:
             yield img, labels
+
+
+if __name__ == "__main__":
+    Utils.config.load_config("./configs/classifier_mt_cifar10.yaml")
+    FLAGS.zca = True
+    FLAGS.translate = 10
+
+    wrapper = AugmentWrapper()
+    dataset = get_dataset(True, 0)
+    img_list = []
+    for i in range(100):
+        img, _ = dataset.__getitem__(i)
+        img_list.append(img)
+    img_list = torch.stack(img_list, 0)
+    torchvision.utils.save_image((img_list + 1) / 2, "./tmp.png", nrow=10)
+
+    img_list = wrapper(img_list)
+    print(torch.max(img_list), torch.min(img_list))
+    torchvision.utils.save_image((img_list + 1) / 2, "./tmp1.png", nrow=10)
