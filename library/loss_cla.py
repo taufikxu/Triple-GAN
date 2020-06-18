@@ -35,6 +35,24 @@ def sigmoid_rampdown(global_step, rampdown_length, training_length):
         return 1.0
 
 
+def linear_rampup(current, rampup_length):
+    """Linear rampup"""
+    assert current >= 0 and rampup_length >= 0
+    if current >= rampup_length:
+        return 1.0
+    else:
+        return current / rampup_length
+
+
+def cosine_rampdown(current, rampdown_length, training_length):
+    """Cosine rampdown from https://arxiv.org/abs/1608.03983"""
+    assert 0 <= current <= training_length
+    if current >= training_length - rampdown_length:
+        return float(.5 * (np.cos(np.pi * current / training_length) + 1))
+    else:
+        return 1.0
+
+
 # losses
 def entropy(logits):
     prob = softmax(logits)
@@ -69,6 +87,25 @@ def loss_entropy_ssl(netC, netC_T, it, iter_l, iter_u, device):
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
 
+def loss_res_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
+    data, label = iter_l.__next__()
+    data, label = data.to(device), label.to(device)
+    data_u, _ = iter_u.__next__()
+    data_u = data_u.to(device)
+
+    sigmoid_rampup_value = sigmoid_rampup(it, FLAGS.rampup_length)
+    cons_coefficient = sigmoid_rampup_value * FLAGS.max_consistency_cost
+    logit_l = netC(data)
+    logit_u = netC(data_u)
+    logit_ut = netC_T(data_u)
+
+    loss_l = loss_cross_entropy(logit_l, label)
+    prob = softmax(logit_u)
+    prob_t = softmax(logit_ut)
+    loss_u = cons_coefficient * torch.sum((prob - prob_t) ** 2, dim=1).mean(dim=0)
+    return loss_l + loss_u, loss_l.detach(), loss_u.detach()
+
+
 def loss_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
     data, label = iter_l.__next__()
     data, label = data.to(device), label.to(device)
@@ -90,7 +127,7 @@ def loss_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
 
 def step_ramp(optim_c, netC, netC_T, it, tloss):
     sigmoid_rampup_value = sigmoid_rampup(it, FLAGS.rampup_length)
-    sigmoid_rampdown_value = sigmoid_rampdown(it, FLAGS.rampup_length, FLAGS.n_iter)
+    sigmoid_rampdown_value = sigmoid_rampdown(it, FLAGS.rampdown_length, FLAGS.n_iter)
 
     lr = FLAGS.c_lr * sigmoid_rampup_value * sigmoid_rampdown_value
     adam_beta_1 = (
@@ -106,6 +143,26 @@ def step_ramp(optim_c, netC, netC_T, it, tloss):
 
     # update adam
     optim_c.param_groups[0]["betas"] = (adam_beta_1, adam_beta_2)
+    optim_c.param_groups[0]["lr"] = lr
+
+    # update student
+    optim_c.zero_grad()
+    tloss.backward()
+    if FLAGS.clip_value > 0:
+        torch.nn.utils.clip_grad_norm_(netC.parameters(), FLAGS.clip_value)
+    optim_c.step()
+
+    # update teacher
+    update_average(netC_T, netC, ema_decay)
+
+def step_ramp_linear(optim_c, netC, netC_T, it, tloss):
+    
+    ema_decay = FLAGS.ema_decay_after_rampup
+    linear_rampup_value = linear_rampup(it, FLAGS.rampup_length_lr)
+    cosine_rampdown_value = cosine_rampdown(it, FLAGS.rampdown_length, FLAGS.n_iter)
+    lr = FLAGS.c_lr * linear_rampup_value * cosine_rampdown_value
+
+    # update adam
     optim_c.param_groups[0]["lr"] = lr
 
     # update student
@@ -142,6 +199,7 @@ c_loss_dict = {
     "crossentropy": loss_supervised,
     "entropyssl": loss_entropy_ssl,
     "mtssl": loss_MT_ssl,
+    "res_mtssl": loss_res_MT_ssl,
 }
 
-c_step_func = {"ramp": step_ramp, "regular": step_regular}
+c_step_func = {"ramp": step_ramp, "ramp_linear": step_ramp_linear, "regular": step_regular}

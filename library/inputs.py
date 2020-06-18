@@ -28,6 +28,8 @@ actvn_dict = {
 def get_optimizer(params, opt_name, lr, beta1, beta2):
     if opt_name.lower() == "adam":
         optim = torch.optim.Adam(params, lr, betas=(beta1, beta2))
+    elif opt_name.lower() == "nesterov":
+        optim = torch.optim.SGD(params, lr, momentum=beta1, nesterov=True)
     return optim
 
 

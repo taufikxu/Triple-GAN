@@ -36,9 +36,17 @@
 
     how to use data from g
 
-    
+    some baselines
+        mt using triple-gan args
+        triple-gan use mt args
 
-4. debug 
-    check eval and train mode for all classifier (c and c_t) (check by kun)
-        triple-gan 
-        mt
+    not sure
+    
+    'batch_size': base_batch_size * ngpu,
+    'labeled_batch_size': base_labeled_batch_size * ngpu,
+    'lr': base_lr * ngpu,
+
+    no mse loss
+    no 4 gpus
+    no weight decay
+    0.02 or 0.05
