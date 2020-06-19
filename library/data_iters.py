@@ -30,11 +30,17 @@ class ZCA(object):
         self.inv_ZCA_mat = np.dot(tmp2, U.T)
         self.mean = m
 
+        self.ZCA_mat_t = torch.from_numpy(self.ZCA_mat).cuda()
+        self.inv_ZCA_mat_t = torch.from_numpy(self.inv_ZCA_mat).cuda()
+        self.mean_t = torch.from_numpy(self.mean).cuda()
+
     def apply(self, x):
         s = x.shape
-        return np.dot(
-            x.reshape((s[0], np.prod(s[1:]))) - self.mean, self.ZCA_mat,
-        ).reshape(s)
+        # return np.dot(
+        #     x.reshape((s[0], np.prod(s[1:]))) - self.mean, self.ZCA_mat,
+        # ).reshape(s)
+        result = torch.mm(x.view(s[0], -1) - self.mean_t, self.ZCA_mat_t)
+        return result.view(*s)
 
     def invert(self, x):
         s = x.shape
@@ -74,28 +80,18 @@ class AugmentWrapper(object):
         assert len(tensor.shape) == 4
 
         if self.zca is not None:
-            # print("Zca")
-            tensor = tensor.data.cpu().numpy()
             tensor = self.zca.apply(tensor)
-        else:
-            # print("No Zca")
-            tensor = tensor.data.cpu().numpy()
 
         if self.eval is False and FLAGS.translate > 0:
             bs, lenx, leny = tensor.shape[0], tensor.shape[2], tensor.shape[3]
             pad = FLAGS.translate
-            tensor = np.pad(
-                tensor,
-                ([0, 0], [0, 0], [pad, pad], [pad, pad]),
-                "constant",
-                constant_values=0,
-            )
+            tensor = F.pad(tensor, [pad, pad, pad, pad])
             index = np.random.randint(0, pad * 2, size=[2, bs])
             indexx, indexy = index[0], index[1]
+            inv_idx = torch.arange(leny - 1, -1, -1).long().cuda()
 
             new_tensor_list = []
             for i in range(bs):
-                # print("translate", indexx[i], indexy[i])
                 ten = tensor[
                     i : i + 1,
                     :,
@@ -103,11 +99,11 @@ class AugmentWrapper(object):
                     indexy[i] : indexy[i] + leny,
                 ]
                 if FLAGS.flip_horizontal is True and np.random.randint(0, 2) == 1:
-                    ten = ten[:, :, :, ::-1]
+                    ten = ten.index_select(3, inv_idx)
                 new_tensor_list.append(ten)
-            tensor = np.concatenate(new_tensor_list, 0)
+            tensor = torch.cat(new_tensor_list, 0)
 
-        return torch.from_numpy(tensor.astype(np.float32))
+        return tensor
 
 
 def get_dataset(train, subset):
@@ -171,9 +167,9 @@ def inf_train_gen(batch_size, train=True, infinity=True, subset=0):
 
 
 if __name__ == "__main__":
-    Utils.config.load_config("./configs/classifier_mt_cifar10.yaml")
+    Utils.config.load_config("./configs/classifier_cifar10_mt_aug.yaml")
     FLAGS.zca = True
-    FLAGS.translate = 10
+    FLAGS.translate = 2
 
     wrapper = AugmentWrapper()
     dataset = get_dataset(True, 0)
@@ -181,7 +177,7 @@ if __name__ == "__main__":
     for i in range(100):
         img, _ = dataset.__getitem__(i)
         img_list.append(img)
-    img_list = torch.stack(img_list, 0)
+    img_list = torch.stack(img_list, 0).cuda()
     torchvision.utils.save_image((img_list + 1) / 2, "./tmp.png", nrow=10)
 
     img_list = wrapper(img_list)
