@@ -354,6 +354,8 @@ class GaussianNoise(nn.Module):
         self.std = std
 
     def forward(self, x):
+        if self.training is False:
+            return x
         zeros_ = torch.zeros(x.size()).cuda()
         n = Variable(torch.normal(zeros_, std=self.std).cuda())
         return x + n

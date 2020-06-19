@@ -74,12 +74,14 @@ class AugmentWrapper(object):
         assert len(tensor.shape) == 4
 
         if self.zca is not None:
+            # print("Zca")
             tensor = tensor.data.cpu().numpy()
             tensor = self.zca.apply(tensor)
         else:
+            # print("No Zca")
             tensor = tensor.data.cpu().numpy()
 
-        if self.eval is True and FLAGS.translate > 0:
+        if self.eval is False and FLAGS.translate > 0:
             bs, lenx, leny = tensor.shape[0], tensor.shape[2], tensor.shape[3]
             pad = FLAGS.translate
             tensor = np.pad(
@@ -93,6 +95,7 @@ class AugmentWrapper(object):
 
             new_tensor_list = []
             for i in range(bs):
+                # print("translate", indexx[i], indexy[i])
                 ten = tensor[
                     i : i + 1,
                     :,
