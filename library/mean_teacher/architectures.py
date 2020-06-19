@@ -5,7 +5,7 @@ import itertools
 import torch
 from torch import nn
 from torch.nn import functional as F
-from torch.autograd import Variable, Function
+from torch.autograd import Function
 from torch.nn.utils import weight_norm
 from library.mean_teacher.utils import export, parameter_count
 
@@ -315,7 +315,7 @@ class Shake(Function):
     def backward(cls, ctx, grad_output):
         grad_inp1 = grad_inp2 = grad_training = None
         gate_size = [grad_output.size()[0], *itertools.repeat(1, grad_output.dim() - 1)]
-        gate = Variable(grad_output.data.new(*gate_size).uniform_(0, 1))
+        gate = grad_output.data.new(*gate_size).uniform_(0, 1)
         if ctx.needs_input_grad[0]:
             grad_inp1 = grad_output * gate
         if ctx.needs_input_grad[1]:
@@ -356,8 +356,7 @@ class GaussianNoise(nn.Module):
     def forward(self, x):
         if self.training is False:
             return x
-        zeros_ = torch.zeros(x.size()).cuda()
-        n = Variable(torch.normal(zeros_, std=self.std).cuda())
+        n = torch.randn_like(x) * self.std
         return x + n
 
 
