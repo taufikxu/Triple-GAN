@@ -126,7 +126,7 @@ def loss_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
 
 
 def step_ramp(optim_c, netC, netC_T, it, tloss):
-    sigmoid_rampup_value = sigmoid_rampup(it, FLAGS.rampup_length)
+    sigmoid_rampup_value = sigmoid_rampup(it, FLAGS.rampup_length_lr)
     sigmoid_rampdown_value = sigmoid_rampdown(it, FLAGS.rampdown_length, FLAGS.n_iter)
 
     lr = FLAGS.c_lr * sigmoid_rampup_value * sigmoid_rampdown_value

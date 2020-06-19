@@ -93,8 +93,7 @@ class classifier_wrapper(nn.Module):
         self.trans = dataset_iters.AugmentWrapper()
 
     def forward(self, dat):
-        if self.training is True:
-            dat = self.trans(dat)
+        dat = self.trans(dat, self.training)
         return self.cla(dat)
 
 

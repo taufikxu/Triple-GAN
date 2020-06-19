@@ -37,7 +37,7 @@ netC.train()
 netC_T.train()
 Torture.update_average(netC_T, netC, 0)
 for p in netC_T.parameters():
-    p.requires_grad_(requires_grad)
+    p.requires_grad_(False)
 
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)

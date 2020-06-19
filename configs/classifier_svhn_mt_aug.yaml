@@ -24,6 +24,7 @@ adam_beta_2_during_rampup: 0.99
 adam_beta_2_after_rampup: 0.999
 # Training schedule
 rampup_length: 40000
+rampup_length_lr: 40000
 rampdown_length: 0
 
 # Preprocessing
