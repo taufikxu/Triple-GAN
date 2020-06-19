@@ -52,7 +52,6 @@ class ZCA(object):
 class AugmentWrapper(object):
     def __init__(self):
         zca = FLAGS.zca
-        self.eval = False
 
         if zca is True:
             self.zca = ZCA()
@@ -69,12 +68,6 @@ class AugmentWrapper(object):
         else:
             self.zca = None
 
-    def eval(self):
-        self.eval = True
-
-    def train(self, mode=True):
-        self.eval = not mode
-
     def __call__(self, tensor):
         assert isinstance(tensor, torch.Tensor)
         assert len(tensor.shape) == 4
@@ -82,7 +75,7 @@ class AugmentWrapper(object):
         if self.zca is not None:
             tensor = self.zca.apply(tensor)
 
-        if self.eval is False and FLAGS.translate > 0:
+        if FLAGS.translate > 0:
             bs, lenx, leny = tensor.shape[0], tensor.shape[2], tensor.shape[3]
             pad = FLAGS.translate
             tensor = F.pad(tensor, [pad, pad, pad, pad])
@@ -102,7 +95,7 @@ class AugmentWrapper(object):
                     ten = ten.index_select(3, inv_idx)
                 new_tensor_list.append(ten)
             tensor = torch.cat(new_tensor_list, 0)
-
+        torchvision.utils.save_image((tensor + 1) / 2, "./tmp.png", nrow=10)
         return tensor
 
 

@@ -48,7 +48,7 @@ def cosine_rampdown(current, rampdown_length, training_length):
     """Cosine rampdown from https://arxiv.org/abs/1608.03983"""
     assert 0 <= current <= training_length
     if current >= training_length - rampdown_length:
-        return float(.5 * (np.cos(np.pi * current / training_length) + 1))
+        return float(0.5 * (np.cos(np.pi * current / training_length) + 1))
     else:
         return 1.0
 
@@ -97,7 +97,7 @@ def loss_res_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
     cons_coefficient = sigmoid_rampup_value * FLAGS.max_consistency_cost
     logit_l = netC(data)
     logit_u = netC(data_u)
-    logit_ut = netC_T(data_u)
+    logit_ut = netC_T(data_u).detach()
 
     loss_l = loss_cross_entropy(logit_l, label)
     prob = softmax(logit_u)
@@ -116,7 +116,7 @@ def loss_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
     cons_coefficient = sigmoid_rampup_value * FLAGS.max_consistency_cost
     logit_l = netC(data)
     logit_u = netC(data_u)
-    logit_ut = netC_T(data_u)
+    logit_ut = netC_T(data_u).detach()
 
     loss_l = loss_cross_entropy(logit_l, label)
     prob = softmax(logit_u)
@@ -155,8 +155,9 @@ def step_ramp(optim_c, netC, netC_T, it, tloss):
     # update teacher
     update_average(netC_T, netC, ema_decay)
 
+
 def step_ramp_linear(optim_c, netC, netC_T, it, tloss):
-    
+
     ema_decay = FLAGS.ema_decay_after_rampup
     linear_rampup_value = linear_rampup(it, FLAGS.rampup_length_lr)
     cosine_rampdown_value = cosine_rampdown(it, FLAGS.rampdown_length, FLAGS.n_iter)
@@ -202,4 +203,9 @@ c_loss_dict = {
     "res_mtssl": loss_res_MT_ssl,
 }
 
-c_step_func = {"ramp": step_ramp, "ramp_linear": step_ramp_linear, "regular": step_regular}
+c_step_func = {
+    "ramp": step_ramp,
+    "ramp_linear": step_ramp_linear,
+    "regular": step_regular,
+}
+

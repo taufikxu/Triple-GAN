@@ -93,16 +93,9 @@ class classifier_wrapper(nn.Module):
         self.trans = dataset_iters.AugmentWrapper()
 
     def forward(self, dat):
-        dat = self.trans(dat).to(dat.device)
+        if self.training is True:
+            dat = self.trans(dat)
         return self.cla(dat)
-
-    def eval(self):
-        self.cla.eval()
-        self.trans.eval()
-
-    def train(self, mode=True):
-        self.cla.train(mode)
-        self.trans.train(mode)
 
 
 def get_classifier_optimizer():
