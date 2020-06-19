@@ -17,7 +17,6 @@ def update_average(model_tgt, model_src, beta=0.999):
     for p_name, p_tgt in model_tgt.named_parameters():
         p_src = param_dict_src[p_name]
         assert p_src is not p_tgt
-        # p_tgt.copy_(beta * p_tgt + (1.0 - beta) * p_src)
         p_tgt.data.mul_(beta).add_((1 - beta) * p_src.data)
 
 
@@ -67,6 +66,10 @@ def loss_cross_entropy(logits, label):
 
 def loss_supervised(netC, netC_T, it, iter_l, iter_u, device):
     data, label = iter_l.__next__()
+    data_u, _ = iter_u.__next__()
+    data_u = data_u.to(device)
+    logit_ut = netC_T(data_u).detach()
+
     data, label = data.to(device), label.to(device)
     logit_l = netC(data)
     loss_l = loss_cross_entropy(logit_l, label)
@@ -81,6 +84,7 @@ def loss_entropy_ssl(netC, netC_T, it, iter_l, iter_u, device):
 
     logit_l = netC(data)
     logit_u = netC(data_u)
+    logit_ut = netC_T(data_u).detach()
 
     loss_l = loss_cross_entropy(logit_l, label)
     loss_u = FLAGS.alpha_entropy * entropy(logit_u)
