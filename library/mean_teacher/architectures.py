@@ -185,17 +185,14 @@ class ResNet32x32(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x, double=False):
+    def forward(self, x):
         x = self.conv1(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        if double is True:
-            return self.fc1(x), self.fc2(x)
-        else:
-            return self.fc1(x)
+        return self.fc1(x), self.fc2(x)
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -422,7 +419,7 @@ class CNN(nn.Module):
         x = self.ap3(x)
 
         x = x.view(-1, 128)
-        return self.fc1(x)
+        return self.fc1(x), self.fc2(x)
 
 
 class CNNGauss(nn.Module):
@@ -484,4 +481,4 @@ class CNNGauss(nn.Module):
         x = self.ap3(x)
 
         x = x.view(-1, 128)
-        return self.fc1(x)
+        return self.fc1(x), self.fc2(x)

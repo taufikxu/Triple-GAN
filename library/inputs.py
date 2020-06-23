@@ -29,7 +29,9 @@ def get_optimizer(params, opt_name, lr, beta1, beta2):
     if opt_name.lower() == "adam":
         optim = torch.optim.Adam(params, lr, betas=(beta1, beta2))
     elif opt_name.lower() == "nesterov":
-        optim = torch.optim.SGD(params, lr, momentum=beta1, weight_decay=FLAGS.c_weight_decay, nesterov=True)
+        optim = torch.optim.SGD(
+            params, lr, momentum=beta1, weight_decay=FLAGS.c_weight_decay, nesterov=True
+        )
     return optim
 
 
@@ -94,7 +96,9 @@ class classifier_wrapper(nn.Module):
 
     def forward(self, dat, double=False):
         dat = self.trans(dat, self.training)
-        return self.cla(dat, double=double)
+        logits = self.cla(dat)
+        print(type(logits))
+        return logits
 
 
 def get_classifier_optimizer():

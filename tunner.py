@@ -5,14 +5,19 @@ import itertools
 
 # Args
 args_fortune = {
-    "config_file": ["./configs/triple_gan_svhn_mt_aug.yaml"],
-    "alpha_c_pdl": [0.03, 0.1, 0.3],
-    "psl_iters": [150000],
-    "alpha_c_adv": [0.003, 0.01],
-    "adv_iters": [150000, 9999999],
-    "subfolder": ["tunesvhn"],
+    "config_file": [
+        "./configs/classifier_cifar10_mt_aug.yaml",
+        "./configs/classifier_cifar10_mt_noaug.yaml",
+        "./configs/classifier_svhn_mt_aug.yaml",
+        "./configs/classifier_svhn_mt_noaug.yaml",
+    ],
+    # "alpha_c_pdl": [0.03, 0.1, 0.3],
+    # "psl_iters": [150000],
+    # "alpha_c_adv": [0.003, 0.01],
+    # "adv_iters": [150000, 9999999],
+    "subfolder": ["FinalBaseline"],
 }
-command_template = "python train_triplegan.py"
+command_template = "python train_classifier.py"
 key_sequence = []
 for k in args_fortune:
     key_sequence.append(k)

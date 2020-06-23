@@ -92,6 +92,8 @@ def loss_entropy_ssl(netC, netC_T, it, iter_l, iter_u, device):
 
 
 def loss_MT_double_ssl(netC, netC_T, it, iter_l, iter_u, device):
+    if it == 0:
+        print("Using Double MT SSL")
     data, label = iter_l.__next__()
     data, label = data.to(device), label.to(device)
     data_u, _ = iter_u.__next__()
@@ -106,8 +108,10 @@ def loss_MT_double_ssl(netC, netC_T, it, iter_l, iter_u, device):
     loss_l = loss_cross_entropy(logit_l, label)
     prob_u_2 = softmax(logit_u_2)
     prob_t = softmax(logit_ut)
-    # loss_u = cons_coefficient * torch.sum((prob_u_2 - prob_t) ** 2, dim=1).mean(dim=0)
-    loss_u = FLAGS.alpha_mse * torch.sum((logit_u_2 - logit_u_1) ** 2, dim=1).mean(dim=0)
+    loss_u = cons_coefficient * torch.mean((prob_u_2 - prob_t) ** 2, dim=[0, 1])
+    loss_u = loss_u + FLAGS.alpha_mse * torch.mean(
+        (logit_u_2 - logit_u_1) ** 2, dim=[0, 1]
+    )
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
 
@@ -126,7 +130,7 @@ def loss_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
     loss_l = loss_cross_entropy(logit_l, label)
     prob = softmax(logit_u)
     prob_t = softmax(logit_ut)
-    loss_u = cons_coefficient * torch.sum((prob - prob_t) ** 2, dim=1).mean(dim=0)
+    loss_u = cons_coefficient * torch.mean((prob - prob_t) ** 2, dim=[0, 1])
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
 

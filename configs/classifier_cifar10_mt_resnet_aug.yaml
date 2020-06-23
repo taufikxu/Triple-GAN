@@ -31,14 +31,14 @@ rampup_length_lr: 0
 
 # Preprocessing
 zca: false
-norm: false
+norm: true
 translate: 4
 flip_horizontal: true
 ssl_seed: 1
 
 # training arguments:
 n_iter: 35000
-batch_size: 32 # 256
+batch_size: 256
 clip_value: -1
 save_every: 10000
 n_labels: 4000
