@@ -2,17 +2,19 @@ dataset: cifar10
 
 # arguments for C
 c_model_name: cifar10_resnet_26
-c_loss: res_mtssl
+c_loss: mtdoublessl
 c_step: ramp_linear
 c_optim: nesterov
-c_lr: 0.05
+c_lr: 0.2
 c_beta1: 0.9
 c_beta2: 0.99 # not used in sgd
+c_weight_decay: 0.0002
 
 # Consistency hyperparameters
 max_consistency_cost: 100.0
 ema_decay_during_rampup: 0.99
 ema_decay_after_rampup: 0.99
+alpha_mse: 0.01
 
 # Optimizer hyperparameters
 lr_anneal_num: 10000000
@@ -23,19 +25,20 @@ lr_anneal_coe: 1
 # adam_beta_2_during_rampup: 0.99
 # adam_beta_2_after_rampup: 0.999
 # Training schedule
-rampup_length: 1000
-rampdown_length: 10000
+rampup_length: 500
+rampdown_length: 30000
 rampup_length_lr: 0
 
 # Preprocessing
 zca: false
+norm: false
 translate: 4
 flip_horizontal: true
 ssl_seed: 1
 
 # training arguments:
-n_iter: 70000
-batch_size: 100
+n_iter: 35000
+batch_size: 32 # 256
 clip_value: -1
 save_every: 10000
 n_labels: 4000

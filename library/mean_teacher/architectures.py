@@ -185,14 +185,17 @@ class ResNet32x32(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x):
+    def forward(self, x, double=False):
         x = self.conv1(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        return self.fc1(x)
+        if double is True:
+            return self.fc1(x), self.fc2(x)
+        else:
+            return self.fc1(x)
 
 
 def conv3x3(in_planes, out_planes, stride=1):

@@ -1,34 +1,4 @@
-1. Triple-GAN 93  
-    87 ssl -> 90 tgan -> 93 gen2cla < 94.2
-    convergence lrelu sn achitecture
-    anneal lr / moving average
-    average 10 times
-    alpha_adv 0 0.01 0.03 0.1
-    cifar10
-
-2. svhn and cifar10 reproduce MT
-    93.7 < 94.7
-    seed 
-    data 
-    not finished
-    teacher train mode bn and dropout
-    zero mean std
-
-    add DA
-    order of DA, ZCA / zero mean
-
-    related to a flag or a dataset
-
-    svhn
-    2-2 trans
-    mean std
-
-    cifar10
-    2-2
-    flip
-    ZCA
-
-3. combine mt and tgan
+1. combine mt and tgan
 
     ratios and learning rates
 
@@ -40,18 +10,20 @@
         mt using triple-gan args
         triple-gan use mt args
 
-    not sure
-    
-    'batch_size': base_batch_size * ngpu,
-    'labeled_batch_size': base_labeled_batch_size * ngpu,
-    'lr': base_lr * ngpu,
+    normalization
 
-    no mse loss
+2. mt resnet
+    normalization 
+        order is not right
+
     no 4 gpus: CUDA_VISIBLE_DEVICES=0,1,2,3  
-    no weight decay
-    0.02 or 0.05
 
-4. Tunable Hyper-parameters:
+    batch_size. 256. 
+        different
+        label parallel
+        bn
+
+3. Tunable Hyper-parameters:
     1. Total Iterations: 70w or 50w
     2. Loss of Adv and PDL
         1. The Coe of the above losses (0.01, 0.03, 0.1)/(0.03, 0.1, 0.3)

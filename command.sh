@@ -26,6 +26,10 @@ python train_gan.py ./configs/gan.yaml -dataset cifar10 -key test -gpu 1
 python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key fix_aug.addcgen.testlog -gpu 5
 python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key cford_int -gpu 1
 
+# resnet
+
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder resnet -gpu 1
+
 
 # Triple-gan
 python train_triplegan.py ./configs/triple_gan_svhn_mt_aug.yaml -subfolder tganmt -translate 2 -c_model_name cifar10_cnn_gaussian -gpu 0

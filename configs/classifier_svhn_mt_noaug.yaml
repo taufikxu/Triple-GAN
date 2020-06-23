@@ -29,6 +29,7 @@ rampdown_length: 0
 
 # Preprocessing
 zca: false
+norm: false
 translate: 0
 flip_horizontal: false
 ssl_seed: 1

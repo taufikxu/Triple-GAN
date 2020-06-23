@@ -91,7 +91,7 @@ def loss_entropy_ssl(netC, netC_T, it, iter_l, iter_u, device):
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
 
-def loss_res_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
+def loss_MT_double_ssl(netC, netC_T, it, iter_l, iter_u, device):
     data, label = iter_l.__next__()
     data, label = data.to(device), label.to(device)
     data_u, _ = iter_u.__next__()
@@ -100,13 +100,14 @@ def loss_res_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
     sigmoid_rampup_value = sigmoid_rampup(it, FLAGS.rampup_length)
     cons_coefficient = sigmoid_rampup_value * FLAGS.max_consistency_cost
     logit_l = netC(data)
-    logit_u = netC(data_u)
+    logit_u_1, logit_u_2 = netC(data_u, double=True)
     logit_ut = netC_T(data_u).detach()
 
     loss_l = loss_cross_entropy(logit_l, label)
-    prob = softmax(logit_u)
+    prob_u_2 = softmax(logit_u_2)
     prob_t = softmax(logit_ut)
-    loss_u = cons_coefficient * torch.sum((prob - prob_t) ** 2, dim=1).mean(dim=0)
+    # loss_u = cons_coefficient * torch.sum((prob_u_2 - prob_t) ** 2, dim=1).mean(dim=0)
+    loss_u = FLAGS.alpha_mse * torch.sum((logit_u_2 - logit_u_1) ** 2, dim=1).mean(dim=0)
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
 
@@ -204,7 +205,7 @@ c_loss_dict = {
     "crossentropy": loss_supervised,
     "entropyssl": loss_entropy_ssl,
     "mtssl": loss_MT_ssl,
-    "res_mtssl": loss_res_MT_ssl,
+    "mtdoublessl": loss_MT_double_ssl,
 }
 
 c_step_func = {
