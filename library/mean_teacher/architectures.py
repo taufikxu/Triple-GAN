@@ -128,7 +128,7 @@ class ResNet224x224(nn.Module):
         x = self.layer4(x)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        return self.fc1(x)
+        return self.fc1(x), self.fc2(x)
 
 
 class ResNet32x32(nn.Module):

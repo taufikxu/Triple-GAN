@@ -97,8 +97,14 @@ class classifier_wrapper(nn.Module):
     def forward(self, dat, double=False):
         dat = self.trans(dat, self.training)
         logits = self.cla(dat)
-        print(type(logits))
-        return logits
+        if len(logits) == 2:
+            logits1, logits2 = logits[0], logits[1]
+        else:
+            logits1, logits2 = logits
+        if double is True:
+            return logits1, logits2
+        else:
+            return logits1
 
 
 def get_classifier_optimizer():
