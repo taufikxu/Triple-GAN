@@ -47,6 +47,14 @@
     'lr': base_lr * ngpu,
 
     no mse loss
-    no 4 gpus
+    no 4 gpus: CUDA_VISIBLE_DEVICES=0,1,2,3  
     no weight decay
     0.02 or 0.05
+
+4. Tunable Hyper-parameters:
+    1. Total Iterations: 70w or 50w
+    2. Loss of Adv and PDL
+        1. The Coe of the above losses (0.01, 0.03, 0.1)/(0.03, 0.1, 0.3)
+        2. When to add the above losses (inf, 15w, 4w, 0)/(15w,)
+    5. SN to D and CLC to stabilize.
+    6. Ramp down length (2.5w, 0)

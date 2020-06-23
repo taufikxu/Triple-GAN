@@ -4,8 +4,18 @@ python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder
 python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml -subfolder newbaseline -key aug -gpu 2
 python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder newbaseline -key noaug -gpu 3
 
-python train_classifier.py ./configs/classifier_cifar10_sl.yaml -c_model_name cifar10_resnet_pytorch -zca false -translate 0 -flip_horizontal false -subfolder newbaseline -key resnet_noaug -gpu 4
-python train_classifier.py ./configs/classifier_cifar10_sl.yaml -c_model_name cifar10_resnet_pytorch -zca false -subfolder newbaseline --key resnet_aug -gpu 5
+
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder tune_ramp -rampup_length_lr -1 -c_lr 0.001 -key noaug -gpu 2
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder tune_ramp -rampup_length_lr -1 -c_lr 0.0003 -key noaug -gpu 3
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder tune_ramp -rampup_length_lr -1 -c_lr 0.0001 -key noaug -gpu 4
+
+python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder tune_ramp -rampup_length_lr -1 -c_lr 0.001 -key noaug -gpu 5
+python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder tune_ramp -rampup_length_lr -1 -c_lr 0.0003 -key noaug -gpu 6
+python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder tune_ramp -rampup_length_lr -1 -c_lr 0.0001 -key noaug -gpu 7
+
+
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug.yaml -subfolder test -gpu 0
+python train_triplegan.py ./configs/triple_gan_svhn_load.yaml -subfolder loadC -gpu 1
 
 # python train_classifier.py ./configs/classifier_cifar10_mt_aug.yaml -subfolder newbaseline -c_model_name cifar10_cnn_gaussian -key nogau_test -gpu 0
 # python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder newbaseline -key noaug -c_model_name cifar10_cnn_gaussian -key nogau_test -gpu 1

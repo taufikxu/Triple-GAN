@@ -1,14 +1,17 @@
-dataset: SVHN
+dataset: cifar10
 
 # training arguments:
-n_iter: 700000
-batch_size: 200
-bs_g: 200
-bs_c: 200
-bs_c_for_d: 200
-bs_l_for_d: 20
-bs_u_for_d: 180
+n_iter: 1000000
+batch_size: 100
+bs_g: 100
+bs_c: 100
+bs_c_for_d: 100
+bs_l_for_d: 10
+bs_u_for_d: 90
 clip_value: -1
+# c_step_threshold: 150000
+c_step_threshold: 0
+old_c: /home/kunxu/Workspace/Triple-GAN/allresults/newbaseline/(train_classifier.py)_(cifar10)_(2020-06-19-21-22-15)_()_(aug)/models/model150000.pt
 save_every: 10000
 gan_type: hinge
 gan_traind_c: int
@@ -45,9 +48,9 @@ rampup_length_lr: 40000
 rampdown_length: 0
 
 # Preprocessing
-zca: false
-translate: 0
-flip_horizontal: false
+zca: true
+translate: 2
+flip_horizontal: true
 ssl_seed: 1
 
 # arguments for G

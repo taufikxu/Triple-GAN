@@ -44,6 +44,10 @@ for p in netC_T.parameters():
     p.requires_grad_(False)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
+checkpoint_io.register_modules(netC=netC, netC_T=netC_T)
+checkpoint_io.load_file(FLAGS.old_c)
+
+checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
 checkpoint_io.register_modules(
     netG=netG,
     netD=netD,
@@ -99,10 +103,7 @@ for i in range(max_iter):
     logger.add("training_g", "loss", loss_g.item(), i + 1)
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
-    if i > FLAGS.adv_iters:
-        loss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
-    else:
-        loss_c_adv, fake_c = torch.zeros_like(loss_g), torch.zeros_like(fake_g)
+    loss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
     if i > FLAGS.psl_iters:
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
@@ -115,7 +116,8 @@ for i in range(max_iter):
         FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
     )
 
-    step_func(optim_c, netC, netC_T, i, loss_c)
+    if i > FLAGS.c_step_threshold:
+        step_func(optim_c, netC, netC_T, i, loss_c)
 
     logger.add("training_c", "loss", loss_c.item(), i + 1)
     logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
