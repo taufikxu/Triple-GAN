@@ -1,6 +1,7 @@
 dataset: SVHN
 
 # training arguments:
+n_iter_pretrain: 20000
 n_iter: 700000
 batch_size: 200
 bs_g: 200

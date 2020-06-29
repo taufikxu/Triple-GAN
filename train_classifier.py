@@ -16,7 +16,7 @@ from library import loss_cla as loss_classifier
 
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
-KEY_ARGUMENTS = ["translate"] + KEY_ARGUMENTS
+# KEY_ARGUMENTS = ["translate"] + KEY_ARGUMENTS
 text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
 torch.manual_seed(1234)

@@ -27,7 +27,7 @@ python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key fix_
 python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key cford_int -gpu 1
 
 # resnet
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder resnet -gpu 0,1,2,3
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder resnet -c_lr 0.2 -gpu 0,1,2,3
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder resnet -c_lr 0.1 -gpu 4,5,6,7
 
 

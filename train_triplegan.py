@@ -59,6 +59,7 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 print_interval = 50
 image_interval = 500
 max_iter = FLAGS.n_iter
+pretrain_inter = FLAGS.n_iter_pretrain
 loss_func_g = loss_triplegan.g_loss_dict[FLAGS.gan_type]
 loss_func_d = loss_triplegan.d_loss_dict[FLAGS.gan_type]
 loss_func_c_adv = loss_triplegan.c_loss_dict[FLAGS.gan_type]
@@ -66,7 +67,22 @@ loss_func_c = loss_classifier.c_loss_dict[FLAGS.c_loss]
 step_func = loss_classifier.c_step_func[FLAGS.c_step]
 
 logger_prefix = "Itera {}/{} ({:.0f}%)"
-for i in range(max_iter):
+
+for i in range(pretrain_inter):  # 1w
+    tloss, l_loss, u_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
+    step_func(optim_c, netC, netC_T, i, tloss)
+
+    logger.add("training_pre", "loss", tloss.item(), i + 1)
+    logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
+    logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
+
+    if (i + 1) % print_interval == 0:
+        prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
+        cats = ["training_pre"]
+        logger.log_info(prefix, text_logger.info, cats=cats)
+
+
+for i in range(pretrain_inter, max_iter + pretrain_inter):
     data, label = itr.__next__()
     data, label = data.to(device), label.to(device)
     data_u, _ = itr_u.__next__()

@@ -28,5 +28,11 @@
     2. Loss of Adv and PDL
         1. The Coe of the above losses (0.01, 0.03, 0.1)/(0.03, 0.1, 0.3)
         2. When to add the above losses (inf, 15w, 4w, 0)/(15w,)
-    5. SN to D and CLC to stabilize.
     6. Ramp down length (2.5w, 0)
+
+4. mt-svhn: No improvement
+    1. G label mismatch (C convergence slowly: Load C) (Pretrain: 1w, 2w, 5w)
+    2. Less Labeled data (250, 500, 1000, No Augmentation)
+    4. G is not good enough(SN + projection label)
+    5. SN to D and CLC to stabilize. # TODO
+5. Cifar10: Close all flag to reproduce MT. (Debug)
