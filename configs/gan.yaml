@@ -1,3 +1,4 @@
+model_name: resnet_sngan
 # arguments for G
 g_model_name: resnet_sngan
 g_z_dim: 256

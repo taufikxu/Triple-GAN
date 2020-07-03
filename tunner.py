@@ -5,15 +5,12 @@ import itertools
 
 # Args
 args_fortune = {
-    "config_file": ["./configs/classifier_cifar10_mt_resnet_aug.yaml",],
-    "c_lr": [0.1, 0.2],
-    # "alpha_c_pdl": [0.03, 0.1, 0.3],
-    # "psl_iters": [150000],
-    # "alpha_c_adv": [0.003, 0.01],
-    # "adv_iters": [150000, 9999999],
-    "subfolder": ["FinalResNet"],
+    "config_file": ["./configs/gan.yaml",],
+    "model_name": ["resnet_reggan", "resnet_sngan"],
+    "dataset": ["svhn", "cifar10"],
+    "subfolder": ["GAN"],
 }
-command_template = "python train_classifier.py"
+command_template = "python train_gan.py"
 key_sequence = []
 for k in args_fortune:
     key_sequence.append(k)
@@ -32,7 +29,7 @@ for args in itertools.product(*possible_value):
     commands.append(command_template.format(*args))
 
 print("# experiments = {}".format(len(commands)))
-gpus = multiprocessing.Manager().list([0, 1, 2, 3, 4, 5, 6, 7])
+gpus = multiprocessing.Manager().list([0, 1, 2, 3])
 proc_to_gpu_map = multiprocessing.Manager().dict()
 
 

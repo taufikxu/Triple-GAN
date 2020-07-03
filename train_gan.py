@@ -21,6 +21,9 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+FLAGS.g_model_name = FLAGS.model_name
+FLAGS.d_model_name = FLAGS.model_name
+
 itr = inputs.get_data_iter()
 netG, optim_G = inputs.get_generator_optimizer()
 netD, optim_D = inputs.get_discriminator_optimizer()
@@ -77,9 +80,11 @@ for i in range(max_iter):
 
     if (i + 1) % image_interval == 0:
         with torch.no_grad():
-            sample_z = torch.randn(batch_size, FLAGS.g_z_dim).to(device)
-            x_fake = netG(sample_z, label)
-            logger.add_imgs(x_fake, "img{:08d}".format(i + 1))
+            sample_z = torch.randn(100, FLAGS.g_z_dim).to(device)
+            tlabel = label[:10]
+            tlabel = torch.cat([tlabel for _ in range(10)], 0)
+            x_fake = netG(sample_z, tlabel)
+            logger.add_imgs(x_fake, "img{:08d}".format(i + 1), nrow=10)
 
     if (i + 1) % FLAGS.save_every == 0:
         logger.save_stats("{:08d}.pkl".format(i))
