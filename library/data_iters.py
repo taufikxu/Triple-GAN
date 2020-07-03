@@ -104,12 +104,20 @@ def get_dataset(train, subset):
     if FLAGS.norm is True:
         assert FLAGS.zca is False
         assert FLAGS.dataset == "cifar10"
-        channel_stats = dict(mean=[0.4914, 0.4822, 0.4465],
-                         std=[0.2470,  0.2435,  0.2616])
-        transf = transforms.Compose([transforms.ToTensor(), transforms.Normalize(**channel_stats)])
-        
-    else:        
-        transf = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        channel_stats = dict(
+            mean=[0.4914, 0.4822, 0.4465], std=[0.2470, 0.2435, 0.2616]
+        )
+        transf = transforms.Compose(
+            [transforms.ToTensor(), transforms.Normalize(**channel_stats)]
+        )
+
+    else:
+        transf = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
     if FLAGS.dataset.lower() == "svhn":
         if train is True:
             split = "train"

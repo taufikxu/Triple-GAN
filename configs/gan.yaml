@@ -1,5 +1,5 @@
 # arguments for G
-g_model_name: Resnet_RegGAN
+g_model_name: resnet_sngan
 g_z_dim: 256
 g_embed_size: 256
 g_nfilter: 32
@@ -12,12 +12,13 @@ g_beta1: 0.
 g_beta2: 0.99
 
 # arguments for D
-d_model_name: Resnet_RegGAN
+d_model_name: resnet_sngan
 d_z_dim: 256
 d_embed_size: 256
 d_nfilter: 32
 d_nfilter_max: 256
 d_actvn: relu
+n_iter_d: 5
 
 d_optim: adam
 d_lr: 0.0001

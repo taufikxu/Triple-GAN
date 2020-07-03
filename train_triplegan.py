@@ -25,7 +25,7 @@ torch.backends.cudnn.benchmark = True
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-itr = inputs.get_data_iter(batch_size=FLAGS.bs_c, subset=1000)
+itr = inputs.get_data_iter(batch_size=FLAGS.bs_c, subset=FLAGS.n_labels)
 itr_u = inputs.get_data_iter(batch_size=FLAGS.bs_c)
 netG, optim_G = inputs.get_generator_optimizer()
 netD, optim_D = inputs.get_discriminator_optimizer()

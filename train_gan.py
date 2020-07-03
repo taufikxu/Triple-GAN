@@ -58,16 +58,17 @@ for i in range(max_iter):
     logger.add("training_d", "dreal", dreal.item(), i + 1)
     logger.add("training_d", "dfake", dfake.item(), i + 1)
 
-    sample_z = torch.randn(batch_size, FLAGS.g_z_dim).to(device)
-    loss_g, dfake_g = loss_func_g(netD, netG, sample_z, label)
-    optim_G.zero_grad()
-    loss_g.backward()
-    if FLAGS.clip_value > 0:
-        torch.nn.utils.clip_grad_norm_(netG.parameters(), FLAGS.clip_value)
-    optim_G.step()
+    if (i + 1) % FLAGS.n_iter_d:
+        sample_z = torch.randn(batch_size, FLAGS.g_z_dim).to(device)
+        loss_g, dfake_g = loss_func_g(netD, netG, sample_z, label)
+        optim_G.zero_grad()
+        loss_g.backward()
+        if FLAGS.clip_value > 0:
+            torch.nn.utils.clip_grad_norm_(netG.parameters(), FLAGS.clip_value)
+        optim_G.step()
 
-    logger.add("training_g", "loss", loss_g.item(), i + 1)
-    logger.add("training_g", "dfake", dfake_g.item(), i + 1)
+        logger.add("training_g", "loss", loss_g.item(), i + 1)
+        logger.add("training_g", "dfake", dfake_g.item(), i + 1)
 
     if (i + 1) % print_interval == 0:
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)

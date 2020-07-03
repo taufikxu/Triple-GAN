@@ -123,11 +123,18 @@ def loss_MT_ssl(netC, netC_T, it, iter_l, iter_u, device):
 
     sigmoid_rampup_value = sigmoid_rampup(it, FLAGS.rampup_length)
     cons_coefficient = sigmoid_rampup_value * FLAGS.max_consistency_cost
-    logit_l = netC(data)
-    logit_u = netC(data_u)
-    logit_ut = netC_T(data_u).detach()
 
-    loss_l = loss_cross_entropy(logit_l, label)
+    lpi = FLAGS.num_label_per_batch
+    batch_input = torch.cat([data[:lpi], data_u[lpi:]], dim=0)
+    logit = netC(batch_input)
+    logit_ut = netC_T(batch_input).detach()
+    logit_l = logit[:lpi]
+    logit_u = logit
+    # logit_l = netC(data)
+    # logit_u = netC(data_u)
+    # logit_ut = netC_T(data_u).detach()
+
+    loss_l = loss_cross_entropy(logit_l, label[:lpi])
     prob = softmax(logit_u)
     prob_t = softmax(logit_ut)
     loss_u = cons_coefficient * torch.mean((prob - prob_t) ** 2, dim=[0, 1])

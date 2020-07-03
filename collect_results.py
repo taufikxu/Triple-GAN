@@ -1,7 +1,7 @@
 import glob
 import pickle
 
-model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/tunetriple_gan/*cifar10*/summary/Model_stats.pkl"
+model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/tune_svhn_lesslabel/*n_labels_500*/summary/Model_stats.pkl"
 stat_paths = glob.glob(model_path)
 for p in stat_paths:
     with open(p, "rb") as f:

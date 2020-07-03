@@ -35,4 +35,5 @@
     2. Less Labeled data (250, 500, 1000, No Augmentation)
     4. G is not good enough(SN + projection label)
     5. SN to D and CLC to stabilize. # TODO
+    6. rampup for adv loss and pdl loss
 5. Cifar10: Close all flag to reproduce MT. (Debug)

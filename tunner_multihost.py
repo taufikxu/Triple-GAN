@@ -6,15 +6,17 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [19, 20, 21, 22, 23]
+jungpus = [17, 20, 26]
 # Args
 args_fortune = {
-    "config_file": ["./configs/triple_gan_svhn_mt_aug.yaml", "./configs/triple_gan_cifar10_mt_aug.yaml"],
-    "alpha_c_pdl": [0.03, 0.1, 0.3],
-    "psl_iters": [150000],
-    "alpha_c_adv": [0.003, 0.01],
-    "adv_iters": [150000, 9999999],
-    "subfolder": ["tunetriple_gan"],
+    "config_file": ["./configs/triple_gan_svhn_mt_noaug.yaml"],
+    "n_iter_pretrain": [0, 10000, 20000],
+    "n_labels": [250, 500, 1000],
+    "alpha_c_pdl": [0, 0.03],
+    "psl_iters": [150000, 200000],
+    "alpha_c_adv": [0.0],
+    "adv_iters": [9999999],
+    "subfolder": ["tune_svhn_lesslabel"],
 }
 command_template = "cd {};{} train_triplegan.py".format(WORK_SPACE, PYTHON_PATH)
 key_sequence = []
@@ -34,7 +36,7 @@ for args in itertools.product(*possible_value):
     commands.append(command_template.format(*args))
 
 gpus = []
-get_gpu_command = "\"import gpustat; q = gpustat.GPUStatCollection.new_query(); usable = []; [usable.append(i) for i in range(len(q)) if len(q[i].processes) == 0]; print(usable)\""
+get_gpu_command = '"import gpustat; q = gpustat.GPUStatCollection.new_query(); usable = []; [usable.append(i) for i in range(len(q)) if len(q[i].processes) == 0]; print(usable)"'
 for server in jungpus:
     tcmd = "ssh g{} '{} -c {}'".format(server, PYTHON_PATH, get_gpu_command)
     usable = eval(subprocess.getoutput(tcmd))
@@ -46,6 +48,7 @@ print("# experiments = {}".format(len(commands)))
 gpus = multiprocessing.Manager().list(gpus)
 proc_to_gpu_map = multiprocessing.Manager().dict()
 
+
 def exp_runner(cmd):
     # print(cmd)
     process_id = multiprocessing.current_process().name
@@ -55,8 +58,8 @@ def exp_runner(cmd):
     server, gpuid = proc_to_gpu_map[process_id]
     return os.system("ssh g{} '".format(server) + cmd + " -gpu {}'".format(gpuid))
 
+
 p = multiprocessing.Pool(processes=len(gpus))
 rets = p.map(exp_runner, commands)
 print(rets)
-
 
