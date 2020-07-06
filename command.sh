@@ -26,6 +26,12 @@ python train_triplegan.py ./configs/triple_gan_svhn_load.yaml -subfolder loadC -
 # python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml -subfolder newbaseline -c_model_name cifar10_cnn_gaussian -key nogau_test -gpu 2
 # python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder newbaseline -key noaug -c_model_name cifar10_cnn_gaussian -key nogau_test -gpu 3
 
+# python train_classifier.py ./configs/classifier_cifar10_vat_aug.yaml -subfolder vat -gpu 0
+# python train_classifier.py ./configs/classifier_cifar10_vat_noaug.yaml -subfolder vat -gpu 1
+# python train_classifier.py ./configs/classifier_svhn_vat_aug.yaml -subfolder vat  -gpu 2
+# python train_classifier.py ./configs/classifier_svhn_vat_noaug.yaml -subfolder vat -gpu 3
+
+
 python train_gan.py ./configs/gan.yaml -dataset svhn -d_model_name resnet_reggan -g_model_name resnet_reggan -subfolder GAN -gpu 0
 python train_gan.py ./configs/gan.yaml -dataset svhn -model_name resnet_sngan  -subfolder GAN -gpu 1
 python train_gan.py ./configs/gan.yaml -dataset cifar10 -d_model_name resnet_reggan -g_model_name resnet_reggan -subfolder GAN -gpu 2

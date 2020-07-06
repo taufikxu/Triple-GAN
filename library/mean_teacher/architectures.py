@@ -8,6 +8,7 @@ from torch.nn import functional as F
 from torch.autograd import Function
 from torch.nn.utils import weight_norm
 from library.mean_teacher.utils import export, parameter_count
+from Utils.flags import FLAGS
 
 
 @export
@@ -55,6 +56,73 @@ def resnext152(pretrained=False, **kwargs):
         **kwargs
     )
     return model
+
+
+@export
+def vat_cnn(pretrained=False, **kwargs):
+    assert not pretrained
+    model = VATCNN(**kwargs)
+    return model
+
+class VATCNN(nn.Module):
+    def __init__(self, num_classes=10):
+        super(VATCNN, self).__init__()
+        self.top_bn = FLAGS.topbn
+        self.main = nn.Sequential(
+            nn.Conv2d(3, 128, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(0.1),
+
+            nn.Conv2d(128, 128, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(0.1),
+
+            nn.Conv2d(128, 128, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(0.1),
+
+            nn.MaxPool2d(2, 2, 1),
+            nn.Dropout2d(),
+
+            nn.Conv2d(128, 256, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.1),
+
+            nn.Conv2d(256, 256, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.1),
+
+            nn.Conv2d(256, 256, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.1),
+
+            nn.MaxPool2d(2, 2, 1),
+            nn.Dropout2d(),
+
+            nn.Conv2d(256, 512, 3, 1, 0, bias=False),
+            nn.BatchNorm2d(512),
+            nn.LeakyReLU(0.1),
+
+            nn.Conv2d(512, 256, 1, 1, 1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.1),
+
+            nn.Conv2d(256, 128, 1, 1, 1, bias=False),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(0.1),
+
+            nn.AdaptiveAvgPool2d((1, 1))
+            )
+
+        self.linear = nn.Linear(128, num_classes)
+        self.bn = nn.BatchNorm1d(num_classes)
+
+    def forward(self, input):
+        output = self.main(input)
+        output = self.linear(output.view(input.size()[0], -1))
+        if self.top_bn:
+            output = self.bn(output)
+        return output, output
 
 
 class ResNet224x224(nn.Module):

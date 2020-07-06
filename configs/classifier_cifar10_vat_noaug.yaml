@@ -1,0 +1,32 @@
+dataset: cifar10
+
+# arguments for C
+c_model_name: vat_cnn
+topbn: false
+c_loss: vatssl
+c_optim: adam
+c_lr: 0.001
+c_beta1: 0.5
+c_beta2: 0.999
+c_step: step_vat
+
+# Consistency hyperparameters
+vat_eps: 10
+lr_anneal_num: 182000
+vat_xi: 0.000001
+vat_iters: 1
+
+# Preprocessing
+zca: true
+norm: false
+translate: 0
+flip_horizontal: false
+ssl_seed: 1
+
+# training arguments:
+n_iter: 200000
+batch_size: 128
+num_label_per_batch: 32
+clip_value: -1
+save_every: 10000
+n_labels: 4000

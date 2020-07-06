@@ -21,6 +21,11 @@
         label parallel
         bn
 
+3. vat
+    init
+    teacher or student
+    
+
 4. XuanXue
     1. Pretrain: 2w, 5w
     2. Number of labels: 1k for svhn and cifar
