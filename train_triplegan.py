@@ -17,12 +17,26 @@ FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
 text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
+FLAGS.g_model_name = FLAGS.model_name
+FLAGS.d_model_name = FLAGS.model_name
+
 torch.manual_seed(1234)
 torch.cuda.manual_seed(1235)
 np.random.seed(1236)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = True
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+n_iter_d = 5 if "sngan" in FLAGS.model_name else 1
+
+
+def sigmoid_rampup(global_step, start_iter, end_iter):
+    if global_step < start_iter:
+        return 0.0
+    rampup_length = end_iter - start_iter
+    cur_ramp = global_step - start_iter
+    cur_ramp = np.clip(cur_ramp, 0, rampup_length)
+    phase = 1.0 - cur_ramp / rampup_length
+    return np.exp(-5.0 * phase * phase)
 
 
 itr = inputs.get_data_iter(batch_size=FLAGS.bs_c, subset=FLAGS.n_labels)
@@ -89,15 +103,21 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     data_u_d, _ = itr_u.__next__()
     data_u, data_u_d = data_u.to(device), data_u_d.to(device)
 
-    sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-    loss_d, dreal, dfake_g, dfake_c = loss_func_d(
-        netD, netG, netC, data, sample_z, label, data_u, data_u_d
-    )
-    optim_D.zero_grad()
-    loss_d.backward()
-    if FLAGS.clip_value > 0:
-        torch.nn.utils.clip_grad_norm_(netD.parameters(), FLAGS.clip_value)
-    optim_D.step()
+    for _ in range(n_iter_d):
+        data, label = itr.__next__()
+        data, label = data.to(device), label.to(device)
+        data_u, _ = itr_u.__next__()
+        data_u_d, _ = itr_u.__next__()
+        data_u, data_u_d = data_u.to(device), data_u_d.to(device)
+        sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
+        loss_d, dreal, dfake_g, dfake_c = loss_func_d(
+            netD, netG, netC, data, sample_z, label, data_u, data_u_d
+        )
+        optim_D.zero_grad()
+        loss_d.backward()
+        if FLAGS.clip_value > 0:
+            torch.nn.utils.clip_grad_norm_(netD.parameters(), FLAGS.clip_value)
+        optim_D.step()
 
     logger.add("training_d", "loss", loss_d.item(), i + 1)
     logger.add("training_d", "dreal", dreal.item(), i + 1)
@@ -115,18 +135,17 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_g", "loss", loss_g.item(), i + 1)
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
-    if i > FLAGS.adv_iters:
-        loss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
-    else:
-        loss_c_adv, fake_c = torch.zeros_like(loss_g), torch.zeros_like(fake_g)
+    tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
+    adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_rampup_start, FLAGS.adv_rampup_end)
+    loss_c_adv = tloss_c_adv * adv_ramp_coe
+
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
-    if i > FLAGS.psl_iters:
-        sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-        loss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
-            netC, netG, sample_z, label
-        )
-    else:
-        loss_c_pdl = torch.zeros_like(loss_c_ssl)
+
+    sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
+    tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(netC, netG, sample_z, label)
+    pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_rampup_start, FLAGS.pdl_rampup_end)
+    loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
+
     loss_c = (
         FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
     )
@@ -167,5 +186,5 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
 
     if (i + 1) % FLAGS.save_every == 0:
         logger.save_stats("Model_stats.pkl")
-        file_name = "model" + str(i + 1) + ".pt"
-        checkpoint_io.save(file_name)
+        # file_name = "model" + str(i + 1) + ".pt"
+        # checkpoint_io.save(file_name)

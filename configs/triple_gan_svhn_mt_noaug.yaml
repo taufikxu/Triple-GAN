@@ -27,7 +27,10 @@ c_beta1: 0.5
 c_beta2: 0.999
 alpha_c_adv: 0.01
 alpha_c_pdl: 0.03
-psl_iters: 150000
+adv_ramp_start: 15000
+adv_ramp_end: 15000
+pdl_ramp_start: 15000
+pdl_ramp_end: 15000
 
 # Lr schdule:
 lr_anneal_num: 1000000
@@ -80,3 +83,5 @@ d_optim: adam
 d_lr: 0.0001
 d_beta1: 0.
 d_beta2: 0.99
+
+gan_model_name: resnet_sngan

@@ -13,12 +13,12 @@ python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder Fi
 python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder FinalBaseline -n_labels 500 -gpu 1
 python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder FinalBaseline -n_labels 1000 -gpu 2
 
-python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder FinalBaseline -n_labels 1000 -gpu 1
-python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder FinalBaseline -n_labels 2000 -gpu 2
-python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder FinalBaseline -n_labels 4000 -gpu 3
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder FinalBaseline -num_label_per_batch 2 -n_labels 1000 -gpu 1
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder FinalBaseline -num_label_per_batch 4 -n_labels 2000 -gpu 2
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder FinalBaseline -num_label_per_batch 8 -n_labels 4000 -gpu 3
 
 
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug.yaml -subfolder test -gpu 0
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug.yaml -subfolder test -model_name resnet_sngan -gpu 0
 python train_triplegan.py ./configs/triple_gan_svhn_load.yaml -subfolder loadC -gpu 1
 
 # python train_classifier.py ./configs/classifier_cifar10_mt_aug.yaml -subfolder newbaseline -c_model_name cifar10_cnn_gaussian -key nogau_test -gpu 0
@@ -27,9 +27,9 @@ python train_triplegan.py ./configs/triple_gan_svhn_load.yaml -subfolder loadC -
 # python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml -subfolder newbaseline -key noaug -c_model_name cifar10_cnn_gaussian -key nogau_test -gpu 3
 
 python train_gan.py ./configs/gan.yaml -dataset svhn -d_model_name resnet_reggan -g_model_name resnet_reggan -subfolder GAN -gpu 0
-python train_gan.py ./configs/gan.yaml -dataset svhn -d_model_name resnet_sngan -g_model_name resnet_reggan  -subfolder GAN -gpu 1
+python train_gan.py ./configs/gan.yaml -dataset svhn -model_name resnet_sngan  -subfolder GAN -gpu 1
 python train_gan.py ./configs/gan.yaml -dataset cifar10 -d_model_name resnet_reggan -g_model_name resnet_reggan -subfolder GAN -gpu 2
-python train_gan.py ./configs/gan.yaml -dataset cifar10 -d_model_name resnet_sngan -g_model_name resnet_reggan  -subfolder GAN -gpu 3
+python train_gan.py ./configs/gan.yaml -dataset cifar10 -model_name resnet_sngan  -subfolder GAN -gpu 3
 
 
 

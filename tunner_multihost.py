@@ -6,17 +6,24 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [17, 20, 26]
+jungpus = [9, 32]
 # Args
 args_fortune = {
-    "config_file": ["./configs/triple_gan_svhn_mt_noaug.yaml"],
-    "n_iter_pretrain": [0, 10000, 20000],
-    "n_labels": [250, 500, 1000],
-    "alpha_c_pdl": [0, 0.03],
-    "psl_iters": [150000, 200000],
-    "alpha_c_adv": [0.0],
-    "adv_iters": [9999999],
-    "subfolder": ["tune_svhn_lesslabel"],
+    "config_file": [
+        "./configs/triple_gan_svhn_mt_noaug.yaml",
+        "./configs/triple_gan_svhn_mt_aug.yaml",
+        "./configs/triple_gan_cifar10_mt_noaug.yaml",
+        "./configs/triple_gan_cifar10_mt_aug.yaml",
+    ],
+    "n_iter_pretrain": [20000, 50000],
+    "model_name": ["resnet_sngan"],
+    "n_labels": [1000],
+    "ssl_seed": [1001, 1002],
+    "adv_ramp_start": [50000],
+    "adv_ramp_end": [150000],
+    "pdl_ramp_start": [150000],
+    "pdl_ramp_end": [250000],
+    "subfolder": ["tune_7.6_triplegan"],
 }
 command_template = "cd {};{} train_triplegan.py".format(WORK_SPACE, PYTHON_PATH)
 key_sequence = []

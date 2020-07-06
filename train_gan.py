@@ -37,8 +37,8 @@ checkpoint_io.register_modules(netG=netG, netD=netD, optim_G=optim_G, optim_D=op
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
-print_interval = 50
-image_interval = 500
+print_interval = 200
+image_interval = 2000
 max_iter = FLAGS.n_iter
 batch_size = FLAGS.batch_size
 loss_func_g = loss_gan.g_loss_dict[FLAGS.gan_type]
@@ -87,6 +87,6 @@ for i in range(max_iter):
             logger.add_imgs(x_fake, "img{:08d}".format(i + 1), nrow=10)
 
     if (i + 1) % FLAGS.save_every == 0:
-        logger.save_stats("{:08d}.pkl".format(i))
+        logger.save_stats("ModelStat.pkl")
         file_name = "model" + str(i + 1) + ".pt"
         checkpoint_io.save(file_name)

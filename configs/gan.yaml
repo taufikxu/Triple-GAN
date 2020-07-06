@@ -3,7 +3,7 @@ model_name: resnet_sngan
 g_model_name: resnet_sngan
 g_z_dim: 256
 g_embed_size: 256
-g_nfilter: 32
+g_nfilter: 128
 g_nfilter_max: 256
 g_actvn: relu
 
@@ -16,7 +16,7 @@ g_beta2: 0.99
 d_model_name: resnet_sngan
 d_z_dim: 256
 d_embed_size: 256
-d_nfilter: 32
+d_nfilter: 128
 d_nfilter_max: 256
 d_actvn: relu
 n_iter_d: 5
@@ -33,5 +33,5 @@ norm: false
 n_iter: 1000000
 batch_size: 100
 clip_value: -1
-save_every: 1000
+save_every: 10000
 gan_type: hinge
