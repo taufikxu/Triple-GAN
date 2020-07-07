@@ -4,6 +4,8 @@ from torch import nn
 from torch.nn import functional as F
 from Utils.flags import FLAGS
 import numpy as np
+from torch.autograd import Variable
+
 
 crossentropy = nn.CrossEntropyLoss()
 softmax = nn.Softmax(1)
@@ -57,6 +59,7 @@ def entropy(logits):
     prob = softmax(logits)
     logprob = logsoftmax(logits)
     return -torch.sum(prob * logprob, dim=1)
+
 
 def loss_cross_entropy(logits, label):
     loss = crossentropy(logits, label)
@@ -209,6 +212,7 @@ def step_vat(optim_c, netC, netC_T, it, tloss):
     # update teacher
     update_average(netC_T, netC, ema_decay)
 
+
 def step_regular(optim_c, netC, netC_T, it, tloss):
 
     ema_decay = FLAGS.ema_decay_after_rampup
@@ -233,8 +237,8 @@ def kl_div_with_logit(q_logit, p_logit):
     logq = F.log_softmax(q_logit, dim=1)
     logp = F.log_softmax(p_logit, dim=1)
 
-    qlogq = ( q *logq).sum(dim=1).mean(dim=0)
-    qlogp = ( q *logp).sum(dim=1).mean(dim=0)
+    qlogq = (q * logq).sum(dim=1).mean(dim=0)
+    qlogp = (q * logp).sum(dim=1).mean(dim=0)
 
     return qlogq - qlogp
 
@@ -244,27 +248,31 @@ def vat_loss_ssl(netC, netC_T, it, iter_l, iter_u, device):
     data, label = data.to(device), label.to(device)
     data_u, _ = iter_u.__next__()
     data_u = data_u.to(device)
-    
+
     logit_l = netC(data)
     logit_u = netC(data_u)
 
-    loss_u = vat_loss(netC, data_u, logit_u, FLAGS.vat_xi, FLAGS.vat_eps, FLAGS.vat_iters)
-    loss_u += entropy(logit_u)
+    loss_u = vat_loss(
+        netC, data_u, logit_u, FLAGS.vat_xi, FLAGS.vat_eps, FLAGS.vat_iters
+    )
+    loss_u = loss_u + torch.mean(entropy(logit_u), dim=0)
 
     loss_l = loss_cross_entropy(logit_l, label)
 
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
+
 def _l2_normalize(d):
     d = d.numpy()
-    d /= (np.sqrt(np.sum(d ** 2, axis=(1, 2, 3))).reshape((-1, 1, 1, 1)) + 1e-16)
+    d /= np.sqrt(np.sum(d ** 2, axis=(1, 2, 3))).reshape((-1, 1, 1, 1)) + 1e-16
     return torch.from_numpy(d)
+
 
 def vat_loss(model, ul_x, ul_y, xi=1e-6, eps=2.5, num_iters=1):
     # find r_adv
     d = torch.Tensor(ul_x.size()).normal_()
     for i in range(num_iters):
-        d = xi *_l2_normalize(d)
+        d = xi * _l2_normalize(d)
         d = Variable(d.cuda(), requires_grad=True)
         y_hat = model(ul_x + d)
         delta_kl = kl_div_with_logit(ul_y.detach(), y_hat)
@@ -275,18 +283,19 @@ def vat_loss(model, ul_x, ul_y, xi=1e-6, eps=2.5, num_iters=1):
 
     d = _l2_normalize(d)
     d = Variable(d.cuda())
-    r_adv = eps *d
+    r_adv = eps * d
     # compute lds
     y_hat = model(ul_x + r_adv.detach())
     delta_kl = kl_div_with_logit(ul_y.detach(), y_hat)
     return delta_kl
+
 
 c_loss_dict = {
     "crossentropy": loss_supervised,
     "entropyssl": loss_entropy_ssl,
     "mtssl": loss_MT_ssl,
     "mtdoublessl": loss_MT_double_ssl,
-    'vatssl': vat_loss_ssl,
+    "vatssl": vat_loss_ssl,
 }
 
 c_step_func = {

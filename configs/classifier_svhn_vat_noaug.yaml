@@ -15,6 +15,7 @@ vat_eps: 2.5
 lr_anneal_num: 32000
 vat_xi: 0.000001
 vat_iters: 1
+ema_decay_after_rampup: 0.999ß
 
 # Preprocessing
 zca: false
