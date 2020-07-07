@@ -203,10 +203,11 @@ class SNResNetProjectionDiscriminator(nn.Module):
             output_list = []
             for i in range(self.num_classes):
                 ty = torch.ones([bs,], dtype=torch.long) * i
-                toutput = output + torch.sum(self.l_y(ty) * h, dim=1, keepdim=True)
+                toutput = output + torch.sum(
+                    self.l_y(ty.to(x.device)) * h, dim=1, keepdim=True
+                )
                 output_list.append(toutput)
             output = torch.cat(output_list, dim=1)
-            print(output.shape)
         return output
 
 

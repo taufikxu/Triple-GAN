@@ -125,11 +125,14 @@ def get_dataset(train, subset):
             split = "test"
 
         sets = datasets.SVHN(
-            "/home/LargeData/svhn", split=split, download=True, transform=transf
+            "/home/LargeData/Regular/svhn", split=split, download=True, transform=transf
         )
     elif FLAGS.dataset.lower() == "cifar10":
         sets = datasets.CIFAR10(
-            "/home/LargeData/cifar", train=train, download=True, transform=transf
+            "/home/LargeData/Regular/cifar",
+            train=train,
+            download=True,
+            transform=transf,
         )
 
     if subset > 0:

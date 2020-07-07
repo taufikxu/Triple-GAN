@@ -136,14 +136,14 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
     tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
-    adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_rampup_start, FLAGS.adv_rampup_end)
+    adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
     loss_c_adv = tloss_c_adv * adv_ramp_coe
 
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
     tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(netC, netG, sample_z, label)
-    pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_rampup_start, FLAGS.pdl_rampup_end)
+    pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_ramp_start, FLAGS.pdl_ramp_end)
     loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
 
     loss_c = (

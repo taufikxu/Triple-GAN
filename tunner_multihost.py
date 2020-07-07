@@ -6,7 +6,7 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [9, 32]
+jungpus = [32, 35]
 # Args
 args_fortune = {
     "config_file": [
@@ -63,7 +63,11 @@ def exp_runner(cmd):
         proc_to_gpu_map[process_id] = gpus.pop()
         print("assign gpu {} to {}".format(proc_to_gpu_map[process_id], process_id))
     server, gpuid = proc_to_gpu_map[process_id]
-    return os.system("ssh g{} '".format(server) + cmd + " -gpu {}'".format(gpuid))
+    return os.system(
+        "ssh g{} '".format(server)
+        + cmd
+        + " -gpu {} -key {}'".format(gpuid, str(gpuid) + str(server))
+    )
 
 
 p = multiprocessing.Pool(processes=len(gpus))
