@@ -196,10 +196,11 @@ def step_ramp_linear(optim_c, netC, netC_T, it, tloss):
 
 
 def step_vat(optim_c, netC, netC_T, it, tloss):
-
     ema_decay = FLAGS.ema_decay_after_rampup
     if it > FLAGS.lr_anneal_num:
-        decayed_lr = (FLAGS.n_iter - it) * lr / (FLAGS.n_iter - FLAGS.lr_anneal_num)
+        decayed_lr = (
+            (FLAGS.n_iter - it) * FLAGS.c_lr / (FLAGS.n_iter - FLAGS.lr_anneal_num)
+        )
         optim_c.param_groups[0]["lr"] = decayed_lr
 
     # update student

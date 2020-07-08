@@ -6,7 +6,7 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [32, 35]
+jungpus = [11, 12, 13, 14]
 # Args
 args_fortune = {
     "config_file": [
@@ -23,7 +23,7 @@ args_fortune = {
     "adv_ramp_end": [150000],
     "pdl_ramp_start": [150000],
     "pdl_ramp_end": [250000],
-    "subfolder": ["tune_7.6_triplegan"],
+    "subfolder": ["tune_7.7_triplegan"],
 }
 command_template = "cd {};{} train_triplegan.py".format(WORK_SPACE, PYTHON_PATH)
 key_sequence = []
@@ -49,9 +49,11 @@ for server in jungpus:
     usable = eval(subprocess.getoutput(tcmd))
     for g in usable:
         gpus.append((server, g))
-print(gpus)
 
-print("# experiments = {}".format(len(commands)))
+
+print("# experiments = {}, # GPUS = {}".format(len(commands), len(gpus)))
+print(gpus)
+assert len(commands) <= len(gpus)
 gpus = multiprocessing.Manager().list(gpus)
 proc_to_gpu_map = multiprocessing.Manager().dict()
 
