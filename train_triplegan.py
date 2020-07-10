@@ -17,8 +17,8 @@ FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
 text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
-FLAGS.g_model_name = FLAGS.model_name
-FLAGS.d_model_name = FLAGS.model_name
+# FLAGS.g_model_name = FLAGS.model_name
+# FLAGS.d_model_name = FLAGS.model_name
 
 torch.manual_seed(1234)
 torch.cuda.manual_seed(1235)
@@ -26,7 +26,7 @@ np.random.seed(1236)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = True
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-n_iter_d = 5 if "sngan" in FLAGS.model_name else 1
+n_iter_d = 5 if "sngan" in FLAGS.g_model_name else 1
 
 
 def sigmoid_rampup(global_step, start_iter, end_iter):

@@ -22,9 +22,9 @@
         bn
 
 3. vat
-    init
     teacher or student
-    
+    linear decay
+    eps
 
 4. XuanXue
     1. Pretrain: 2w, 5w

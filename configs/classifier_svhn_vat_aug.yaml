@@ -11,7 +11,7 @@ c_beta2: 0.999
 c_step: step_vat
 
 # Consistency hyperparameters
-vat_eps: 2.5
+vat_eps: 3.5
 lr_anneal_num: 32000
 vat_xi: 0.000001
 vat_iters: 1
