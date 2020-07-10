@@ -247,31 +247,32 @@ class ResNetGenerator(nn.Module):
         self.num_classes = num_classes = n_label
         self.distribution = distribution
 
-        self.l1 = nn.Linear(self.dim_z, 4 * num_features * bottom_width ** 2)
+        width_coe = 8
+        self.l1 = nn.Linear(self.dim_z, width_coe * num_features * bottom_width ** 2)
 
         self.block2 = Block(
-            num_features * 4,
-            num_features * 4,
+            num_features * width_coe,
+            num_features * width_coe,
             activation=activation,
             upsample=True,
             num_classes=num_classes,
         )
         self.block3 = Block(
-            num_features * 4,
-            num_features * 4,
+            num_features * width_coe,
+            num_features * width_coe,
             activation=activation,
             upsample=True,
             num_classes=num_classes,
         )
         self.block4 = Block(
-            num_features * 4,
-            num_features * 4,
+            num_features * width_coe,
+            num_features * width_coe,
             activation=activation,
             upsample=True,
             num_classes=num_classes,
         )
-        self.b7 = nn.BatchNorm2d(num_features * 4)
-        self.conv7 = nn.Conv2d(num_features * 4, 3, 1, 1)
+        self.b7 = nn.BatchNorm2d(num_features * width_coe)
+        self.conv7 = nn.Conv2d(num_features * width_coe, 3, 1, 1)
 
     def _initialize(self):
         init.xavier_uniform_(self.l1.weight.tensor)

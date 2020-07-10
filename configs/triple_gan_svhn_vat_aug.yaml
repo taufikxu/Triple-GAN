@@ -66,7 +66,7 @@ n_labels: 1000
 g_model_name: Resnet_RegGAN
 g_z_dim: 256
 g_embed_size: 256
-g_nfilter: 128
+g_nfilter: 32
 g_nfilter_max: 256
 g_actvn: relu
 
@@ -79,7 +79,7 @@ g_beta2: 0.99
 d_model_name: Resnet_RegGAN
 d_z_dim: 256
 d_embed_size: 256
-d_nfilter: 128
+d_nfilter: 32
 d_nfilter_max: 256
 d_actvn: relu
 
