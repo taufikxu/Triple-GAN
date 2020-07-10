@@ -6,24 +6,23 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [11, 12, 13, 14]
+jungpus = [14, 21, 22, 27]
 # Args
 args_fortune = {
     "config_file": [
-        "./configs/triple_gan_svhn_mt_noaug.yaml",
-        "./configs/triple_gan_svhn_mt_aug.yaml",
-        "./configs/triple_gan_cifar10_mt_noaug.yaml",
-        "./configs/triple_gan_cifar10_mt_aug.yaml",
+        "./configs/triple_gan_cifar10_mt_aug_sngan.yaml",
+        "./configs/triple_gan_cifar10_mt_noaug_sngan.yaml",
     ],
-    "n_iter_pretrain": [20000, 50000],
-    "model_name": ["resnet_sngan"],
-    "n_labels": [1000],
+    "n_iter_pretrain": [20000],
+    "n_labels": [4000],
     "ssl_seed": [1001, 1002],
     "adv_ramp_start": [50000],
-    "adv_ramp_end": [150000],
-    "pdl_ramp_start": [150000],
-    "pdl_ramp_end": [250000],
-    "subfolder": ["tune_7.7_triplegan"],
+    "adv_ramp_end": [100000],
+    "pdl_ramp_start": [50000],
+    "pdl_ramp_end": [100000],
+    "alpha_c_adv": [0.01, 0.03],
+    "alpha_c_pdl": [0.03, 0.1, 0.3],
+    "subfolder": ["tune_7.10_triple_gan"],
 }
 command_template = "cd {};{} train_triplegan.py".format(WORK_SPACE, PYTHON_PATH)
 key_sequence = []
@@ -41,6 +40,7 @@ for k in key_sequence:
 commands = []
 for args in itertools.product(*possible_value):
     commands.append(command_template.format(*args))
+
 
 gpus = []
 get_gpu_command = '"import gpustat; q = gpustat.GPUStatCollection.new_query(); usable = []; [usable.append(i) for i in range(len(q)) if len(q[i].processes) == 0]; print(usable)"'

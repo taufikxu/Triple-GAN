@@ -85,5 +85,3 @@ d_optim: adam
 d_lr: 0.0001
 d_beta1: 0.
 d_beta2: 0.99
-
-gan_model_name: resnet_sngan
