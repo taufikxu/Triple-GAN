@@ -36,7 +36,7 @@ python train_triplegan.py ./configs/triple_gan_svhn_load.yaml -subfolder loadC -
 # python train_triplegan.py ./configs/triple_gan_svhn_vat_aug.yaml -subfolder vat  -gpu 6
 # python train_triplegan.py ./configs/triple_gan_svhn_vat_noaug.yaml -subfolder vat -gpu 7
 
-
+# python train_triplegan.py ./configs/triple_gan_cifar10_vat_noaug_sngan.yaml -subfolder vat -gpu 2
 
 python train_gan.py ./configs/gan.yaml -dataset svhn -d_model_name resnet_reggan -g_model_name resnet_reggan -subfolder GAN -gpu 0
 python train_gan.py ./configs/gan.yaml -dataset svhn -model_name resnet_sngan  -subfolder GAN -gpu 1

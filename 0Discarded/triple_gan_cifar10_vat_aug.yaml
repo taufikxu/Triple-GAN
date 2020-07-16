@@ -1,15 +1,15 @@
-dataset: SVHN
+dataset: cifar10
 
 # training arguments:
 n_iter_pretrain: 20000
 n_iter: 700000
-num_label_per_batch: 1
-batch_size: 100
-bs_g: 100
-bs_c: 100
-bs_c_for_d: 100
-bs_l_for_d: 10
-bs_u_for_d: 90
+batch_size: 128
+num_label_per_batch: 32
+bs_g: 128
+bs_c: 128
+bs_c_for_d: 128
+bs_l_for_d: 12
+bs_u_for_d: 116
 clip_value: -1
 save_every: 10000
 gan_type: hinge
@@ -17,16 +17,15 @@ gan_traind_c: int
 clc_reg: 5
 
 # arguments for C
-c_model_name: cifar10_cnn
-
-teach_for_d: false
-
-c_loss: mtssl
-c_step: ramp
+c_model_name: vat_cnn
+topbn: false
+c_loss: vatssl
 c_optim: adam
-c_lr: 0.003
+c_lr: 0.001
 c_beta1: 0.5
 c_beta2: 0.999
+c_step: step_vat
+
 alpha_c_adv: 0.01
 alpha_c_pdl: 0.03
 adv_ramp_start: 15000
@@ -35,9 +34,10 @@ pdl_ramp_start: 15000
 pdl_ramp_end: 15000
 
 # Lr schdule:
-lr_anneal_num: 1000000
-lr_anneal_interval: 500
-lr_anneal_coe: 1
+vat_eps: 2.5
+lr_anneal_num: 182000
+vat_xi: 0.000001
+vat_iters: 1
 # Consistency hyperparameters
 max_consistency_cost: 50.0
 ema_decay_during_rampup: 0.99
@@ -53,12 +53,12 @@ rampup_length_lr: 40000
 rampdown_length: 0
 
 # Preprocessing
-zca: false
+zca: true
 norm: false
-translate: 0
-flip_horizontal: false
+translate: 2
+flip_horizontal: true
 ssl_seed: 1
-n_labels: 1000
+n_labels: 4000
 
 # arguments for G
 g_model_name: Resnet_RegGAN
