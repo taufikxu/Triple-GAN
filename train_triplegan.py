@@ -110,9 +110,14 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         data_u_d, _ = itr_u.__next__()
         data_u, data_u_d = data_u.to(device), data_u_d.to(device)
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-        loss_d, dreal, dfake_g, dfake_c = loss_func_d(
-            netD, netG, netC, data, sample_z, label, data_u, data_u_d
-        )
+        if FLAGS.teach_for_d:
+            loss_d, dreal, dfake_g, dfake_c = loss_func_d(
+                netD, netG, netC, netC_T, data, sample_z, label, data_u, data_u_d
+            )
+        else:
+            loss_d, dreal, dfake_g, dfake_c = loss_func_d(
+                netD, netG, netC, netC, data, sample_z, label, data_u, data_u_d
+            )
         optim_D.zero_grad()
         loss_d.backward()
         if FLAGS.clip_value > 0:

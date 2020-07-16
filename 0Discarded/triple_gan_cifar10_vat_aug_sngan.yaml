@@ -55,8 +55,8 @@ rampdown_length: 0
 # Preprocessing
 zca: true
 norm: false
-translate: 0
-flip_horizontal: false
+translate: 2
+flip_horizontal: true
 ssl_seed: 1
 n_labels: 4000
 

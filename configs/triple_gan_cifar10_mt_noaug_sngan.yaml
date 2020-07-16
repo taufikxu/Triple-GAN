@@ -18,6 +18,8 @@ gan_traind_c: int
 # arguments for C
 c_model_name: cifar10_cnn
 
+teach_for_d: false
+
 c_loss: mtssl
 c_step: ramp
 c_optim: adam
