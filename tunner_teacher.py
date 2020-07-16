@@ -45,8 +45,8 @@ def exp_runner(cmd):
     if process_id not in proc_to_gpu_map:
         proc_to_gpu_map[process_id] = gpus.pop()
         print("assign gpu {} to {}".format(proc_to_gpu_map[process_id], process_id))
-    return os.system(cmd + " -gpu {}".format(proc_to_gpu_map[process_id]))
-
+    gpuid = proc_to_gpu_map[process_id]
+    return os.system(cmd + " -gpu {} -key {}".format(gpuid, gpuid))
 
 p = multiprocessing.Pool(processes=len(gpus))
 rets = p.map(exp_runner, commands)
