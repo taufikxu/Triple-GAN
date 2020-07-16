@@ -40,3 +40,4 @@ batch_size: 100
 clip_value: -1
 save_every: 10000
 n_labels: 4000
+num_label_per_batch: 8

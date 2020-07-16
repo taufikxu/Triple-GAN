@@ -6,29 +6,26 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [14, 21, 22, 27]
+jungpus = [10, 12, 13, 21, 23]
 # Args
 args_fortune = {
     "config_file": [
-        "./configs/triple_gan_cifar10_mt_aug_sngan.yaml",
-        "./configs/triple_gan_cifar10_mt_noaug_sngan.yaml",
+        "./configs/classifier_cifar10_mt_aug.yaml",
+        "./configs/classifier_cifar10_mt_noaug.yaml",
     ],
-    "n_iter_pretrain": [20000],
-    "n_labels": [4000],
-    "ssl_seed": [1001, 1002],
-    "adv_ramp_start": [50000],
-    "adv_ramp_end": [100000],
-    "pdl_ramp_start": [50000],
-    "pdl_ramp_end": [100000],
-    "alpha_c_adv": [0.01, 0.03],
-    "alpha_c_pdl": [0.03, 0.1, 0.3],
-    "subfolder": ["tune_7.10_triple_gan"],
+    "ssl_seed": [1001, 1002, 1003],
+    "subfolder": ["AverageBaseline"],
+    "TUNNER_groups": [
+        "-n_labels 4000 -num_label_per_batch 8",
+        "-n_labels 2000 -num_label_per_batch 4",
+        "-n_labels 1000 -num_label_per_batch 2",
+    ],
 }
-command_template = "cd {};{} train_triplegan.py".format(WORK_SPACE, PYTHON_PATH)
+command_template = "cd {};{} train_classifier.py".format(WORK_SPACE, PYTHON_PATH)
 key_sequence = []
 for k in args_fortune:
     key_sequence.append(k)
-    if k == "config_file":
+    if k == "config_file" or "TUNNER_groups" in k:
         command_template += " {}"
     else:
         command_template += " -" + k + " {}"

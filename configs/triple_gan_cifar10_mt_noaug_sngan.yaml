@@ -14,6 +14,7 @@ clip_value: -1
 save_every: 10000
 gan_type: hinge
 gan_traind_c: int
+clc_reg: 0.
 
 # arguments for C
 c_model_name: cifar10_cnn
