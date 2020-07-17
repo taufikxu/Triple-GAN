@@ -2,8 +2,8 @@ import glob
 import pickle
 import os
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/tune_7.10_triple_gan"
-model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/tune_7.10_triple_gan/*cifar10*/summary/Model_stats.pkl"
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/Triple-GAN-7.15_pdlcoe_7w"
+model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/Triple-GAN-7.15_pdlcoe_7w/*cifar10*/summary/Model_stats.pkl"
 stat_paths = glob.glob(model_path)
 for p in stat_paths:
     ckpt_path = os.path.join(os.path.dirname(p), "../source/configs_dict.pkl")
@@ -18,5 +18,5 @@ for p in stat_paths:
             if itr == 50000:
                 plist.append(v)
         plist.append(test_dat[-1])
-        if config["ssl_seed"] == 1002 and config["flip_horizontal"] is True:
-            print(p[len(basename) :], plist)
+
+        print(p[len(basename) :], config["flip_horizontal"], plist)

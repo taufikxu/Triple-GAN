@@ -21,5 +21,8 @@
         label parallel
         bn
 
-4. XuanXue
-    1. batch size ratio between labeled and unlabeled when training D.
+4. Triple-gan with resnet
+    1. Memory is enough for bs 256 and its correspoding lr
+    2. coefficient rampup (default sigmoid, 7w)
+    3. pdl coefficient (default 3.0), adv fix to 0.03
+    4. Use teacher or not (default True)

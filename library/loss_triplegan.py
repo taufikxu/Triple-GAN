@@ -32,14 +32,9 @@ def loss_hinge_dis(netD, netG, netC, netC_d, x_l, z_rand, label, x_u, x_u_d):
         loss_fake_c = torch.mean(
             torch.sum(torch.relu(1.0 + d_fake_c) * softmax(logits_c), dim=1)
         )
-    if FLAGS.clc_reg > 0:
-        reg = (d_real ** 2).mean()
-        reg = reg + (d_fake_g ** 2).mean() * 0.5 + (d_fake_c ** 2).mean() * 0.5
-        reg = reg * FLAGS.clc_reg
-    else:
-        reg = 0
+
     return (
-        loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c + reg,
+        loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c,
         d_real.mean(),
         d_fake_g.mean(),
         d_fake_c.mean(),

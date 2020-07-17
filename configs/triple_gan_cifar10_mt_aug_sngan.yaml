@@ -27,12 +27,12 @@ c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5
 c_beta2: 0.999
-alpha_c_adv: 0.01
-alpha_c_pdl: 0.03
+alpha_c_adv: 0.03
+alpha_c_pdl: 3.0
 adv_ramp_start: 50000
-adv_ramp_end: 100000
+adv_ramp_end: 70000
 pdl_ramp_start: 50000
-pdl_ramp_end: 100000
+pdl_ramp_end: 70000
 
 # Lr schdule:
 lr_anneal_num: 100000000000
@@ -57,7 +57,7 @@ zca: true
 norm: false
 translate: 2
 flip_horizontal: true
-ssl_seed: 1
+ssl_seed: 1001
 n_labels: 4000
 
 # arguments for G
