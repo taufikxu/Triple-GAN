@@ -25,7 +25,7 @@ torch.cuda.manual_seed(1235)
 np.random.seed(1236)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = True
-FLAGS.device = device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 n_iter_d = 5 if "sngan" in FLAGS.g_model_name else 1
 
 
@@ -172,7 +172,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         netC.eval()
         netC_T.eval()
         with torch.no_grad():
-            sample_z = torch.randn((FLAGS.bs_g // 10) * 10, FLAGS.g_z_dim).to(device)
+            sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
             tlabel = label[: FLAGS.bs_g // 10]
             tlabel = torch.cat([tlabel for _ in range(10)], 0)
             x_fake = netG(sample_z, tlabel)

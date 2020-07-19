@@ -3,7 +3,6 @@ dataset: cifar10
 # training arguments:
 n_iter_pretrain: 20000
 n_iter: 220000
-num_label_per_batch: 10
 batch_size: 256
 bs_g: 256
 bs_c: 256
