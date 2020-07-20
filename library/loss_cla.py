@@ -20,7 +20,7 @@ def update_average(model_tgt, model_src, beta=0.999):
         p_src = param_dict_src[p_name]
         assert p_src is not p_tgt
         p_tgt.data.mul_(beta).add_((1 - beta) * p_src.data)
-
+        
 
 def sigmoid_rampup(global_step, rampup_length):
     global_step = np.clip(global_step, 0, rampup_length)
@@ -52,6 +52,12 @@ def cosine_rampdown(current, rampdown_length, training_length):
         return float(0.5 * (np.cos(np.pi * current / training_length) + 1))
     else:
         return 1.0
+
+
+def cosine_rampdown_1(current, rampdown_length):
+    """Cosine rampdown from https://arxiv.org/abs/1608.03983"""
+    assert 0 <= current <= rampdown_length
+    return max(0., float(.5 * (np.cos(np.pi * current / rampdown_length) + 1)))
 
 
 # losses
@@ -91,6 +97,7 @@ def loss_entropy_ssl(netC, netC_T, it, iter_l, iter_u, device):
     loss_l = loss_cross_entropy(logit_l, label)
     loss_u = FLAGS.alpha_entropy * entropy(logit_u)
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
+
 
 
 def loss_MT_double_ssl(netC, netC_T, it, iter_l, iter_u, device):
@@ -173,6 +180,38 @@ def step_ramp(optim_c, netC, netC_T, it, tloss):
     # update teacher
     update_average(netC_T, netC, ema_decay)
 
+
+def step_ramp_swa(optim_c, swa_optim, netC, netC_T, it, tloss):
+
+    ema_decay = FLAGS.ema_decay_after_rampup
+    linear_rampup_value = linear_rampup(it, FLAGS.rampup_length_lr)
+    
+    if it >= FLAGS.swa_start and (it - FLAGS.swa_start) % FLAGS.cycle_interval ==0:
+        swa_optim.update(netC)
+
+    if it < FLAGS.swa_start:
+        # Cosine LR rampdown from https://arxiv.org/abs/1608.03983
+        assert FLAGS.rampdown_length >= FLAGS.swa_start
+        cosine_rampdown_value = cosine_rampdown_1(it, FLAGS.rampdown_length)
+    elif it >= FLAGS.swa_start:
+        cosine_rampdown_value = cosine_rampdown_1((FLAGS.swa_start - FLAGS.cycle_interval) + ((it - FLAGS.swa_start) % FLAGS.cycle_interval),
+                FLAGS.rampdown_length)
+    
+    cosine_rampdown_value = cosine_rampdown(it, FLAGS.rampdown_length, FLAGS.n_iter)
+    lr = FLAGS.c_lr * linear_rampup_value * cosine_rampdown_value
+
+    # update adam
+    optim_c.param_groups[0]["lr"] = lr
+
+    # update student
+    optim_c.zero_grad()
+    tloss.backward()
+    if FLAGS.clip_value > 0:
+        torch.nn.utils.clip_grad_norm_(netC.parameters(), FLAGS.clip_value)
+    optim_c.step()
+
+    # update teacher
+    update_average(netC_T, netC, ema_decay)
 
 def step_ramp_linear(optim_c, netC, netC_T, it, tloss):
 
