@@ -38,7 +38,7 @@ netC_T.train()
 Torture.update_average(netC_T, netC, 0)
 for p in netC_T.parameters():
     p.requires_grad_(False)
-if FLAGS.c_step is 'ramp_swa':
+if FLAGS.c_step is "ramp_swa":
     netC_swa, _ = inputs.get_classifier_optimizer()
     netC_swa = netC_swa.to(device)
     netC_swa = nn.DataParallel(netC_swa)
@@ -49,7 +49,7 @@ if FLAGS.c_step is 'ramp_swa':
     Torture.update_average(netC_swa, netC, 0)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
-if FLAGS.c_step is 'ramp_swa':
+if FLAGS.c_step is "ramp_swa":
     checkpoint_io.register_modules(netC=netC, netC_T=netC_T, netC_swa=netC_swa)
 else:
     checkpoint_io.register_modules(netC=netC, netC_T=netC_T)
@@ -64,7 +64,7 @@ step_func = loss_classifier.c_step_func[FLAGS.c_step]
 logger_prefix = "Itera {}/{} ({:.0f}%)"
 for i in range(max_iter):
     tloss, l_loss, u_loss = loss_func(netC, netC_T, i, itr, itr_u, device)
-    if FLAGS.c_step is 'ramp_swa':
+    if FLAGS.c_step is "ramp_swa":
         step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
     else:
         step_func(optim_c, netC, netC_T, i, tloss)
@@ -81,17 +81,16 @@ for i in range(max_iter):
     if (i + 1) % test_interval == 0:
         netC.eval()
         netC_T.eval()
-        
-        if FLAGS.c_step is 'ramp_swa':
-            # bn ?
-            # is it updated by optim?
-            # only test when swa updated
+
+        if FLAGS.c_step is "ramp_swa":
+            netC_swa.train()
+            for _ in range(300):
+                data_u, _ = iter_u.__next__()
+                _ = netC_swa(data_u.to(device))
             netC_swa.eval()
             total_s, correct_s, loss_s = evaluation.test_classifier(netC_swa)
             logger.add("testing", "loss_s", loss_s.item(), i + 1)
             logger.add("testing", "accuracy_s", 100 * (correct_s / total_s), i + 1)
-            netC_swa.train() 
-            # not sure
 
         total_t, correct_t, loss_t = evaluation.test_classifier(netC_T)
         logger.add("testing", "loss_t", loss_t.item(), i + 1)
