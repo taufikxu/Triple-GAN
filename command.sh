@@ -76,5 +76,11 @@ python train_triplegan.py ./configs/triple_gan_stl10_mt_aug_sngan.yaml -subfolde
 python train_classifier.py ./configs/classifier_cifar10_swa_aug.yaml -subfolder swa -key cnn -gpu 0
 python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key resnet -gpu 1
 
+# new swa
+python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key resnet-norm -zca false -norm true -gpu 1
+python train_triplegan.py ./configs/triple_gan_cifar10_swa_resnet_aug.yaml -subfolder swa -key tgan-resnet-norm -zca false -norm true -gpu 1
+python train_triplegan.py ./configs/triple_gan_cifar10_swa_resnet_aug.yaml -subfolder swa -key tgan-resnet-zca -zca true -norm false -gpu 1
+python train_classifier.py ./configs/triple_gan_cifar10_swa_aug.yaml -subfolder swa -key t-gan-cnn -gpu 0
+
 
 python test_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/(train_triplegan.py)_(svhn)_(2020-06-12-11-24-49)_()_(cford_int)/models/model209000.pt" -gpu 1

@@ -12,6 +12,8 @@ from Utils import config
 import Torture
 from library import loss_triplegan, evaluation
 import library.loss_cla as loss_classifier
+from library.mean_teacher import optim_weight_swa
+
 
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
@@ -56,17 +58,38 @@ netC_T.train()
 Torture.update_average(netC_T, netC, 0)
 for p in netC_T.parameters():
     p.requires_grad_(False)
+if FLAGS.c_step == "ramp_swa":
+    netC_swa, _ = inputs.get_classifier_optimizer()
+    netC_swa = netC_swa.to(device)
+    netC_swa = nn.DataParallel(netC_swa)
+    netC_swa.train()
+    swa_optim = optim_weight_swa.WeightSWA(netC_swa)
+    for p in netC_swa.parameters():
+        p.requires_grad_(False)
+    Torture.update_average(netC_swa, netC, 0)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
-checkpoint_io.register_modules(
-    netG=netG,
-    netD=netD,
-    netC=netC,
-    netC_T=netC_T,
-    optim_G=optim_G,
-    optim_D=optim_D,
-    optim_c=optim_c,
-)
+if FLAGS.c_step == "ramp_swa":
+    checkpoint_io.register_modules(
+        netG=netG,
+        netD=netD,
+        netC=netC,
+        netC_T=netC_T,
+        netC_swa=netC_swa,
+        optim_G=optim_G,
+        optim_D=optim_D,
+        optim_c=optim_c,
+    )
+else:    
+    checkpoint_io.register_modules(
+        netG=netG,
+        netD=netD,
+        netC=netC,
+        netC_T=netC_T,
+        optim_G=optim_G,
+        optim_D=optim_D,
+        optim_c=optim_c,
+    )
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
@@ -143,7 +166,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
     adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
     loss_c_adv = tloss_c_adv * adv_ramp_coe
-
+    
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
@@ -155,7 +178,10 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
     )
 
-    step_func(optim_c, netC, netC_T, i, loss_c)
+    if FLAGS.c_step == "ramp_swa":
+        step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
+    else:
+        step_func(optim_c, netC, netC_T, i, tloss)
 
     logger.add("training_c", "loss", loss_c.item(), i + 1)
     logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
@@ -181,6 +207,17 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
             total_tt, correct_tt, loss_tt = evaluation.test_classifier(netC_T)
         netC.train()
         netC_T.train()
+
+        if FLAGS.c_step == "ramp_swa":
+            netC_swa.train()
+            for _ in range(300):
+                data_u, _ = itr_u.__next__()
+                _ = netC_swa(data_u.to(device))
+            netC_swa.eval()
+            total_s, correct_s, loss_s = evaluation.test_classifier(netC_swa)
+            
+        logger.add("testing", "loss_s", loss_s.item(), i + 1)
+        logger.add("testing", "accuracy_s", 100 * (correct_s / total_s), i + 1)
 
         logger.add("testing", "loss", loss_t.item(), i + 1)
         logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
