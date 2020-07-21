@@ -1,60 +1,64 @@
-dataset: cifar10
+dataset: cifar100
 
 # training arguments:
 n_iter_pretrain: 20000
 n_iter: 220000
-batch_size: 256
-bs_g: 256
-bs_c: 256
-bs_c_for_d: 256
-bs_l_for_d: 26
-bs_u_for_d: 230
+num_label_per_batch: 20
+batch_size: 100
+bs_g: 100
+bs_c: 100
+bs_c_for_d: 100
+bs_l_for_d: 10
+bs_u_for_d: 90
 clip_value: -1
 save_every: 10000
 gan_type: hinge
 gan_traind_c: int
+clc_reg: 0.
+
+# arguments for C
+c_model_name: cifar10_cnn
 
 teach_for_d: false
 
-# arguments for C
-c_model_name: cifar10_resnet_26
-c_loss: mtdoublessl
-c_step: ramp_linear
-c_optim: nesterov
-c_lr: 0.1
-c_beta1: 0.9
-c_beta2: 0.99 # not used in sgd
-c_weight_decay: 0.0002
-alpha_c_adv: 0.01
-alpha_c_pdl: 0.03
+c_loss: mtssl
+c_step: ramp
+c_optim: adam
+c_lr: 0.003
+c_beta1: 0.5
+c_beta2: 0.999
+alpha_c_adv: 0.03
+alpha_c_pdl: 3.0
 adv_ramp_start: 50000
-adv_ramp_end: 100000
+adv_ramp_end: 70000
 pdl_ramp_start: 50000
-pdl_ramp_end: 100000
+pdl_ramp_end: 70000
 
 # Lr schdule:
 lr_anneal_num: 100000000000
 lr_anneal_interval: 500
 lr_anneal_coe: 1
 # Consistency hyperparameters
-
-max_consistency_cost: 100.0
+max_consistency_cost: 50.0
 ema_decay_during_rampup: 0.99
-ema_decay_after_rampup: 0.99
-alpha_mse: 0.01
-
+ema_decay_after_rampup: 0.999
+# Optimizer hyperparameters
+adam_beta_1_before_rampdown: 0.9
+adam_beta_1_after_rampdown: 0.5
+adam_beta_2_during_rampup: 0.99
+adam_beta_2_after_rampup: 0.999
 # Training schedule
-rampup_length: 1000
-rampdown_length: 30000
-rampup_length_lr: 0
+rampup_length: 40000
+rampup_length_lr: 40000
+rampdown_length: 0
 
 # Preprocessing
-n_labels: 4000
-zca: false
-norm: true
-translate: 4
-flip_horizontal: true
+zca: true
+norm: false
+translate: 0
+flip_horizontal: false
 ssl_seed: 1001
+n_labels: 10000
 
 # arguments for G
 g_model_name: resnet_sngan

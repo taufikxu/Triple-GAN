@@ -14,6 +14,8 @@ FLAGS = flags.FLAGS
 
 hw_dict = {
     "cifar10": (32, 3, 10),
+    "cifar100": (32, 3, 100),
+    "stl10": (96, 3, 10),
     "svhn": (32, 3, 10),
     "mnist": (32, 1, 10),
     "fashionmnist": (32, 1, 10),

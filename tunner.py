@@ -5,12 +5,16 @@ import itertools
 
 # Args
 args_fortune = {
-    "config_file": ["./configs/classifier_cifar10_mt_resnet_aug.yaml",],
-    "n_labels": [1000, 4000],
-    "ssl_seed": [1001, 1002, 1003, 1004],
-    "subfolder": ["AverageBaseline_cifar10ResNet"],
+    "config_file": [
+        "python train_classifier.py ./configs/classifier_cifar100_mt_aug.yaml",
+        "python train_classifier.py ./configs/classifier_cifar100_mt_noaug.yaml",
+        # "python train_triplegan.py ./configs/triple_gan_cifar100_mt_aug_sngan.yaml",
+        # "python train_triplegan.py ./configs/triple_gan_cifar100_mt_aug_sngan.yaml",
+    ],
+    "ssl_seed": [1001],
+    "subfolder": ["CIFAR100"],
 }
-command_template = "python train_classifier.py"
+command_template = ""
 key_sequence = []
 for k in args_fortune:
     key_sequence.append(k)

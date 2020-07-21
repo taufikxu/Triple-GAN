@@ -134,6 +134,21 @@ def get_dataset(train, subset):
             download=True,
             transform=transf,
         )
+    elif FLAGS.dataset.lower() == "cifar100":
+        sets = datasets.CIFAR100(
+            "/home/LargeData/Regular/cifar",
+            train=train,
+            download=True,
+            transform=transf,
+        )
+    elif FLAGS.dataset.lower() == "stl10":
+        if train is True:
+            split = "train+unlabeled"
+        else:
+            split = "test"
+        sets = datasets.STL10(
+            "/home/LargeData/Regular/", split=split, download=True, transform=transf,
+        )
 
     if subset > 0:
         generator = np.random.default_rng(FLAGS.ssl_seed)

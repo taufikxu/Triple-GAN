@@ -22,6 +22,7 @@ torch.backends.cudnn.benchmark = True
 np.random.seed(1235)
 torch.cuda.manual_seed(1236)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+FLAGS.device = device
 
 itr = inputs.get_data_iter(subset=FLAGS.n_labels)
 itr_u = inputs.get_data_iter()
