@@ -26,3 +26,9 @@
     2. coefficient rampup (default sigmoid, 7w)
     3. pdl coefficient (default 3.0), adv fix to 0.03
     4. Use teacher or not (default True)
+
+
+5. cifar100, stl 10 and svhn.
+
+6. swa
+    1. bn. see repo https://github.com/benathi/fastswa-semi-sup

@@ -11,6 +11,7 @@ from Utils import config
 import Torture
 from library import evaluation
 from library import loss_cla as loss_classifier
+from mean_teacher import optim_weight_swa
 
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
@@ -37,10 +38,21 @@ netC_T.train()
 Torture.update_average(netC_T, netC, 0)
 for p in netC_T.parameters():
     p.requires_grad_(False)
-
+if FLAGS.c_step is 'ramp_swa':
+    netC_swa, _ = inputs.get_classifier_optimizer()
+    netC_swa = netC_swa.to(device)
+    netC_swa = nn.DataParallel(netC_swa)
+    netC_swa.train()
+    swa_optim = optim_weight_swa.WeightSWA(netC_swa)
+    for p in netC_swa.parameters():
+        p.requires_grad_(False)
+    Torture.update_average(netC_swa, netC, 0)
 
 checkpoint_io = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
-checkpoint_io.register_modules(netC=netC, netC_T=netC_T)
+if FLAGS.c_step is 'ramp_swa':
+    checkpoint_io.register_modules(netC=netC, netC_T=netC_T, netC_swa=netC_swa)
+else:
+    checkpoint_io.register_modules(netC=netC, netC_T=netC_T)
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 # train
 print_interval = 50
@@ -52,7 +64,10 @@ step_func = loss_classifier.c_step_func[FLAGS.c_step]
 logger_prefix = "Itera {}/{} ({:.0f}%)"
 for i in range(max_iter):
     tloss, l_loss, u_loss = loss_func(netC, netC_T, i, itr, itr_u, device)
-    step_func(optim_c, netC, netC_T, i, tloss)
+    if FLAGS.c_step is 'ramp_swa':
+        step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
+    else:
+        step_func(optim_c, netC, netC_T, i, tloss)
 
     logger.add("training", "loss", tloss.item(), i + 1)
     logger.add("training", "l_loss", l_loss.item(), i + 1)
@@ -66,6 +81,18 @@ for i in range(max_iter):
     if (i + 1) % test_interval == 0:
         netC.eval()
         netC_T.eval()
+        
+        if FLAGS.c_step is 'ramp_swa':
+            # bn ?
+            # is it updated by optim?
+            # only test when swa updated
+            netC_swa.eval()
+            total_s, correct_s, loss_s = evaluation.test_classifier(netC_swa)
+            logger.add("testing", "loss_s", loss_s.item(), i + 1)
+            logger.add("testing", "accuracy_s", 100 * (correct_s / total_s), i + 1)
+            netC_swa.train() 
+            # not sure
+
         total_t, correct_t, loss_t = evaluation.test_classifier(netC_T)
         logger.add("testing", "loss_t", loss_t.item(), i + 1)
         logger.add("testing", "accuracy_t", 100 * (correct_t / total_t), i + 1)
