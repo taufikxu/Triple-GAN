@@ -6,6 +6,8 @@ c_loss: mtdoublessl
 c_step: ramp_swa
 c_optim: nesterov
 c_lr: 0.05
+c_beta1: 0.9
+c_beta2: 0.999
 c_weight_decay: 0.0002
 
 # Consistency hyperparameters

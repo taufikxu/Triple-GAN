@@ -343,5 +343,6 @@ c_step_func = {
     "ramp_linear": step_ramp_linear,
     "regular": step_regular,
     "step_vat": step_vat,
+    "ramp_swa": step_ramp_swa,
 }
 
