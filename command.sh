@@ -58,8 +58,8 @@ python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subf
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 1000 -gpu 0,1,2,3
 
 
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_tg -teach_for_d true -gpu 0,1,2,3
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_tg -teach_for_d false -gpu 4,5,6,7
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 0 -subfolder ResNet_tg -gpu 0
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 20000 -subfolder ResNet_tg -gpu 1
 
 # Triple-gan
 python train_triplegan.py ./configs/triple_gan_svhn_mt_aug.yaml -subfolder tganmt -translate 2 -c_model_name cifar10_cnn_gaussian -gpu 0
@@ -77,10 +77,10 @@ python train_classifier.py ./configs/classifier_cifar10_swa_aug.yaml -subfolder 
 python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key resnet -gpu 1
 
 # new swa
-python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key resnet-norm -zca false -norm true -gpu 1
-python train_triplegan.py ./configs/triple_gan_cifar10_swa_resnet_aug.yaml -subfolder swa -key tgan-resnet-norm -zca false -norm true -gpu 1
-python train_triplegan.py ./configs/triple_gan_cifar10_swa_resnet_aug.yaml -subfolder swa -key tgan-resnet-zca -zca true -norm false -gpu 1
-python train_classifier.py ./configs/triple_gan_cifar10_swa_aug.yaml -subfolder swa -key t-gan-cnn -gpu 0
+python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key resnet-norm -zca false -norm true -gpu 4
+python train_triplegan.py ./configs/triple_gan_cifar10_swa_aug_sngan.yaml -n_iter_pretrain 0 -subfolder swa -gpu 5
+python train_triplegan.py ./configs/triple_gan_cifar10_swa_aug_sngan_resnet.yaml -n_iter_pretrain 0 -subfolder swa_debug -gpu 6
+python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key t-gan-cnn -gpu 7
 
 
 python test_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/(train_triplegan.py)_(svhn)_(2020-06-12-11-24-49)_()_(cford_int)/models/model209000.pt" -gpu 1

@@ -80,7 +80,7 @@ if FLAGS.c_step == "ramp_swa":
         optim_D=optim_D,
         optim_c=optim_c,
     )
-else:    
+else:
     checkpoint_io.register_modules(
         netG=netG,
         netD=netD,
@@ -107,7 +107,11 @@ logger_prefix = "Itera {}/{} ({:.0f}%)"
 
 for i in range(pretrain_inter):  # 1w
     tloss, l_loss, u_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
-    step_func(optim_c, netC, netC_T, i, tloss)
+    # step_func(optim_c, netC, netC_T, i, tloss)
+    if FLAGS.c_step == "ramp_swa":
+        step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
+    else:
+        step_func(optim_c, netC, netC_T, i, tloss)
 
     logger.add("training_pre", "loss", tloss.item(), i + 1)
     logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
@@ -166,7 +170,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
     adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
     loss_c_adv = tloss_c_adv * adv_ramp_coe
-    
+
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
@@ -179,9 +183,9 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     )
 
     if FLAGS.c_step == "ramp_swa":
-        step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
+        step_func(optim_c, swa_optim, netC, netC_T, i, loss_c)
     else:
-        step_func(optim_c, netC, netC_T, i, tloss)
+        step_func(optim_c, netC, netC_T, i, loss_c)
 
     logger.add("training_c", "loss", loss_c.item(), i + 1)
     logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
@@ -215,9 +219,8 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
                 _ = netC_swa(data_u.to(device))
             netC_swa.eval()
             total_s, correct_s, loss_s = evaluation.test_classifier(netC_swa)
-            
-        logger.add("testing", "loss_s", loss_s.item(), i + 1)
-        logger.add("testing", "accuracy_s", 100 * (correct_s / total_s), i + 1)
+            logger.add("testing", "loss_s", loss_s.item(), i + 1)
+            logger.add("testing", "accuracy_s", 100 * (correct_s / total_s), i + 1)
 
         logger.add("testing", "loss", loss_t.item(), i + 1)
         logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)

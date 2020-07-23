@@ -3,12 +3,12 @@ dataset: cifar10
 # training arguments:
 n_iter_pretrain: 20000
 n_iter: 220000
-batch_size: 256
-bs_g: 256
-bs_c: 256
-bs_c_for_d: 256
-bs_l_for_d: 26
-bs_u_for_d: 230
+batch_size: 100
+bs_g: 100
+bs_c: 100
+bs_c_for_d: 100
+bs_l_for_d: 10
+bs_u_for_d: 90
 clip_value: -1
 save_every: 10000
 gan_type: hinge
@@ -21,16 +21,16 @@ c_model_name: cifar10_resnet_26
 c_loss: mtdoublessl
 c_step: ramp_linear
 c_optim: nesterov
-c_lr: 0.1
+c_lr: 0.05
 c_beta1: 0.9
 c_beta2: 0.99 # not used in sgd
 c_weight_decay: 0.0002
-alpha_c_adv: 0.01
-alpha_c_pdl: 0.03
+alpha_c_adv: 0.03
+alpha_c_pdl: 3.0
 adv_ramp_start: 50000
-adv_ramp_end: 100000
+adv_ramp_end: 70000
 pdl_ramp_start: 50000
-pdl_ramp_end: 100000
+pdl_ramp_end: 70000
 
 # Lr schdule:
 lr_anneal_num: 100000000000
@@ -44,7 +44,7 @@ ema_decay_after_rampup: 0.99
 alpha_mse: 0.01
 
 # Training schedule
-rampup_length: 1000
+rampup_length: 2500
 rampdown_length: 30000
 rampup_length_lr: 0
 

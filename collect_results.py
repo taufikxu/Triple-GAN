@@ -19,5 +19,5 @@ for p in stat_paths:
                 plist.append(v)
         plist.append(test_dat[-1])
 
-        if config["flip_horizontal"] is True:
+        if config["flip_horizontal"] is False:
             print(p[len(basename) :], config["flip_horizontal"], plist)
