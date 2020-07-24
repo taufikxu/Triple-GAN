@@ -72,6 +72,22 @@ class AugmentWrapper(object):
         assert isinstance(tensor, torch.Tensor)
         assert len(tensor.shape) == 4
 
+        if FLAGS.norm is True:
+            assert FLAGS.zca is False
+            assert FLAGS.dataset == "cifar10"
+            tensor = (tensor + 1) / 2
+            channel_mean = (
+                torch.from_numpy(np.array([0.4914, 0.4822, 0.4465]).astype(np.float32))
+                .to(tensor.device)
+                .view(1, 3, 1, 1)
+            )
+            channel_std = (
+                torch.from_numpy(np.array([0.2470, 0.2435, 0.2616]).astype(np.float32))
+                .to(tensor.device)
+                .view(1, 3, 1, 1)
+            )
+            tensor = (tensor - channel_mean) / channel_std
+
         if self.zca is not None:
             tensor = self.zca.apply(tensor)
         if training is False:
@@ -101,23 +117,10 @@ class AugmentWrapper(object):
 
 
 def get_dataset(train, subset):
-    if FLAGS.norm is True:
-        assert FLAGS.zca is False
-        assert FLAGS.dataset == "cifar10"
-        channel_stats = dict(
-            mean=[0.4914, 0.4822, 0.4465], std=[0.2470, 0.2435, 0.2616]
-        )
-        transf = transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize(**channel_stats)]
-        )
 
-    else:
-        transf = transforms.Compose(
-            [
-                transforms.ToTensor(),
-                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-            ]
-        )
+    transf = transforms.Compose(
+        [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),]
+    )
     if FLAGS.dataset.lower() == "svhn":
         if train is True:
             split = "train"

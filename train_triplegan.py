@@ -94,7 +94,7 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
 print_interval = 50
-image_interval = 500
+image_interval = 100
 max_iter = FLAGS.n_iter
 pretrain_inter = FLAGS.n_iter_pretrain
 loss_func_g = loss_triplegan.g_loss_dict[FLAGS.gan_type]

@@ -59,6 +59,7 @@ python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subf
 
 
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 0 -subfolder ResNet_tg -gpu 0
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 0 -subfolder ResNet_tg -gpu 4,5,6,7 -batch_size 256 -bs_g 256 -bs_c 256 -bs_c_for_d 256 -bs_l_for_d 26 -bs_u_for_d 230 -c_lr 0.1
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 20000 -subfolder ResNet_tg -gpu 1
 
 # Triple-gan

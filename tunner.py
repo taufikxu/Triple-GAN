@@ -4,16 +4,18 @@ import time
 import itertools
 
 # Args
-gpu_list = [0, 1, 2, 3]
+gpu_list = [0, 1, 2, 3, 4, 5, 6, 7]
 args_fortune = {
     "config_file": [
-        # "python train_classifier.py ./configs/classifier_cifar100_mt_aug.yaml",
-        # "python train_classifier.py ./configs/classifier_cifar100_mt_noaug.yaml",
+        # "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
+        # "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
         "python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml",
         "python train_triplegan.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml",
     ],
     "alpha_c_pdl": [3.0, 10.0],
     "ssl_seed": [1001],
+    "n_labels": [250],
+    "num_label_per_batch": [1, 50],
     "subfolder": ["SVHN_FINAL"],
 }
 command_template = ""
