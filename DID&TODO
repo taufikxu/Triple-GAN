@@ -30,5 +30,5 @@
 
 5. cifar100, stl 10 and svhn.
 
-6. swa
-    1. bn. see repo https://github.com/benathi/fastswa-semi-sup
+7. extreme low data regime
+    1. total iters and ramp up
