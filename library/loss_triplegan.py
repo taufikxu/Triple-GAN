@@ -8,6 +8,34 @@ from library.loss_cla import loss_cross_entropy
 softmax = torch.nn.Softmax(1)
 
 
+
+def loss_hinge_dis_elr(netD, netG, netC, x_l, z_rand, label, x_u):
+    with torch.no_grad():
+        x_fake = netG(z_rand, label).detach()
+        logits_c = netC(x_u).detach()
+        _, l_fake = torch.max(logits_c, 1)
+
+    d_real = netD(x_l, label)
+    d_fake_g = netD(x_fake, label)
+    loss_real = torch.mean(torch.relu(1.0 - d_real))
+    loss_fake_g = torch.mean(torch.relu(1.0 + d_fake_g))
+
+    if FLAGS.gan_traind_c == "argmax":
+        d_fake_c = netD(x_u, l_fake)
+        loss_fake_c = torch.mean(torch.relu(1.0 + d_fake_c))
+    elif FLAGS.gan_traind_c == "int":
+        d_fake_c = netD(x_u)
+        loss_fake_c = torch.mean(
+            torch.sum(torch.relu(1.0 + d_fake_c) * softmax(logits_c), dim=1)
+        )
+
+    return (
+        loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c,
+        d_real.mean(),
+        d_fake_g.mean(),
+        d_fake_c.mean(),
+    )
+
 def loss_hinge_dis(netD, netG, netC, netC_d, x_l, z_rand, label, x_u, x_u_d):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()

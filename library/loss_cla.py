@@ -71,6 +71,12 @@ def loss_cross_entropy(logits, label):
     loss = crossentropy(logits, label)
     return loss
 
+def loss_elr(netC, it, iter_l, device):
+    data, label = iter_l.__next__()
+    data, label = data.to(device), label.to(device)
+    logit_l = netC(data)
+    loss_l = loss_cross_entropy(logit_l, label)
+    return loss_l
 
 def loss_supervised(netC, netC_T, it, iter_l, iter_u, device):
     data, label = iter_l.__next__()

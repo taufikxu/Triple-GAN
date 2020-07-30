@@ -4,19 +4,31 @@ import time
 import itertools
 
 # Args
-gpu_list = [0, 1, 2, 3]
+# gpu_list = [0, 1, 2, 3]
+# args_fortune = {
+#     "config_file": [
+#         "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
+#         "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
+#         "python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml",
+#         "python train_triplegan.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml",
+#     ],
+#     "alpha_c_pdl": [3.0],
+#     "ssl_seed": [1001],
+#     "n_labels": [100],
+#     "num_label_per_batch": [1],
+#     "subfolder": ["SVHN_FINAL100"],
+
+gpu_list = [0, 1, 2]
 args_fortune = {
     "config_file": [
-        "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
-        "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
-        "python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml",
-        "python train_triplegan.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml",
+        # "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
+        # "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
+        # "python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml",
     ],
-    "alpha_c_pdl": [3.0],
     "ssl_seed": [1001],
-    "n_labels": [100],
-    "num_label_per_batch": [1],
-    "subfolder": ["SVHN_FINAL100"],
+    "n_labels": [500, 800, 1000],
+    "subfolder": ["svhn_elr"],
 }
 command_template = ""
 key_sequence = []
