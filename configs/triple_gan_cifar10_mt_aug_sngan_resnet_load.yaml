@@ -1,7 +1,9 @@
 dataset: cifar10
 
+old_model_c: /home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-49)_((ssl_seed_1001)(n_labels_1000))_(NotValid_Signature)/models/model150000.pt
 # training arguments:
-n_iter_pretrain: 20000
+n_iter_pretrain: 0
+
 n_iter: 100000
 batch_size: 256
 bs_g: 256
@@ -25,12 +27,13 @@ c_lr: 0.1
 c_beta1: 0.9
 c_beta2: 0.99 # not used in sgd
 c_weight_decay: 0.0002
-adv_ramp_start: 50000
-adv_ramp_end: 70000
-pdl_ramp_start: 50000
-pdl_ramp_end: 70000
+n_iter_trainc: 30000
+adv_ramp_start: 30000
+adv_ramp_end: 50000
+pdl_ramp_start: 30000
+pdl_ramp_end: 50000
 alpha_c_adv: 0.03
-alpha_c_pdl: 3.0
+alpha_c_pdl: 0.3
 
 # Lr schdule:
 lr_anneal_num: 100000000000
@@ -49,7 +52,7 @@ rampdown_length: 30000
 rampup_length_lr: 1
 
 # Preprocessing
-n_labels: 4000
+n_labels: 1000
 zca: false
 norm: true
 translate: 4

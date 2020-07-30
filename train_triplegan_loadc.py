@@ -17,6 +17,8 @@ from library.mean_teacher import optim_weight_swa
 
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
+old_model = FLAGS.old_model_c
+FLAGS.old_model_c = "loaded"
 text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
 # FLAGS.g_model_name = FLAGS.model_name
@@ -90,6 +92,7 @@ else:
         optim_D=optim_D,
         optim_c=optim_c,
     )
+checkpoint_io.load_file(old_model)
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
@@ -105,22 +108,22 @@ step_func = loss_classifier.c_step_func[FLAGS.c_step]
 
 logger_prefix = "Itera {}/{} ({:.0f}%)"
 
-for i in range(pretrain_inter):  # 1w
-    tloss, l_loss, u_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
-    # step_func(optim_c, netC, netC_T, i, tloss)
-    if FLAGS.c_step == "ramp_swa":
-        step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
-    else:
-        step_func(optim_c, netC, netC_T, i, tloss)
+# for i in range(pretrain_inter):  # 1w
+#     tloss, l_loss, u_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
+#     # step_func(optim_c, netC, netC_T, i, tloss)
+#     if FLAGS.c_step == "ramp_swa":
+#         step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
+#     else:
+#         step_func(optim_c, netC, netC_T, i, tloss)
 
-    logger.add("training_pre", "loss", tloss.item(), i + 1)
-    logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
-    logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
+#     logger.add("training_pre", "loss", tloss.item(), i + 1)
+#     logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
+#     logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
 
-    if (i + 1) % print_interval == 0:
-        prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
-        cats = ["training_pre"]
-        logger.log_info(prefix, text_logger.info, cats=cats)
+#     if (i + 1) % print_interval == 0:
+#         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
+#         cats = ["training_pre"]
+#         logger.log_info(prefix, text_logger.info, cats=cats)
 
 
 for i in range(pretrain_inter, max_iter + pretrain_inter):
@@ -167,31 +170,38 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_g", "loss", loss_g.item(), i + 1)
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
-    tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
-    adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
-    loss_c_adv = tloss_c_adv * adv_ramp_coe
+    if i > FLAGS.n_iter_trainc:
+        tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data_u)
+        adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
+        loss_c_adv = tloss_c_adv * adv_ramp_coe
 
-    loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
+        loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(
+            netC, netC_T, i, itr, itr_u, device
+        )
 
-    sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-    tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(netC, netG, sample_z, label)
-    pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_ramp_start, FLAGS.pdl_ramp_end)
-    loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
+        sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
+        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
+            netC, netG, sample_z, label
+        )
+        pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_ramp_start, FLAGS.pdl_ramp_end)
+        loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
 
-    loss_c = (
-        FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
-    )
+        loss_c = (
+            FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
+        )
 
-    if FLAGS.c_step == "ramp_swa":
-        step_func(optim_c, swa_optim, netC, netC_T, i, loss_c)
+        if FLAGS.c_step == "ramp_swa":
+            step_func(optim_c, swa_optim, netC, netC_T, i, loss_c)
+        else:
+            step_func(optim_c, netC, netC_T, i, loss_c)
+
+        logger.add("training_c", "loss", loss_c.item(), i + 1)
+        logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
+        logger.add("training_c", "loss_ssl", loss_c_ssl.item(), i + 1)
+        logger.add("training_c", "loss_pdl", loss_c_pdl.item(), i + 1)
+        logger.add("training_c", "fake_c", fake_c.item(), i + 1)
     else:
-        step_func(optim_c, netC, netC_T, i, loss_c)
-
-    logger.add("training_c", "loss", loss_c.item(), i + 1)
-    logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
-    logger.add("training_c", "loss_ssl", loss_c_ssl.item(), i + 1)
-    logger.add("training_c", "loss_pdl", loss_c_pdl.item(), i + 1)
-    logger.add("training_c", "fake_c", fake_c.item(), i + 1)
+        logger.add("training_c", "loss", 0, i + 1)
 
     if (i + 1) % print_interval == 0:
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)

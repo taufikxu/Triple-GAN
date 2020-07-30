@@ -56,7 +56,7 @@ zca: false
 norm: false
 translate: 0
 flip_horizontal: false
-ssl_seed: 1
+ssl_seed: 1001
 n_labels: 1000
 
 # arguments for G

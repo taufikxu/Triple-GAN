@@ -2,9 +2,12 @@ import glob
 import pickle
 import os
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/Triple-GAN-Report-CIFAR10"
-model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/Triple-GAN-Report-CIFAR10/*/summary/Model_stats.pkl"
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Tune"
+model_path = (
+    "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Tune/*/summary/Model_stats.pkl"
+)
 stat_paths = glob.glob(model_path)
+
 for p in stat_paths:
     ckpt_path = os.path.join(os.path.dirname(p), "../source/configs_dict.pkl")
     with open(ckpt_path, "rb") as f:
@@ -19,5 +22,4 @@ for p in stat_paths:
                 plist.append(v)
         plist.append(test_dat[-1])
 
-        if config["flip_horizontal"] is False:
-            print(p[len(basename) :], config["flip_horizontal"], plist)
+        print(p[len(basename) :], config["flip_horizontal"], plist)

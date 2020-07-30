@@ -58,10 +58,24 @@ python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subf
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 1000 -gpu 0,1,2,3
 
 
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 0 -subfolder ResNet_tg -gpu 0
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 0 -subfolder ResNet_tg -gpu 4,5,6,7 -batch_size 256 -bs_g 256 -bs_c 256 -bs_c_for_d 256 -bs_l_for_d 26 -bs_u_for_d 230 -c_lr 0.1
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -n_iter_pretrain 20000 -subfolder ResNet_tg -gpu 1
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 3.0 -n_labels 4000 -teach_for_d false -gpu 0,1,2,3
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 0.3 -n_labels 1000 -gpu 0,1,2,3
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 0.1 -n_labels 1000 -gpu 4,5,6,7
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 3.0 -n_labels 1000 -gpu 0,1,2,3
 
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 1.0 -gpu 0,1,2,3
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 10.0 -gpu 4,5,6,7
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 30.0 -gpu 0,1,2,3
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 10.0 -n_labels 1000 -gpu 4,5,6,7
+
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet_100.yaml -subfolder ResNetDebug -gpu 4,5,6,7
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sugan_double.yaml -subfolder ResNetDebug -gpu 3
+python test_resnet.py ./configs/triple_gan_resnet_test.yaml -old_model_c '/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-43)_((ssl_seed_1001)(n_labels_4000))_(NotValid_Signature)/models/model150000.pt' -old_model_gan '/home/kunxu/Workspace/Triple-GAN/allresults/ResNetDebug/(train_triplegan.py)_(cifar10)_(2020-07-28-11-10-37)_()_(NotValid_Signature)/models/model70000.pt'
+
+python train_triplegan_loadc.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet_load.yaml -old_model_c '/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-49)_((ssl_seed_1001)(n_labels_1000))_(NotValid_Signature)/models/model150000.pt' -alpha_c_pdl 0.1 -gpu 0,1,2,3
+python train_triplegan_loadc.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet_load.yaml -old_model_c '/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-49)_((ssl_seed_1001)(n_labels_1000))_(NotValid_Signature)/models/model150000.pt' -alpha_c_pdl 0.3 -gpu 4,5,6,7
+
+python train_triplegan_loadT.py ./configs/triple_gan_resnet_test.yaml -old_model_c '/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Tune/(train_triplegan.py)_(cifar10)_(2020-07-28-11-09-12)_((alpha_c_adv_0.03)(alpha_c_pdl_0.3)(n_labels_1000))_(NotValid_Signature)/models/model40000.pt' -gpu 0,1,2,3
 # Triple-gan
 python train_triplegan.py ./configs/triple_gan_svhn_mt_aug.yaml -subfolder tganmt -translate 2 -c_model_name cifar10_cnn_gaussian -gpu 0
 python train_triplegan.py ./configs/triple_gan_svhn_mt_noaug.yaml -subfolder tganmt -translate 0 -c_model_name cifar10_cnn_gaussian -gpu 1

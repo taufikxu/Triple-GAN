@@ -6,20 +6,16 @@ import subprocess
 
 WORK_SPACE = "~/Workspace/Triple-GAN"
 PYTHON_PATH = "/home/kunxu/ENV/envs/torch/bin/python"
-jungpus = [16, 17, 22]
+jungpus = [13, 14, 21, 22]
 # Args
 args_fortune = {
     "config_file": [
-        "./configs/triple_gan_cifar10_mt_aug_sngan.yaml",
-        "./configs/triple_gan_cifar10_mt_noaug_sngan.yaml",
+        "./configs/triple_gan_svhn_mt_aug_sngan.yaml",
+        "./configs/triple_gan_svhn_mt_noaug_sngan.yaml",
     ],
     "ssl_seed": [1001, 1002, 1003],
-    "subfolder": ["Triple-GAN-Report-CIFAR10"],
-    "TUNNER_groups": [
-        "-n_labels 4000 -num_label_per_batch 8",
-        "-n_labels 2000 -num_label_per_batch 4",
-        "-n_labels 1000 -num_label_per_batch 2",
-    ],
+    "subfolder": ["Triple-GAN-Report-SVHN"],
+    "TUNNER_groups": ["-n_labels 1000", "-n_labels 500", "-n_labels 250",],
 }
 command_template = "cd {};{} train_triplegan.py".format(WORK_SPACE, PYTHON_PATH)
 key_sequence = []
