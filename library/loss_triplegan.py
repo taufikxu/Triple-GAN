@@ -8,7 +8,6 @@ from library.loss_cla import loss_cross_entropy
 softmax = torch.nn.Softmax(1)
 
 
-
 def loss_hinge_dis_elr(netD, netG, netC, x_l, z_rand, label, x_u):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()
@@ -35,6 +34,7 @@ def loss_hinge_dis_elr(netD, netG, netC, x_l, z_rand, label, x_u):
         d_fake_g.mean(),
         d_fake_c.mean(),
     )
+
 
 def loss_hinge_dis(netD, netG, netC, netC_d, x_l, z_rand, label, x_u, x_u_d):
     with torch.no_grad():
@@ -81,6 +81,26 @@ def pseudo_discriminative_loss(netC, netG, z_rand, label):
         x_fake = netG(z_rand, label).detach()
     logit = netC(x_fake)
     return loss_cross_entropy(logit, label)
+
+
+def pseudo_discriminative_loss_MT(netC, netG, netC_T, z_rand, label):
+    with torch.no_grad():
+        x_fake = netG(z_rand, label).detach()
+
+    logit_l = netC(x_fake)
+    logit_u_1, logit_u_2 = netC(x_fake, double=True)
+    logit_ut = logit_u_1
+
+    loss_l = loss_cross_entropy(logit_l, label)
+    prob_u_2 = softmax(logit_u_2)
+    prob_t = softmax(logit_ut)
+    loss_u = FLAGS.max_consistency_cost * torch.mean(
+        (prob_u_2 - prob_t) ** 2, dim=[0, 1]
+    )
+    loss_u = loss_u + FLAGS.alpha_mse * torch.mean(
+        (logit_u_2 - logit_u_1) ** 2, dim=[0, 1]
+    )
+    return loss_l + loss_u
 
 
 def loss_hinge_gen(netD, netG, z_rand, label):

@@ -63,10 +63,8 @@ python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml 
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 0.1 -n_labels 1000 -gpu 4,5,6,7
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 3.0 -n_labels 1000 -gpu 0,1,2,3
 
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 1.0 -gpu 0,1,2,3
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 10.0 -gpu 4,5,6,7
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 30.0 -gpu 0,1,2,3
-python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 10.0 -n_labels 1000 -gpu 4,5,6,7
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder TMP -alpha_c_adv 0.03 -alpha_c_pdl 0.3 -gpu 0,1,2,3
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder TMP -alpha_c_adv 0.03 -alpha_c_pdl 0.1 -gpu 0,1,2,3
 
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet_100.yaml -subfolder ResNetDebug -gpu 4,5,6,7
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sugan_double.yaml -subfolder ResNetDebug -gpu 3

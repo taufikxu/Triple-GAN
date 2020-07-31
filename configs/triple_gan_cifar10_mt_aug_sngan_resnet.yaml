@@ -30,7 +30,7 @@ adv_ramp_end: 70000
 pdl_ramp_start: 50000
 pdl_ramp_end: 70000
 alpha_c_adv: 0.03
-alpha_c_pdl: 3.0
+alpha_c_pdl: 0.3
 
 # Lr schdule:
 lr_anneal_num: 100000000000
@@ -49,7 +49,7 @@ rampdown_length: 30000
 rampup_length_lr: 1
 
 # Preprocessing
-n_labels: 4000
+n_labels: 1000
 zca: false
 norm: true
 translate: 4
