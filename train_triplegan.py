@@ -174,7 +174,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-    if FLAGS.c_model_name == "cifar10_resnet_26":
+    if FLAGS.consist_pdl:
         tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_MT(
             netC, netG, netC_T, sample_z, label
         )

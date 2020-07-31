@@ -7,6 +7,11 @@ from library.loss_cla import loss_cross_entropy
 
 softmax = torch.nn.Softmax(1)
 
+def loss_cross_entropy_ele(logits, label):
+    crossentropy = torch.nn.CrossEntropyLoss(reduction=None)
+    loss = crossentropy(logits, label)    
+    return loss
+
 
 def loss_hinge_dis_elr(netD, netG, netC, x_l, z_rand, label, x_u):
     with torch.no_grad():
@@ -86,12 +91,22 @@ def pseudo_discriminative_loss(netC, netG, z_rand, label):
 def pseudo_discriminative_loss_MT(netC, netG, netC_T, z_rand, label):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()
+        x_fake_u = netG(torch.randn_like(z_rand), label).detach()
 
     logit_l = netC(x_fake)
-    logit_u_1, logit_u_2 = netC(x_fake, double=True)
-    logit_ut = logit_u_1
+    logit_u_1, logit_u_2 = netC(x_fake_u, double=True)
+    logit_ut =  netC_T(x_fake_u).detach()
 
-    loss_l = loss_cross_entropy(logit_l, label)
+    # only use data corrected predicted by the model
+    if FLAGS.masked_pdl == True:
+        _, pred = torch.max(logit_l, dim=1)
+        mask = (label==pred)
+    else:
+        mask = 1.
+
+    loss_l = loss_cross_entropy_ele(logit_l, label)
+    loss_l = torch.mean(mask*loss_l, dim=0)
+
     prob_u_2 = softmax(logit_u_2)
     prob_t = softmax(logit_ut)
     loss_u = FLAGS.max_consistency_cost * torch.mean(

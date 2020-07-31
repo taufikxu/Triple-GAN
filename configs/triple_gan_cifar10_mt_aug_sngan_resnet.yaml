@@ -31,6 +31,8 @@ pdl_ramp_start: 50000
 pdl_ramp_end: 70000
 alpha_c_adv: 0.03
 alpha_c_pdl: 0.3
+masked_pdl: true
+consist_pdl: true
 
 # Lr schdule:
 lr_anneal_num: 100000000000
