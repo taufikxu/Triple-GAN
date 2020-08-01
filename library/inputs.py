@@ -40,13 +40,13 @@ def get_optimizer(params, opt_name, lr, beta1, beta2):
 def get_data_iter(batch_size=None, train=True, infinity=True, subset=0):
     if batch_size is None:
         batch_size = FLAGS.batch_size
-    return dataset_iters.inf_train_gen(FLAGS.batch_size, train, infinity, subset)
+    return dataset_iters.inf_train_gen(batch_size, train, infinity, subset)
 
 
 def get_data_iter_test(batch_size=None, infinity=False):
     if batch_size is None:
         batch_size = FLAGS.batch_size
-    return dataset_iters.inf_train_gen(FLAGS.batch_size, train=False, infinity=infinity)
+    return dataset_iters.inf_train_gen(batch_size, train=False, infinity=infinity)
 
 
 def get_generator_optimizer():

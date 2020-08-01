@@ -59,12 +59,12 @@ python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subf
 
  # resnet consist pdl and masked pdl: last chance
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 1000 -gpu 0,1,2,3
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 4000 -gpu 0,1,2,3
+    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 4000 -gpu 4,5,6,7
 
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl false -masked_pdl false -n_labels 1000 -gpu 0,1,2,3
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl false -masked_pdl false -n_labels 4000 -gpu 0,1,2,3
 
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 1000 -gpu 0,1,2,3
+    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 1000 -gpu 4,5,6,7
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 4000 -gpu 0,1,2,3
 
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 3.0 -n_labels 4000 -teach_for_d false -gpu 0,1,2,3
@@ -105,4 +105,4 @@ python train_triplegan.py ./configs/triple_gan_cifar10_swa_aug_sngan_resnet.yaml
 python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key t-gan-cnn -gpu 7
 
 
-python test_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/(train_triplegan.py)_(svhn)_(2020-06-12-11-24-49)_()_(cford_int)/models/model209000.pt" -gpu 1
+python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-43)_((ssl_seed_1001)(n_labels_4000))_(NotValid_Signature)/models/model150000.pt" -gpu 3
