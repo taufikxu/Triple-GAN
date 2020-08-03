@@ -50,19 +50,19 @@ python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key cfor
 
 # resnet for report baseline
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1001 -n_labels 4000 -gpu 0,1,2,3
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1002 -n_labels 4000 -gpu 4,5,6,7
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1002 -n_labels 4000 -gpu 0,1,2,3
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 4000 -gpu 0,1,2,3
 
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1001 -n_labels 1000 -gpu 4,5,6,7
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1002 -n_labels 1000 -gpu 0,1,2,3
+# python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1001 -n_labels 1000 -gpu 4,5,6,7
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1002 -n_labels 1000 -gpu 4,5,6,7
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 1000 -gpu 0,1,2,3
 
  # resnet consist pdl and masked pdl: last chance
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 1000 -gpu 0,1,2,3
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 4000 -gpu 4,5,6,7
+    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 4000 -gpu 4,5,6,7 
 
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl false -masked_pdl false -n_labels 1000 -gpu 0,1,2,3
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl false -masked_pdl false -n_labels 4000 -gpu 0,1,2,3
+    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder TMP -consist_pdl false -masked_pdl false -n_labels 4000 -gpu 4,5,6,7 -alpha_c_pdl 1.0
 
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 1000 -gpu 4,5,6,7
     python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 4000 -gpu 0,1,2,3

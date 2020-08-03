@@ -32,6 +32,8 @@ adv_ramp_start: 50000
 adv_ramp_end: 70000
 pdl_ramp_start: 50000
 pdl_ramp_end: 70000
+masked_pdl: false
+consist_pdl: false
 
 # Lr schdule:
 lr_anneal_num: 1000000

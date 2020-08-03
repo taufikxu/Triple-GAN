@@ -175,10 +175,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
     if FLAGS.consist_pdl:
-        # tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_MT(
-        #     netC, netG, netC_T, sample_z, label
-        # )
-        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_consist_MT(
+        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_MT(
             netC, netG, netC_T, sample_z, label
         )
     else:

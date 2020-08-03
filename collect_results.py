@@ -2,10 +2,10 @@ import glob
 import pickle
 import os
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Tune"
-model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Tune/*/summary/Model_stats.pkl"
+basename = (
+    "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Last"
 )
+model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Last/*/summary/Model_stats.pkl"
 stat_paths = glob.glob(model_path)
 
 for p in stat_paths:
@@ -22,4 +22,4 @@ for p in stat_paths:
                 plist.append(v)
         plist.append(test_dat[-1])
 
-        print(p[len(basename) :], config["flip_horizontal"], plist)
+        print(p[len(basename) :], config["translate"], plist)
