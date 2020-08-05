@@ -58,14 +58,14 @@ python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subf
 python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 1000 -gpu 0,1,2,3
 
  # resnet consist pdl and masked pdl: last chance
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 1000 -gpu 0,1,2,3
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 4000 -gpu 4,5,6,7 
+# python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 1000 -gpu 0,1,2,3
+# python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 4000 -gpu 4,5,6,7 
 
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl false -masked_pdl false -n_labels 1000 -gpu 0,1,2,3
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder TMP -consist_pdl false -masked_pdl false -n_labels 4000 -gpu 4,5,6,7 -alpha_c_pdl 1.0
+# python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl false -masked_pdl false -n_labels 1000 -gpu 0,1,2,3
+# python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder TMP -consist_pdl false -masked_pdl false -n_labels 4000 -gpu 4,5,6,7 -alpha_c_pdl 1.0
 
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 1000 -gpu 4,5,6,7
-    python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl false -n_labels 4000 -gpu 0,1,2,3
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Final -consist_pdl true -masked_pdl false -n_labels 1000 -gpu 4,5,6,7 -alpha_c_pdl 0.3 -ssl_seed 1003
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Final -consist_pdl true -masked_pdl false -n_labels 4000 -gpu 4,5,6,7 -alpha_c_pdl 0.3 -ssl_seed 1003
 
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 3.0 -n_labels 4000 -teach_for_d false -gpu 0,1,2,3
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Tune -alpha_c_adv 0.03 -alpha_c_pdl 0.3 -n_labels 1000 -gpu 0,1,2,3

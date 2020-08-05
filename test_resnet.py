@@ -23,7 +23,7 @@ old_c = FLAGS.old_model_c
 old_gan = FLAGS.old_model_gan
 FLAGS.old_model_c = "loaded"
 FLAGS.old_model_gan = "loaded"
-text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
+# text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
 torch.manual_seed(1234)
 torch.cuda.manual_seed(1235)
@@ -79,19 +79,19 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 #     x_fake = netG(sample_z, tlabel)
 #     logger.add_imgs(x_fake, "imgtest", nrow=FLAGS.bs_g // 10)
 
-# Inception score
-# with torch.no_grad():
-#     netG.eval()
-#     img_list = []
-#     for _ in range(100):
-#         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-#         data, label = itr.__next__()
-#         x_fake = netG(sample_z.to(device), label.to(device))
-#         img_list.append(x_fake.data.cpu().numpy() * 0.5 + 0.5)
-#     img_list = np.concatenate(img_list, axis=0)
-#     img_list = np.transpose(img_list, [0, 2, 3, 1])
-#     print(img_list.shape)
-#     print(eval_inception_score.get_inception_score(img_list))
+# # # # Inception score
+with torch.no_grad():
+    netG.eval()
+    img_list = []
+    for _ in range(100):
+        sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
+        data, label = itr.__next__()
+        x_fake = netG(sample_z.to(device), label.to(device))
+        img_list.append(x_fake.data.cpu().numpy() * 0.5 + 0.5)
+    img_list = np.concatenate(img_list, axis=0)
+    img_list = np.transpose(img_list, [0, 2, 3, 1])
+    print(img_list.shape)
+    print(eval_inception_score.get_inception_score(img_list))
 
 with torch.no_grad():
     netG.eval()
