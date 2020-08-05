@@ -23,7 +23,7 @@ old_c = FLAGS.old_model_c
 old_gan = FLAGS.old_model_gan
 FLAGS.old_model_c = "loaded"
 FLAGS.old_model_gan = "loaded"
-# text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
+text_logger, MODELS_FOLDER, SUMMARIES_FOLDER = save_context(__file__, KEY_ARGUMENTS)
 
 torch.manual_seed(1234)
 torch.cuda.manual_seed(1235)
@@ -63,8 +63,8 @@ checkpoint_io_gan.register_modules(netG=netG, netD=netD)
 checkpoint_io_c = Torture.utils.checkpoint.CheckpointIO(checkpoint_dir=MODELS_FOLDER)
 checkpoint_io_c.register_modules(netC=netC, netC_T=netC_T)
 
-# checkpoint_io_gan.load_file(FLAGS.old_model_gan)
-checkpoint_io_c.load_file(old_c)
+checkpoint_io_gan.load_file(FLAGS.old_model_gan)
+# checkpoint_io_c.load_file(old_c)
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # total, correct, _ = evaluation.test_classifier(netC_T)
