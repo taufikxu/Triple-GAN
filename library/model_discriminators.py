@@ -223,6 +223,69 @@ class SNResNetProjectionDiscriminator(nn.Module):
         return output
 
 
+class SNResNetUnconditionalDiscriminator(nn.Module):
+    def __init__(
+        self,
+        z_dim=256,
+        n_label=10,
+        im_size=32,
+        im_chan=3,
+        embed_size=256,
+        nfilter=64,
+        nfilter_max=512,
+        actvn=nn.ReLU(),
+    ):
+        super(SNResNetUnconditionalDiscriminator, self).__init__()
+        self.num_features = num_features = nfilter
+        self.num_classes = num_classes = 0
+        self.activation = activation = actvn
+
+        width_coe = 8
+        self.block1 = OptimizedBlock(3, num_features * width_coe)
+        self.block2 = Block(
+            num_features * width_coe,
+            num_features * width_coe,
+            activation=activation,
+            downsample=True,
+        )
+        self.block3 = Block(
+            num_features * width_coe,
+            num_features * width_coe,
+            activation=activation,
+            downsample=True,
+        )
+        self.block4 = Block(
+            num_features * width_coe,
+            num_features * width_coe,
+            activation=activation,
+            downsample=True,
+        )
+        self.l7 = utils.spectral_norm(nn.Linear(num_features * width_coe, 1))
+        if num_classes > 0:
+            self.l_y = utils.spectral_norm(
+                nn.Embedding(num_classes, num_features * width_coe)
+            )
+
+        self._initialize()
+
+    def _initialize(self):
+        init.xavier_uniform_(self.l7.weight.data)
+        optional_l_y = getattr(self, "l_y", None)
+        if optional_l_y is not None:
+            init.xavier_uniform_(optional_l_y.weight.data)
+
+    def forward(self, x, y=None):
+        bs = x.shape[0]
+        h = x
+        for i in range(1, 5):
+            h = getattr(self, "block{}".format(i))(h)
+        h = self.activation(h)
+        # Global pooling
+        h = torch.sum(h, dim=(2, 3))
+        output = self.l7(h)
+        return output
+
+
 class SNResNetProjectionDiscriminator96(nn.Module):
     def __init__(
         self,
@@ -306,6 +369,7 @@ class SNResNetProjectionDiscriminator96(nn.Module):
 discriminator_dict = {
     "resnet_reggan": Discriminator,
     "resnet_sngan": SNResNetProjectionDiscriminator,
+    "resnet_sngan_un": SNResNetUnconditionalDiscriminator,
     "resnet_sngan96": SNResNetProjectionDiscriminator96,
 }
 

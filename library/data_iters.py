@@ -10,6 +10,23 @@ import Utils
 from Utils.flags import FLAGS
 
 
+class NumpyDataset(torch.utils.data.Dataset):
+    def __init__(self, X, Y, transf):
+        super().__init__()
+        assert X.shape[0] == Y.shape[0]
+        self.X = X
+        self.Y = Y
+        self.transf = transf
+
+    def __len__(self):
+        return self.X.shape[0]
+
+    def __getitem__(self, i):
+        image = Image.fromarray(self.X[i])
+        image = self.transf(image)
+        return image, self.Y[i]
+
+
 class ZCA(object):
     def __init__(self, regularization=1e-3, x=None):
         self.regularization = regularization
@@ -151,6 +168,51 @@ def get_dataset(train, subset):
             split = "test"
         sets = datasets.STL10(
             "/home/LargeData/Regular/", split=split, download=True, transform=transf,
+        )
+    elif FLAGS.dataset.lower() in ["tinyimagenet", "tiny-imagenet"]:
+        if train is True:
+            train_data = np.load("/home/LargeData/Regular/tinyimagenet/train.npz")
+            X = train_data["X"]
+            Y = train_data["Y"].flatten()
+        else:
+            test_data = np.load("/home/LargeData/Regular/tinyimagenet/test.npz")
+            X = test_data["X"]
+            Y = test_data["Y"].flatten()
+        select = [
+            0,
+            9,
+            10,
+            20,
+            29,
+            35,
+            40,
+            72,
+            76,
+            81,
+            94,
+            104,
+            115,
+            120,
+            124,
+            154,
+            160,
+            179,
+            187,
+            193,
+            197,
+        ]
+        img_list, label_list = [], []
+        for j in range(10):
+            tempx = X[Y == select[j]]
+            tempy = Y[Y == select[j]] * 0 + j
+            print(tempx.shape)
+            img_list.append(tempx)
+            label_list.append(tempy)
+        img_list = np.concatenate(img_list, axis=0)
+        label_list = np.concatenate(label_list, axis=0)
+        print(img_list.dtype, img_list.shape, np.min(img_list), np.max(img_list))
+        sets = NumpyDataset(
+            img_list.astype(np.uint8), label_list.astype(np.int), transf
         )
 
     if subset > 0:
