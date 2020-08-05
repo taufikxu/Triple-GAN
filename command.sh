@@ -105,4 +105,15 @@ python train_triplegan.py ./configs/triple_gan_cifar10_swa_aug_sngan_resnet.yaml
 python train_classifier.py ./configs/classifier_cifar10_swa_resnet_aug.yaml -subfolder swa -key t-gan-cnn -gpu 7
 
 
+
 python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Last/(train_triplegan.py)_(cifar10)_(2020-07-31-15-58-04)_((consist_pdl_True)(masked_pdl_False)(n_labels_1000))_(NotValid_Signature)/models/model80000.pt" -gpu 3
+
+python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-43)_((ssl_seed_1001)(n_labels_4000))_(NotValid_Signature)/models/model150000.pt" -gpu 3
+
+# svhn
+python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml -ssl_seed 1001 -n_labels 1000 -subfolder svhn_report -gpu 0
+
+aug 500 2, 3
+
+noaug 500, 1000 x 3
+
