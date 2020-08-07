@@ -78,6 +78,13 @@ def loss_elr(netC, it, iter_l, device):
     loss_l = loss_cross_entropy(logit_l, label)
     return loss_l
 
+def loss_elr_wrap(netC, netC_T, it, iter_l, itr, device):
+    data, label = iter_l.__next__()
+    data, label = data.to(device), label.to(device)
+    logit_l = netC(data)
+    loss_l = loss_cross_entropy(logit_l, label)
+    return loss_l
+
 def loss_supervised(netC, netC_T, it, iter_l, iter_u, device):
     data, label = iter_l.__next__()
     data_u, _ = iter_u.__next__()
@@ -350,5 +357,6 @@ c_step_func = {
     "regular": step_regular,
     "step_vat": step_vat,
     "ramp_swa": step_ramp_swa,
+    "loss_elr_wrap": loss_elr_wrap,
 }
 

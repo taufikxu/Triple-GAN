@@ -1,9 +1,9 @@
-dataset: SVHN
+dataset: cifar10
 
 # training arguments:
 n_iter_pretrain: 0
 n_iter: 22000
-num_label_per_batch: 1
+num_label_per_batch: 10
 batch_size: 100
 bs_g: 100
 bs_c: 100
@@ -18,6 +18,7 @@ clc_reg: 0.
 
 # arguments for C
 c_model_name: cifar10_cnn
+
 teach_for_d: false
 
 c_loss: mtssl
@@ -29,12 +30,12 @@ c_beta2: 0.999
 alpha_c_adv: 0.03
 alpha_c_pdl: 3.0
 adv_ramp_start: 5000
-adv_ramp_end: 70000
+adv_ramp_end: 7000
 pdl_ramp_start: 5000
 pdl_ramp_end: 7000
 
 # Lr schdule:
-lr_anneal_num: 1000000
+lr_anneal_num: 100000000000
 lr_anneal_interval: 500
 lr_anneal_coe: 1
 # Consistency hyperparameters
@@ -52,15 +53,15 @@ rampup_length_lr: 4000
 rampdown_length: 0
 
 # Preprocessing
-zca: false
+zca: true
 norm: false
 translate: 0
 flip_horizontal: false
 ssl_seed: 1001
-n_labels: 1000
+n_labels: 4000
 
 # arguments for G
-g_model_name: Resnet_sngan
+g_model_name: resnet_sngan
 g_z_dim: 256
 g_embed_size: 256
 g_nfilter: 32
@@ -73,7 +74,7 @@ g_beta1: 0.
 g_beta2: 0.99
 
 # arguments for D
-d_model_name: Resnet_sngan
+d_model_name: resnet_sngan
 d_z_dim: 256
 d_embed_size: 256
 d_nfilter: 32
