@@ -1,4 +1,4 @@
-dataset: tinyimagenet32
+dataset: tinyimagenet
 
 # training arguments:
 n_iter_pretrain: 0
@@ -17,7 +17,7 @@ gan_traind_c: int
 clc_reg: 0.
 
 # arguments for C
-c_model_name: cifar10_cnn
+c_model_name: tinyimagenet_cnn
 teach_for_d: false
 
 c_loss: mtssl
@@ -60,7 +60,7 @@ ssl_seed: 1
 n_labels: 1000
 
 # arguments for G
-g_model_name: Resnet_sngan
+g_model_name: Resnet_sngan64
 g_z_dim: 256
 g_embed_size: 256
 g_nfilter: 32
@@ -73,7 +73,7 @@ g_beta1: 0.
 g_beta2: 0.99
 
 # arguments for D
-d_model_name: Resnet_sngan
+d_model_name: Resnet_sngan64
 d_z_dim: 256
 d_embed_size: 256
 d_nfilter: 32

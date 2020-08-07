@@ -3,6 +3,7 @@ import Torture
 from library import mean_teacher
 
 classifier_dict = {
+    "tinyimagenet_cnn": mean_teacher.architectures.tinyimagenet_cnn,
     "cifar10_cnn": mean_teacher.architectures.cifar_cnn,
     "stl10_cnn": mean_teacher.architectures.stl10_cnn,
     "cifar10_cnn_gaussian": mean_teacher.architectures.cifar_cnn_gauss,

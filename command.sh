@@ -118,6 +118,6 @@ aug 500 2, 3
 noaug 500, 1000 x 3
 
 
-python train_triplegan_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder debug
+python train_triplegan_elr.py ./configs/triple_gan_tinyimagenet64_noaug_elr.yaml -subfolder debug -gpu 1
 python train_gan.py ./configs/gan_cifar10.yaml -subfolder GAN_IS -gpu 0
 python train_gan.py ./configs/gan_cifar10_un.yaml -subfolder GAN_IS -gpu 1

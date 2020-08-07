@@ -205,12 +205,54 @@ def get_dataset(train, subset):
         for j in range(10):
             tempx = X[Y == select[j]]
             tempy = Y[Y == select[j]] * 0 + j
-            print(tempx.shape)
             img_list.append(tempx)
             label_list.append(tempy)
         img_list = np.concatenate(img_list, axis=0)
         label_list = np.concatenate(label_list, axis=0)
-        print(img_list.dtype, img_list.shape, np.min(img_list), np.max(img_list))
+        sets = NumpyDataset(
+            img_list.astype(np.uint8), label_list.astype(np.int), transf
+        )
+    elif FLAGS.dataset.lower() in ["tinyimagenet32", "tiny-imagenet32"]:
+        if train is True:
+            train_data = np.load("/home/LargeData/Regular/tinyimagenet/train.npz")
+            X = train_data["X"]
+            Y = train_data["Y"].flatten()
+        else:
+            test_data = np.load("/home/LargeData/Regular/tinyimagenet/test.npz")
+            X = test_data["X"]
+            Y = test_data["Y"].flatten()
+        select = [
+            0,
+            9,
+            10,
+            20,
+            29,
+            35,
+            40,
+            72,
+            76,
+            81,
+            94,
+            104,
+            115,
+            120,
+            124,
+            154,
+            160,
+            179,
+            187,
+            193,
+            197,
+        ]
+        img_list, label_list = [], []
+        for j in range(10):
+            tempx = X[Y == select[j]]
+            tempy = Y[Y == select[j]] * 0 + j
+            img_list.append(tempx)
+            label_list.append(tempy)
+        transf = transforms.Compose([transforms.Resize(32), transf])
+        img_list = np.concatenate(img_list, axis=0)
+        label_list = np.concatenate(label_list, axis=0)
         sets = NumpyDataset(
             img_list.astype(np.uint8), label_list.astype(np.int), transf
         )

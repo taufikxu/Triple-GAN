@@ -20,6 +20,7 @@ hw_dict = {
     "mnist": (32, 1, 10),
     "fashionmnist": (32, 1, 10),
     "tinyimagenet": (64, 3, 10),
+    "tinyimagenet32": (32, 3, 10),
 }
 actvn_dict = {
     "relu": nn.ReLU,

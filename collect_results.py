@@ -2,10 +2,8 @@ import glob
 import pickle
 import os
 
-basename = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Last"
-)
-model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Last/*/summary/Model_stats.pkl"
+basename = "/mfs/chongxuan/workspace/Triple-GAN/allresults/svhn_report"
+model_path = "/mfs/chongxuan/workspace/Triple-GAN/allresults/svhn_report/*/summary/Model_stats.pkl"
 stat_paths = glob.glob(model_path)
 
 for p in stat_paths:
