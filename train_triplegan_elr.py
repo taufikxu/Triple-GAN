@@ -1,7 +1,8 @@
 import copy
-
+import os
 import torch
 import torch.nn as nn
+import torchvision
 import numpy as np
 
 from library import inputs
@@ -92,6 +93,11 @@ else:
     )
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
+realimg, _ = itr.__next__()
+print(type(realimg))
+torchvision.utils.save_image(
+    realimg * 0.5 + 0.5, os.path.join(SUMMARIES_FOLDER, "realimg.png"), 10
+)
 # train
 print_interval = 50
 image_interval = 100
@@ -139,8 +145,8 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
 
         loss_d, dreal, dfake_g, dfake_c = loss_triplegan.loss_hinge_dis_elr(
-                netD, netG, netC, data, sample_z, label, data_u
-            )
+            netD, netG, netC, data, sample_z, label, data_u
+        )
 
         optim_D.zero_grad()
         loss_d.backward()
@@ -169,7 +175,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data)
     adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
     loss_c_adv = tloss_c_adv * adv_ramp_coe
-    
+
     loss_c_ssl = loss_classifier.loss_elr(netC, i, itr, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)

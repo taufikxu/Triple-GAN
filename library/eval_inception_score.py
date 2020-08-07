@@ -21,7 +21,7 @@ softmax = None
 
 # Call this function with list of images. Each of elements should be a
 # numpy array with values ranging from 0 to 255.
-def get_inception_score(images, splits=1, bs=500):
+def get_inception_score(images, splits=10, bs=500):
     if softmax is None:
         _init_inception()
     assert type(images) == list

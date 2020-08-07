@@ -21,9 +21,6 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-FLAGS.g_model_name = FLAGS.model_name
-FLAGS.d_model_name = FLAGS.model_name
-
 itr = inputs.get_data_iter()
 netG, optim_G = inputs.get_generator_optimizer()
 netD, optim_D = inputs.get_discriminator_optimizer()
@@ -86,7 +83,7 @@ for i in range(max_iter):
             x_fake = netG(sample_z, tlabel)
             logger.add_imgs(x_fake, "img{:08d}".format(i + 1), nrow=10)
 
-    if (i + 1) % FLAGS.save_every == 0:
+    if (i + 1) % 20 == 0:
         logger.save_stats("ModelStat.pkl")
         file_name = "model" + str(i + 1) + ".pt"
         checkpoint_io.save(file_name)

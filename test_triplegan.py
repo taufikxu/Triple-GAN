@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from library import inputs
+from library import inputs, eval_inception_score
 from Utils.checkpoints import save_context, Logger
 from Utils import flags
 from Utils import config
@@ -70,13 +70,34 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 #     x_fake = netG(sample_z, tlabel)
 #     logger.add_imgs(x_fake, "imgtest", nrow=FLAGS.bs_g // 10)
 
-itr_test = inputs.get_data_iter(batch_size=100, train=False, infinity=False)
-netC_T.eval()
-total, correct = 0, 0
-for images, labels in itr_test:
-    images, labels = images.to(device), labels.to(device)
-    outputs = netC_T(images)
-    _, predicted = torch.max(outputs.data, 1)
-    total += labels.size(0)
-    correct += (predicted == labels).sum().item()
-print(total, correct, correct / total)
+# itr_test = inputs.get_data_iter(batch_size=100, train=False, infinity=False)
+# netC_T.eval()
+# total, correct = 0, 0
+# for images, labels in itr_test:
+#     images, labels = images.to(device), labels.to(device)
+#     outputs = netC_T(images)
+#     _, predicted = torch.max(outputs.data, 1)
+#     total += labels.size(0)
+#     correct += (predicted == labels).sum().item()
+# print(total, correct, correct / total)
+
+# # # # Inception score
+with torch.no_grad():
+    netG.eval()
+    img_list = []
+    for _ in range(500):
+        sample_z = torch.randn(100, FLAGS.g_z_dim).to(device)
+        data, label = itr.__next__()
+        # print(label.shape, sample_z.shape)
+        x_fake = netG(sample_z.to(device), label.to(device))
+        img_list.append(x_fake.data.cpu().numpy() * 0.5 + 0.5)
+    img_list = np.concatenate(img_list, axis=0)
+    img_list = (np.transpose(img_list, [0, 2, 3, 1]) * 255).astype(np.uint8)
+    new_img_list = []
+    for i in range(50000):
+        new_img_list.append(img_list[i])
+    with open("image.pkl", "wb") as f:
+        pickle.dump(new_img_list, f)
+    exit()
+    print(img_list.shape)
+    print(eval_inception_score.get_inception_score(new_img_list))
