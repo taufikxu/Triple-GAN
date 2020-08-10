@@ -1,8 +1,8 @@
 dataset: tinyimagenet
 
 # training arguments:
-n_iter_pretrain: 0
-n_iter: 22000
+n_iter_pretrain: 20000
+n_iter: 220000
 num_label_per_batch: 1
 batch_size: 100
 bs_g: 100
@@ -28,10 +28,10 @@ c_beta1: 0.5
 c_beta2: 0.999
 alpha_c_adv: 0.03
 alpha_c_pdl: 3.0
-adv_ramp_start: 5000
+adv_ramp_start: 50000
 adv_ramp_end: 70000
-pdl_ramp_start: 5000
-pdl_ramp_end: 7000
+pdl_ramp_start: 50000
+pdl_ramp_end: 70000
 
 # Lr schdule:
 lr_anneal_num: 1000000
@@ -47,8 +47,8 @@ adam_beta_1_after_rampdown: 0.5
 adam_beta_2_during_rampup: 0.99
 adam_beta_2_after_rampup: 0.999
 # Training schedule
-rampup_length: 4000
-rampup_length_lr: 4000
+rampup_length: 40000
+rampup_length_lr: 40000
 rampdown_length: 0
 
 # Preprocessing

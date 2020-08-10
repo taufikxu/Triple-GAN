@@ -355,6 +355,7 @@ c_loss_dict = {
     "mtssl": loss_MT_ssl,
     "mtdoublessl": loss_MT_double_ssl,
     "vatssl": vat_loss_ssl,
+    "loss_elr_wrap": loss_elr_wrap,
 }
 
 c_step_func = {
@@ -363,6 +364,5 @@ c_step_func = {
     "regular": step_regular,
     "step_vat": step_vat,
     "ramp_swa": step_ramp_swa,
-    "loss_elr_wrap": loss_elr_wrap,
 }
 

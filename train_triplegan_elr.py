@@ -116,6 +116,21 @@ for i in range(pretrain_inter):  # 1w
     logger.add("training_pre", "loss", tloss.item(), i + 1)
     logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
     logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
+    if (i + 1) % image_interval == 0:
+        netC.eval()
+        netC_T.eval()
+        with torch.no_grad():
+            total_t, correct_t, loss_t = evaluation.test_classifier(netC)
+            total_tt, correct_tt, loss_tt = evaluation.test_classifier(netC_T)
+        netC.train()
+        netC_T.train()
+
+        logger.add("testing", "loss", loss_t.item(), i + 1)
+        logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)
+        logger.add("testing", "loss_t", loss_tt.item(), i + 1)
+        logger.add("testing", "accuracy_t", 100 * (correct_tt / total_tt), i + 1)
+        str_meg = logger_prefix.format(i + 1, max_iter, 100 * ((i + 1) / max_iter))
+        logger.log_info(str_meg, text_logger.info, ["testing"])
 
     if (i + 1) % print_interval == 0:
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
