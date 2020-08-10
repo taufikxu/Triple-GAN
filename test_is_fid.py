@@ -58,37 +58,37 @@ checkpoint_io.register_modules(
 )
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
-max_ism, max_id = 0, 0
-for iters in range(50000, 250001, 2000):
-    torch.manual_seed(1234)
-    torch.cuda.manual_seed(1235)
-    np.random.seed(1236)
+# max_ism, max_id = 0, 0
+# for iters in range(50000, 250001, 2000):
+#     torch.manual_seed(1234)
+#     torch.cuda.manual_seed(1235)
+#     np.random.seed(1236)
 
-    model_path = os.path.join(dirname, "model{}.pt".format(iters))
-    if os.path.exists(model_path) is False:
-        continue
-    checkpoint_io.load_file(model_path)
-    # # # # Inception score
-    with torch.no_grad():
-        netG.eval()
-        img_list = []
-        for _ in range(50):
-            sample_z = torch.randn(100, FLAGS.g_z_dim).to(device)
-            data, label = itr.__next__()
-            x_fake = netG(sample_z.to(device), label.to(device))
-            img_list.append(x_fake.data.cpu().numpy() * 0.5 + 0.5)
-        img_list = np.concatenate(img_list, axis=0)
-        img_list = (np.transpose(img_list, [0, 2, 3, 1]) * 255).astype(np.uint8)
-        new_img_list = []
-        for i in range(img_list.shape[0]):
-            new_img_list.append(img_list[i])
-        ism, isvar = eval_inception_score.get_inception_score(new_img_list, 1, 100)
-        if ism > max_ism:
-            max_ism = ism
-            max_id = iters
-        text_logger.info(str((iters, ism, max_id, max_ism)))
+#     model_path = os.path.join(dirname, "model{}.pt".format(iters))
+#     if os.path.exists(model_path) is False:
+#         continue
+#     checkpoint_io.load_file(model_path)
+#     # # # # Inception score
+#     with torch.no_grad():
+#         netG.eval()
+#         img_list = []
+#         for _ in range(50):
+#             sample_z = torch.randn(100, FLAGS.g_z_dim).to(device)
+#             data, label = itr.__next__()
+#             x_fake = netG(sample_z.to(device), label.to(device))
+#             img_list.append(x_fake.data.cpu().numpy() * 0.5 + 0.5)
+#         img_list = np.concatenate(img_list, axis=0)
+#         img_list = (np.transpose(img_list, [0, 2, 3, 1]) * 255).astype(np.uint8)
+#         new_img_list = []
+#         for i in range(img_list.shape[0]):
+#             new_img_list.append(img_list[i])
+#         ism, isvar = eval_inception_score.get_inception_score(new_img_list, 1, 100)
+#         if ism > max_ism:
+#             max_ism = ism
+#             max_id = iters
+#         text_logger.info(str((iters, ism, max_id, max_ism)))
 
-max_id = 52000
+max_id = 72000
 model_path = os.path.join(dirname, "model{}.pt".format(max_id))
 checkpoint_io.load_file(model_path)
 # # # # Inception score
@@ -99,7 +99,7 @@ with torch.no_grad():
 
     netG.eval()
     img_list = []
-    for _ in range(50):
+    for _ in range(500):
         sample_z = torch.randn(100, FLAGS.g_z_dim).to(device)
         data, label = itr.__next__()
         x_fake = netG(sample_z.to(device), label.to(device))
@@ -110,5 +110,5 @@ with torch.no_grad():
     new_img_list = []
     for i in range(img_list.shape[0]):
         new_img_list.append(img_list[i])
-    ism, isvar = eval_inception_score.get_inception_score(new_img_list, 1, 100)
+    ism, isvar = eval_inception_score.get_inception_score(new_img_list, 10, 100)
     text_logger.info(str((max_id, ism, isvar)))
