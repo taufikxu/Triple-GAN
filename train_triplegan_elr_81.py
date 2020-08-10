@@ -1,7 +1,8 @@
 import copy
-
+import os
 import torch
 import torch.nn as nn
+import torchvision
 import numpy as np
 
 from library import inputs
@@ -92,9 +93,14 @@ else:
     )
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
+realimg, _ = itr.__next__()
+print(type(realimg))
+torchvision.utils.save_image(
+    realimg * 0.5 + 0.5, os.path.join(SUMMARIES_FOLDER, "realimg.png"), 10
+)
 # train
 print_interval = 50
-image_interval = 500
+image_interval = 100
 max_iter = FLAGS.n_iter
 pretrain_inter = FLAGS.n_iter_pretrain
 loss_func_g = loss_triplegan.g_loss_dict[FLAGS.gan_type]
@@ -106,7 +112,8 @@ step_func = loss_classifier.c_step_func[FLAGS.c_step]
 logger_prefix = "Itera {}/{} ({:.0f}%)"
 
 for i in range(pretrain_inter):  # 1w
-    tloss, l_loss, u_loss = loss_func_c(netC, netC_T, i, itr, itr, device)
+    # tloss, l_loss, u_loss = loss_func_c(netC, netC_T, i, itr, itr_u, device)
+    tloss = loss_classifier.loss_elr(netC, i, itr, device)
     # step_func(optim_c, netC, netC_T, i, tloss)
     if FLAGS.c_step == "ramp_swa":
         step_func(optim_c, swa_optim, netC, netC_T, i, tloss)
@@ -114,8 +121,8 @@ for i in range(pretrain_inter):  # 1w
         step_func(optim_c, netC, netC_T, i, tloss)
 
     logger.add("training_pre", "loss", tloss.item(), i + 1)
-    logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
-    logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
+    # logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
+    # logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
 
     if (i + 1) % print_interval == 0:
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
@@ -126,8 +133,8 @@ for i in range(pretrain_inter):  # 1w
 for i in range(pretrain_inter, max_iter + pretrain_inter):
     data, label = itr.__next__()
     data, label = data.to(device), label.to(device)
-    # data_u, _ = itr.__next__()
-    # data_u_d, _ = itr.__next__()
+    # data_u, _ = itr_u.__next__()
+    # data_u_d, _ = itr_u.__next__()
     # data_u, data_u_d = data_u.to(device), data_u_d.to(device)
 
     for _ in range(n_iter_d):
@@ -152,8 +159,6 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_d", "dfake_g", dfake_g.item(), i + 1)
     logger.add("training_d", "dfake_c", dfake_c.item(), i + 1)
 
-    data, _ = itr.__next__()
-    data = data.to(device)
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
     loss_g, fake_g = loss_func_g(netD, netG, sample_z, label)
     optim_G.zero_grad()
@@ -165,11 +170,13 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_g", "loss", loss_g.item(), i + 1)
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
+    data, _ = itr.__next__()
+    data = data.to(device)
     tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data)
     adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
     loss_c_adv = tloss_c_adv * adv_ramp_coe
 
-    loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr, device)
+    loss_c_ssl = loss_classifier.loss_elr(netC, i, itr, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
     tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(netC, netG, sample_z, label)
@@ -180,10 +187,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
     )
 
-    if FLAGS.c_step == "ramp_swa":
-        step_func(optim_c, swa_optim, netC, netC_T, i, loss_c)
-    else:
-        step_func(optim_c, netC, netC_T, i, loss_c)
+    step_func(optim_c, netC, netC_T, i, loss_c)
 
     logger.add("training_c", "loss", loss_c.item(), i + 1)
     logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
@@ -209,16 +213,6 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
             total_tt, correct_tt, loss_tt = evaluation.test_classifier(netC_T)
         netC.train()
         netC_T.train()
-
-        if FLAGS.c_step == "ramp_swa":
-            netC_swa.train()
-            for _ in range(300):
-                data_u, _ = itr.__next__()
-                _ = netC_swa(data_u.to(device))
-            netC_swa.eval()
-            total_s, correct_s, loss_s = evaluation.test_classifier(netC_swa)
-            logger.add("testing", "loss_s", loss_s.item(), i + 1)
-            logger.add("testing", "accuracy_s", 100 * (correct_s / total_s), i + 1)
 
         logger.add("testing", "loss", loss_t.item(), i + 1)
         logger.add("testing", "accuracy", 100 * (correct_t / total_t), i + 1)

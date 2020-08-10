@@ -20,6 +20,8 @@ clc_reg: 0.
 c_model_name: cifar10_cnn
 
 teach_for_d: false
+masked_pdl: false
+consist_pdl: false
 
 c_loss: mtssl
 c_step: ramp

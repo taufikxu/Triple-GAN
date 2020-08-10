@@ -114,3 +114,58 @@ python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key tes
 python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-43)_((ssl_seed_1001)(n_labels_4000))_(NotValid_Signature)/models/model150000.pt" -gpu 3
 
 python test_is_fid.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Final/(train_triplegan.py)_(cifar10)_(2020-08-05-14-57-39)_((consist_pdl_True)(masked_pdl_False)(n_labels_4000)(alpha_c_pdl_0.3)(ssl_seed_1001)(save_every_2000))_(save_model)/models" -gpu 3
+
+
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 2 -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 2 -gpu 0 
+
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 2 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 2 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 2 -gpu 0
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 2 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 2 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 2 -gpu 0
+
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 0 -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 0 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 0 -gpu 0 
+
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 0 -gpu 0
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 0 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 0 -gpu 0
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 0 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 0 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -key short -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 0 -gpu 0
+
+
+
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 2 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 2 -gpu 0 
+
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 2 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 2 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 2 -gpu 0
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 2 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 2 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 2 -gpu 0
+
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 0 -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 0 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 0 -gpu 0 
+
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 0 -gpu 0
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 0 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 0 -gpu 0
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 0 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 0 -gpu 0 
+python train_triplegan_elr.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml -key long -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 0 -gpu 0
