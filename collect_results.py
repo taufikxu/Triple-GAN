@@ -2,8 +2,9 @@ import glob
 import pickle
 import os
 
-basename = "/mfs/chongxuan/workspace/Triple-GAN/allresults/svhn_report"
-model_path = "/mfs/chongxuan/workspace/Triple-GAN/allresults/svhn_report/*/summary/Model_stats.pkl"
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN"
+model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_0)*/summary/00149999.pkl"
+# model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_2)*/summary/Model*.pkl"
 stat_paths = glob.glob(model_path)
 
 for p in stat_paths:
@@ -15,9 +16,8 @@ for p in stat_paths:
         # print(p, dat["training_pre"]["loss"][-1])
         test_dat = dat["testing"]["accuracy_t"]
         plist = []
-        for itr, v in test_dat:
-            if itr == 50000:
-                plist.append(v)
+        # for itr, v in test_dat:
+        #     if itr == 50000:
+        #         plist.append(v)
         plist.append(test_dat[-1])
-
         print(p[len(basename) :], config["translate"], plist)

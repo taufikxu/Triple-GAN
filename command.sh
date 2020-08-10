@@ -43,19 +43,22 @@ python train_gan.py ./configs/gan.yaml -dataset svhn -model_name resnet_sngan  -
 python train_gan.py ./configs/gan.yaml -dataset cifar10 -d_model_name resnet_reggan -g_model_name resnet_reggan -subfolder GAN -gpu 2
 python train_gan.py ./configs/gan.yaml -dataset cifar10 -model_name resnet_sngan  -subfolder GAN -gpu 3
 
+python train_gan.py ./configs/gan_cifar10.yaml -subfolder GAN_IS -gpu 0
+python train_gan.py ./configs/gan_cifar10.yaml -subfolder GAN_IS -n_labels 4000 -gpu 1
+python train_gan.py ./configs/gan_cifar10_un.yaml -subfolder GAN_IS -gpu 2
 
 
 python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key fix_aug.addcgen.testlog -gpu 5
 python train_triplegan.py ./configs/triple_gan_svhn.yaml -dataset svhn -key cford_int -gpu 1
 
 # resnet for report baseline
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1001 -n_labels 4000 -gpu 0,1,2,3
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1002 -n_labels 4000 -gpu 0,1,2,3
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 4000 -gpu 0,1,2,3
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet_256 -ssl_seed 1001 -n_labels 4000 -gpu 0,1,2,3
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet_256 -ssl_seed 1002 -n_labels 4000 -gpu 0,1,2,3
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet_256 -ssl_seed 1003 -n_labels 4000 -gpu 0,1,4,5
 
-# python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1001 -n_labels 1000 -gpu 4,5,6,7
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1002 -n_labels 1000 -gpu 4,5,6,7
-python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet -ssl_seed 1003 -n_labels 1000 -gpu 0,1,2,3
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet_256 -ssl_seed 1001 -n_labels 1000 -gpu 3,4,5,7
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet_256 -ssl_seed 1002 -n_labels 1000 -gpu 0,1,2,3
+python train_classifier.py ./configs/classifier_cifar10_mt_resnet_aug.yaml -subfolder AverageBaseline_resnet_256 -ssl_seed 1003 -n_labels 1000 -gpu 0,1,2,3
 
  # resnet consist pdl and masked pdl: last chance
 # python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan_resnet.yaml -subfolder ResNet_Last -consist_pdl true -masked_pdl true -n_labels 1000 -gpu 0,1,2,3
@@ -110,109 +113,4 @@ python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key tes
 
 python test_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/AverageBaseline_resnet/(train_classifier.py)_(cifar10)_(2020-07-15-16-36-43)_((ssl_seed_1001)(n_labels_4000))_(NotValid_Signature)/models/model150000.pt" -gpu 3
 
-# elr baseline
-# cifar10: 
-
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1002 -translate 2 -flip_horizontal true -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1003 -translate 2 -flip_horizontal true -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1002 -translate 0 -flip_horizontal false -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1003 -translate 0 -flip_horizontal false -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1002 -translate 2 -flip_horizontal true -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1003 -translate 2 -flip_horizontal true -c_loss loss_elr_wrap -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1002 -translate 0 -flip_horizontal false -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 4000 -ssl_seed 1003 -translate 0 -flip_horizontal false -c_loss loss_elr_wrap -gpu 0
-
-# svhn: 
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 2 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 2 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 2 -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 2 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 2 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 2 -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 2 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 2 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 2 -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 0 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 0 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 0 -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 0 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 0 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 0 -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 0 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 0 -c_loss mtssl -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 0 -c_loss mtssl -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 2 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 2 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 2 -c_loss loss_elr_wrap -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 2 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 2 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 2 -c_loss loss_elr_wrap -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 2 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 2 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 2 -c_loss loss_elr_wrap -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 0 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 0 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 0 -c_loss loss_elr_wrap -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 0 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 0 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 0 -c_loss loss_elr_wrap -gpu 0
-
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 0 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 0 -c_loss loss_elr_wrap -gpu 0
-python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 0 -c_loss loss_elr_wrap -gpu 0
-
-# imagenet:
-
-
-# elr Triple-GAN:
-# cifar10:
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder elr_tgan -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder elr_tgan -n_labels 4000 -ssl_seed 1002 -translate 2 -flip_horizontal true -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder elr_tgan -n_labels 4000 -ssl_seed 1003 -translate 2 -flip_horizontal true -gpu 0
-
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder elr_tgan -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder elr_tgan -n_labels 4000 -ssl_seed 1002 -translate 0 -flip_horizontal false -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder elr_tgan -n_labels 4000 -ssl_seed 1003 -translate 0 -flip_horizontal false -gpu 0
-
-# svhn
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 2 -gpu 0
-
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 2 -gpu 0
-
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 2 -gpu 0
-
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 0 -gpu 0
-
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 0 -gpu 0
-
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 0 -gpu 0
+python test_is_fid.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -old_model "/home/kunxu/Workspace/Triple-GAN/allresults/ResNet_Final/(train_triplegan.py)_(cifar10)_(2020-08-05-14-57-39)_((consist_pdl_True)(masked_pdl_False)(n_labels_4000)(alpha_c_pdl_0.3)(ssl_seed_1001)(save_every_2000))_(save_model)/models" -gpu 3

@@ -1,13 +1,15 @@
 dataset: cifar10
+key: conditional
 
 batch_size: 100
 bs_g: 100
 clip_value: -1
+n_labels: 50000
+ssl_seed: 1001
 save_every: 2000
-n_iter: 100000
+n_iter: 500000
 n_iter_d: 5
 gan_type: hinge
-gan_traind_c: int
 clc_reg: 0.
 
 # arguments for G

@@ -4,53 +4,66 @@ import time
 import itertools
 
 # Args
-gpu_list = [0, 1, 2, 3, 4, 5]
+gpu_list = [0, 1, 2, 3]
 args_fortune = {
-    "config_file": [
-        # "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
-        # "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
-        "python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml",
-        "python train_triplegan.py ./configs/triple_gan_cifar10_mt_noaug_sngan.yaml",
-    ],
-    "alpha_c_pdl": [3.0],
-    "ssl_seed": [1001, 1002, 1003],
-    "c_loss": ["mtdoublessl"],
-    "alpha_mse": [0.01],
     "TUNNER_groups": [
-        # "-n_labels 1000 -num_label_per_batch 2",
-        # "-n_labels 2000 -num_label_per_batch 4",
-        "-n_labels 4000 -num_label_per_batch 8",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 2 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 0 -c_loss mtssl ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 2 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1001 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1002 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 500 -ssl_seed 1003 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1001 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1002 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 800 -ssl_seed 1003 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1001 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1002 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_classifier_elr.py ./configs/classifier_svhn_mt_aug_elr.yaml -subfolder elr_baseline -n_labels 1000 -ssl_seed 1003 -translate 0 -c_loss loss_elr_wrap ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 2 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1001 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1002 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 500 -ssl_seed 1003 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1001 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1002 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 800 -ssl_seed 1003 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1001 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1002 -translate 0 ",
+        "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan -n_labels 1000 -ssl_seed 1003 -translate 0 ",
     ],
-    "subfolder": ["CIFAR10-double-head"],
+    "subfolder": ["ELR_SVHN"],
 }
-
-# gpu_list = [0, 1, 2, 3, 4, 5]
-# args_fortune = {
-#     "config_file": [
-#         # "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
-#         # "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
-#         "python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml",
-#         "python train_triplegan.py ./configs/triple_gan_svhn_mt_noaug_sngan.yaml",
-#     ],
-#     "alpha_c_pdl": [3.0],
-#     "ssl_seed": [1001, 1002, 1003],
-#     "n_labels": [250],
-#     "num_label_per_batch": [1],
-#     "subfolder": ["SVHN_FINAL250"],
-# }
-
-# gpu_list = [0, 1, 2]
-# args_fortune = {
-#     "config_file": [
-#         # "python train_classifier.py ./configs/classifier_svhn_mt_aug.yaml",
-#         # "python train_classifier.py ./configs/classifier_svhn_mt_noaug.yaml",
-#         # "python train_triplegan.py ./configs/triple_gan_svhn_mt_aug_sngan.yaml",
-#         "python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml",
-#     ],
-#     "ssl_seed": [1001],
-#     "n_labels": [500, 800, 1000],
-#     "subfolder": ["svhn_elr"],
-# }
 command_template = ""
 key_sequence = []
 for k in args_fortune:

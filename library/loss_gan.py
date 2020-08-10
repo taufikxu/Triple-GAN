@@ -37,6 +37,7 @@ def loss_hinge_gen(netD, netG, z_rand, label):
     loss_fake = -torch.mean(d_fake)
     return loss_fake.mean(), d_fake.mean()
 
+
 g_loss_dict = {
     "dcgan": loss_dcgan_gen,
     "hinge": loss_hinge_gen,

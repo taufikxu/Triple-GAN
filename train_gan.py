@@ -21,8 +21,9 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-itr = inputs.get_data_iter()
+itr = inputs.get_data_iter(subset=FLAGS.n_labels)
 netG, optim_G = inputs.get_generator_optimizer()
+# netG_T, _ = inputs.get_generator_optimizer()
 netD, optim_D = inputs.get_discriminator_optimizer()
 
 netG, netD = netG.to(device), netD.to(device)
@@ -34,8 +35,8 @@ checkpoint_io.register_modules(netG=netG, netD=netD, optim_G=optim_G, optim_D=op
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 # train
-print_interval = 200
-image_interval = 2000
+print_interval = 250
+image_interval = 2500
 max_iter = FLAGS.n_iter
 batch_size = FLAGS.batch_size
 loss_func_g = loss_gan.g_loss_dict[FLAGS.gan_type]
@@ -69,6 +70,7 @@ for i in range(max_iter):
 
         logger.add("training_g", "loss", loss_g.item(), i + 1)
         logger.add("training_g", "dfake", dfake_g.item(), i + 1)
+        # Torture.shortcuts.update_average(netG_T, net_G, 0.999)
 
     if (i + 1) % print_interval == 0:
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
