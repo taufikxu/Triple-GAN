@@ -118,31 +118,31 @@ python test_is_fid.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -
 
 
 # final 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1002 -translate 2 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1003 -translate 2 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1001 -translate 2 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1002 -translate 2 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1003 -translate 2 -gpu 0
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 0
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1002 -translate 2 -gpu 1
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1003 -translate 2 -gpu 2 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1001 -translate 2 -gpu 3 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1002 -translate 2 -gpu 1 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1003 -translate 2 -gpu 2
 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1001 -translate 0 -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1002 -translate 0 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1003 -translate 0 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1001 -translate 0 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1002 -translate 0 -gpu 0 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1003 -translate 0 -gpu 0
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1001 -translate 0 -gpu 1
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1002 -translate 0 -gpu 7 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_1000 -n_labels 1000 -ssl_seed 1003 -translate 0 -gpu 5 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1001 -translate 0 -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1002 -translate 0 -gpu 1 
+# python train_triplegan_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder elr_tgan_svhn_500 -n_labels 500 -ssl_seed 1003 -translate 0 -gpu 2
 
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1002 -translate 2 -flip_horizontal true -gpu 0 
+# python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -gpu 3
+# python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1002 -translate 2 -flip_horizontal true -gpu 1 
 python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1003 -translate 2 -flip_horizontal true -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -gpu 0
+# python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -gpu 0
 python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1002 -translate 0 -flip_horizontal false -gpu 0 
 python train_triplegan_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml  -subfolder elr_tgan_cifar10 -n_labels 4000 -ssl_seed 1003 -translate 0 -flip_horizontal false -gpu 0 
 
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -gpu 0 
+# python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -gpu 1 
 python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1002 -translate 2 -flip_horizontal true -gpu 0 
 python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1003 -translate 2 -flip_horizontal true -gpu 0
-python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -gpu 0 
+# python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -gpu 0 
 python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1002 -translate 0 -flip_horizontal false -gpu 0 
 python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1003 -translate 0 -flip_horizontal false -gpu 0 
 
