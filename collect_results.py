@@ -2,8 +2,10 @@ import glob
 import pickle
 import os
 
+
 basename = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN"
-model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_0)*/summary/00149999.pkl"
+# model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_0)*/summary/00149999.pkl"
+model_path = '/home/kunxu/Workspace/Triple-GAN/allresults/elr_tgan_svhn_1000/*/summary/*.pkl'
 # model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_2)*/summary/Model*.pkl"
 stat_paths = glob.glob(model_path)
 
