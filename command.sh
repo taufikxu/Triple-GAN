@@ -147,14 +147,10 @@ python test_is_fid.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -key test -
 # python train_classifier_elr.py ./configs/classifier_cifar10_mt_aug_elr.yaml -subfolder elr_baseline_cifar10 -n_labels 4000 -ssl_seed 1003 -translate 0 -flip_horizontal false -gpu 1 
 
 
-# svhn baseline.
-# imagenet ssl all and elr all. incluing baseline.
-# images and is and fid.
 # ablation
-
 # aug and no aug
 # python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -subfolder ablation -c_loss mtssl -alpha_c_pdl 0.0 -gpu 4
-# python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -subfolder ablation -c_loss loss_entropy_ssl -alpha_c_pdl 3.0 -gpu 5
+# python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -subfolder ablation -c_loss entropyssl -alpha_entropy 0.3 -gpu 2
 # python train_triplegan.py ./configs/triple_gan_cifar10_mt_aug_sngan.yaml -subfolder ablation -c_loss loss_elr_wrap -alpha_c_pdl 3.0 -gpu 6
 
 
@@ -190,3 +186,32 @@ python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml 
 # python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1003 -gpu 6
 
 
+# tiny elr
+
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder tiny_mt_elr_1000 -ssl_seed 1001 -n_labels 1000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder tiny_mt_elr_1000 -ssl_seed 1002 -n_labels 1000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder tiny_mt_elr_1000 -ssl_seed 1003 -n_labels 1000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder tiny_mt_elr_1000 -ssl_seed 1001 -n_labels 1000 -gpu 1
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder tiny_mt_elr_1000 -ssl_seed 1002 -n_labels 1000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder tiny_mt_elr_1000 -ssl_seed 1003 -n_labels 1000 -gpu 0
+
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder tiny_mt_elr_2000 -ssl_seed 1001 -n_labels 2000 -gpu 7
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder tiny_mt_elr_2000 -ssl_seed 1002 -n_labels 2000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder tiny_mt_elr_2000 -ssl_seed 1003 -n_labels 2000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder tiny_mt_elr_2000 -ssl_seed 1001 -n_labels 2000 -gpu 1
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder tiny_mt_elr_2000 -ssl_seed 1002 -n_labels 2000 -gpu 0
+python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder tiny_mt_elr_2000 -ssl_seed 1003 -n_labels 2000 -gpu 0
+
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_1000 -ssl_seed 1001 -translate 2 -flip_horizontal true -n_labels 1000 -gpu 2
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_1000 -ssl_seed 1002 -translate 2 -flip_horizontal true -n_labels 1000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_1000 -ssl_seed 1003 -translate 2 -flip_horizontal true -n_labels 1000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_1000 -ssl_seed 1001 -translate 0 -flip_horizontal false -n_labels 1000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_1000 -ssl_seed 1002 -translate 0 -flip_horizontal false -n_labels 1000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_1000 -ssl_seed 1003 -translate 0 -flip_horizontal false -n_labels 1000 -gpu 0
+
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1001 -translate 2 -flip_horizontal true -n_labels 2000 -gpu 5
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1002 -translate 2 -flip_horizontal true -n_labels 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1003 -translate 2 -flip_horizontal true -n_labels 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1001 -translate 0 -flip_horizontal false -n_labels 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1002 -translate 0 -flip_horizontal false -n_labels 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1003 -translate 0 -flip_horizontal false -n_labels 2000 -gpu 0
