@@ -111,7 +111,7 @@ def loss_entropy_ssl(netC, netC_T, it, iter_l, iter_u, device):
     logit_ut = netC_T(data_u).detach()
 
     loss_l = loss_cross_entropy(logit_l, label)
-    loss_u = FLAGS.alpha_entropy * entropy(logit_u)
+    loss_u = FLAGS.alpha_entropy * torch.mean(entropy(logit_u), dim=0)
     return loss_l + loss_u, loss_l.detach(), loss_u.detach()
 
 

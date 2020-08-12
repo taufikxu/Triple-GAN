@@ -215,3 +215,29 @@ python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subf
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1001 -translate 0 -flip_horizontal false -n_labels 2000 -gpu 0
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1002 -translate 0 -flip_horizontal false -n_labels 2000 -gpu 0
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_2000 -ssl_seed 1003 -translate 0 -flip_horizontal false -n_labels 2000 -gpu 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# baseline entropy and cnn for elr
+
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -c_step regular -c_loss entropyssl -gpu 0
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss entropyssl -gpu 1
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -c_step regular -c_loss loss_elr_wrap -gpu 2
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss loss_elr_wrap -gpu 3
+
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step regular -c_loss entropyssl -gpu 1
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss entropyssl -gpu 1
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step regular -c_loss loss_elr_wrap -gpu 1
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss loss_elr_wrap -gpu 1
