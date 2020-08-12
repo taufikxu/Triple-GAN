@@ -21,6 +21,7 @@ c_model_name: cifar10_cnn
 teach_for_d: false
 consist_pdl: false
 masked_pdl: false
+alpha_mse: 0.01
 
 c_loss: mtssl
 c_step: ramp
