@@ -172,11 +172,11 @@ python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml 
 # python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml -subfolder TinyImg32 -n_labels 1000 -ssl_seed 1003 -gpu 3
 
 # python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1001 -gpu 4
-# python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1002 -gpu 0
-# python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1003 -gpu 0
+# python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1002 -key left -gpu 0
+# python train_classifier.py ./configs/classifier_tinyimagenet_mt_aug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1003 -key left -gpu 1
 # python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1001 -gpu 3
 # python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1002 -gpu 6
-# python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1003 -gpu 0
+# python train_classifier.py ./configs/classifier_tinyimagenet_mt_noaug.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1003 -key left -gpu 7
 
 # python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_aug_sngan.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1001 -gpu 7
 # python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_aug_sngan.yaml -subfolder TinyImg32 -n_labels 2000 -ssl_seed 1002 -gpu 3
@@ -219,8 +219,23 @@ python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subf
 
 
 
+# tune tiny_tgan
+
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 3.0 -consist_pdl false -n_labels 1000 -key default -gpu 3
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 3.0 -consist_pdl true -n_labels 1000 -key cpdl -gpu 5
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 1.0 -consist_pdl false -n_labels 1000 -key default -gpu 1
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 1.0 -consist_pdl true -n_labels 1000 -key cpdl -gpu 5
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -consist_pdl false -n_labels 1000 -key default -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -consist_pdl true -n_labels 1000 -key cpdl -gpu 0
 
 
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 3.0 -consist_pdl false -n_labels 2000 -key 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 1.0 -consist_pdl false -n_labels 2000 -key 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -consist_pdl false -n_labels 2000 -key 2000 -gpu 0
+
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 3.0 -translate 2 -flip_horizontal true -consist_pdl false -n_labels 1000 -key aug -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 1.0 -translate 2 -flip_horizontal true -consist_pdl false -n_labels 1000 -key aug -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -translate 2 -flip_horizontal true -consist_pdl false -n_labels 1000 -key aug -gpu 0
 
 
 
@@ -243,21 +258,14 @@ python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss loss_elr_wrap -gpu 3
 
 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 1
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 1
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 2
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 3
 python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 1
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 2
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 3
 
 
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
-python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step ramp -c_loss mtssl -gpu 1
