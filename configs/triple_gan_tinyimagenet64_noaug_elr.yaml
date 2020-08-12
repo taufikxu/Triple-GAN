@@ -19,6 +19,8 @@ clc_reg: 0.
 # arguments for C
 c_model_name: tinyimagenet_cnn
 teach_for_d: false
+consist_pdl: false
+masked_pdl: false
 
 c_loss: mtssl
 c_step: ramp

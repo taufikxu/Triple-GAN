@@ -225,7 +225,7 @@ python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subf
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 3.0 -consist_pdl true -n_labels 1000 -key cpdl -gpu 5
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 1.0 -consist_pdl false -n_labels 1000 -key default -gpu 1
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 1.0 -consist_pdl true -n_labels 1000 -key cpdl -gpu 5
-python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -consist_pdl false -n_labels 1000 -key default -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -consist_pdl false -n_labels 1000 -key default -gpu 6
 python train_triplegan.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder tiny_tgan_elr_tune -ssl_seed 1001 -translate 0 -n_iter_pretrain 0 -flip_horizontal false -alpha_c_pdl 0.3 -consist_pdl true -n_labels 1000 -key cpdl -gpu 0
 
 
