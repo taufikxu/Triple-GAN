@@ -6,11 +6,9 @@ from Utils.flags import FLAGS
 import numpy as np
 from torch.autograd import Variable
 
-
 crossentropy = nn.CrossEntropyLoss()
 softmax = nn.Softmax(1)
 logsoftmax = nn.LogSoftmax(1)
-
 
 # some utils TODO
 def update_average(model_tgt, model_src, beta=0.999):

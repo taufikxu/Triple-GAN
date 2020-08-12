@@ -237,7 +237,27 @@ python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -c_step regular -c_loss loss_elr_wrap -gpu 2
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss loss_elr_wrap -gpu 3
 
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step regular -c_loss entropyssl -gpu 1
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step regular -c_loss entropyssl -gpu 0
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss entropyssl -gpu 1
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step regular -c_loss loss_elr_wrap -gpu 1
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss loss_elr_wrap -gpu 1
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step regular -c_loss loss_elr_wrap -gpu 2
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder elr_base_debug -n_labels 500 -ssl_seed 1001 -translate 2 -c_step ramp -c_loss loss_elr_wrap -gpu 3
+
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 1000 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+
+
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss entropyssl -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.1 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 0.3 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 1.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
+python train_triplegan_elr.py ./configs/triple_gan_svhn_elr.yaml -subfolder elr_tgan_debug -n_labels 500 -ssl_seed 1001 -translate 2 -alpha_c_pdl 3.0 -n_iter_pretrain 0 -c_step regular -c_loss loss_elr_wrap -gpu 0
