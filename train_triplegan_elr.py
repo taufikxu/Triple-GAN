@@ -117,6 +117,11 @@ for i in range(pretrain_inter):  # 1w
     logger.add("training_pre", "l_loss", l_loss.item(), i + 1)
     logger.add("training_pre", "u_loss", u_loss.item(), i + 1)
     if (i + 1) % image_interval == 0:
+        netC.train()
+        netC_T.train()
+        for _ in range(FLAGS.n_labels/FLAGS.batch_size):
+            data_u, _ = itr.__next__()
+            _ = netC_T(data_u.to(device))
         netC.eval()
         netC_T.eval()
         with torch.no_grad():
@@ -212,6 +217,11 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % image_interval == 0:
+        netC.train()
+        netC_T.train()
+        for _ in range(FLAGS.n_labels/FLAGS.batch_size):
+            data_u, _ = itr.__next__()
+            _ = netC_T(data_u.to(device))
         netC.eval()
         netC_T.eval()
         with torch.no_grad():

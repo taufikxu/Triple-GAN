@@ -2,8 +2,8 @@ dataset: svhn
 
 # arguments for C
 c_model_name: cifar10_cnn
-c_loss: mtssl
-c_step: ramp
+c_loss: loss_elr_wrap
+c_step: regular
 c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5

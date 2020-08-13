@@ -79,6 +79,11 @@ for i in range(max_iter):
         logger.log_info(prefix, text_logger.info, cats=cats)
 
     if (i + 1) % test_interval == 0:
+        netC.train()
+        netC_T.train()
+        for _ in range(FLAGS.n_labels/FLAGS.batch_size):
+            data_u, _ = itr.__next__()
+            _ = netC_T(data_u.to(device))
         netC.eval()
         netC_T.eval()
 
