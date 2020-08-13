@@ -14,6 +14,36 @@ def loss_cross_entropy_ele(logits, label):
     return loss
 
 
+def loss_hinge_dis_elr_bcr(netD, netG, netC, x_l, z_rand, label, x_u):
+    with torch.no_grad():
+        x_fake = netG(z_rand, label).detach()
+        logits_c = netC(x_u).detach()
+        _, l_fake = torch.max(logits_c, 1)
+
+    d_real = netD(x=x_l, y=label, aug=True)
+    d_real_2 = netD(x=x_l, y=label, aug=True)
+    d_fake_g = netD(x=x_fake, y=label, aug=True)        
+    d_fake_g_2 = netD(x=x_fake, y=label, aug=True)
+    loss_real = torch.mean(torch.relu(1.0 - d_real))
+    loss_fake_g = torch.mean(torch.relu(1.0 + d_fake_g))
+    loss_bcr = 10. * torch.mean((d_real_2 - d_real) ** 2, dim=[0, 1]) + 10. * torch.mean((d_fake_g_2 - d_fake_g) ** 2, dim=[0, 1]) 
+
+    if FLAGS.gan_traind_c == "argmax":
+        d_fake_c = netD(x_u, l_fake)
+        loss_fake_c = torch.mean(torch.relu(1.0 + d_fake_c))
+    elif FLAGS.gan_traind_c == "int":
+        d_fake_c = netD(x_u)
+        loss_fake_c = torch.mean(
+            torch.sum(torch.relu(1.0 + d_fake_c) * softmax(logits_c), dim=1)
+        )
+
+    return (
+        loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c + loss_bcr,
+        d_real.mean(),
+        d_fake_g.mean(),
+        d_fake_c.mean(),
+    )
+
 def loss_hinge_dis_elr(netD, netG, netC, x_l, z_rand, label, x_u):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()

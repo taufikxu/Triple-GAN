@@ -71,6 +71,19 @@ def get_generator_optimizer():
     return G, optim
 
 
+class discriminator_wrapper(nn.Module):
+    def __init__(self, discriminator):
+        super().__init__()
+        self.dis = discriminator
+        self.trans = dataset_iters.AugmentWrapper()
+
+    def forward(self, x, y=None, aug=False):
+        if aug:
+            x = self.trans(x, self.training)
+        logits = self.dis(x=x, y=y)
+        return logits
+
+
 def get_discriminator_optimizer():
     module = discriminator_dict[FLAGS.g_model_name.lower()]
     hw, c, nlabel = hw_dict[FLAGS.dataset.lower()]
@@ -85,11 +98,16 @@ def get_discriminator_optimizer():
         actvn=actvn_dict[FLAGS.d_actvn](),
     )
 
+    D = discriminator_wrapper(D)
+
     optim = get_optimizer(
         D.parameters(), FLAGS.d_optim, FLAGS.d_lr, FLAGS.d_beta1, FLAGS.d_beta2
     )
 
     return D, optim
+
+
+
 
 
 class classifier_wrapper(nn.Module):
