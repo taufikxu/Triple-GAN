@@ -119,7 +119,7 @@ for i in range(pretrain_inter):  # 1w
     if (i + 1) % image_interval == 0:
         netC.train()
         netC_T.train()
-        for _ in range(FLAGS.n_labels/FLAGS.batch_size):
+        for _ in range(int(FLAGS.n_labels/FLAGS.batch_size)):
             data_u, _ = itr.__next__()
             _ = netC_T(data_u.to(device))
         netC.eval()
@@ -219,7 +219,7 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     if (i + 1) % image_interval == 0:
         netC.train()
         netC_T.train()
-        for _ in range(FLAGS.n_labels/FLAGS.batch_size):
+        for _ in range(int(FLAGS.n_labels/FLAGS.batch_size)):
             data_u, _ = itr.__next__()
             _ = netC_T(data_u.to(device))
         netC.eval()

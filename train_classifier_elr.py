@@ -81,7 +81,7 @@ for i in range(max_iter):
     if (i + 1) % test_interval == 0:
         netC.train()
         netC_T.train()
-        for _ in range(FLAGS.n_labels/FLAGS.batch_size):
+        for _ in range(int(FLAGS.n_labels/FLAGS.batch_size)):
             data_u, _ = itr.__next__()
             _ = netC_T(data_u.to(device))
         netC.eval()

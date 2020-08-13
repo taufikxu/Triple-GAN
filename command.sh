@@ -273,12 +273,12 @@ python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml 
 
 # FINAL_BASE_ELR_SVHN
 
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder FINAL_BASE_ELR_SVHN -n_labels 1000 -translate 0 -ssl_seed 1001 -gpu 8
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder FINAL_BASE_ELR_SVHN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 8
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder FINAL_BASE_ELR_SVHN -n_labels 1000 -translate 0 -ssl_seed 1001 -gpu 0
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder FINAL_BASE_ELR_SVHN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 1
 
 # FINAL_BASE_ELR_TINY
 
-python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 2000 -translate 0 -ssl_seed 1001 -gpu 8
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 2000 -translate 0 -ssl_seed 1001 -gpu 2
 python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 2000 -translate 2 -ssl_seed 1001 -gpu 8
 
 # FINAL_BASE_ELR_CIFAR
