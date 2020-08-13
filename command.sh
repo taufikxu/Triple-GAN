@@ -302,7 +302,7 @@ python train_triplegan_final_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml 
 
 # FINAL_TGAN_ELR_TINY
 
-python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 4 -flip_horizontal true -bcr true -alpha_c_pdl 1.0 -ssl_seed 1001 -gpu 8
-python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 4 -flip_horizontal true -bcr true -alpha_c_pdl 3.0 -ssl_seed 1001 -gpu 8
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 4 -flip_horizontal true -bcr true -alpha_c_pdl 1.0 -ssl_seed 1001 -gpu 1
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 4 -flip_horizontal true -bcr true -alpha_c_pdl 3.0 -ssl_seed 1001 -gpu 7
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 2 -flip_horizontal true -bcr true -alpha_c_pdl 1.0 -ssl_seed 1001 -gpu 8
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 2 -flip_horizontal true -bcr true -alpha_c_pdl 3.0 -ssl_seed 1001 -gpu 8
