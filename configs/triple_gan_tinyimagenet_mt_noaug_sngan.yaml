@@ -17,6 +17,7 @@ gan_traind_c: int
 clc_reg: 0.
 consist_pdl: false
 masked_pdl: false
+bcr: true
 
 # arguments for C
 c_model_name: cifar10_cnn

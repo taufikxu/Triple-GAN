@@ -72,6 +72,44 @@ def loss_hinge_dis_elr(netD, netG, netC, x_l, z_rand, label, x_u):
     )
 
 
+def loss_hinge_dis_bcr(netD, netG, netC, netC_d, x_l, z_rand, label, x_u, x_u_d):
+    with torch.no_grad():
+        x_fake = netG(z_rand, label).detach()
+        logits_c = netC(x_u).detach()
+        _, l_fake = torch.max(logits_c, 1)
+        _, l_d = torch.max(netC_d(x_u_d).detach(), 1)
+
+    x_real_for_d = torch.cat([x_l[: FLAGS.bs_l_for_d], x_u_d[: FLAGS.bs_u_for_d]], 0)
+    label_real_for_d = torch.cat(
+        [label[: FLAGS.bs_l_for_d], l_d[: FLAGS.bs_u_for_d]], 0
+    )
+
+    d_real = netD(x=x_real_for_d, y=label_real_for_d, aug=True)
+    d_real_2 = netD(x=x_real_for_d, y=label_real_for_d, aug=True)
+    d_fake_g = netD(x=x_fake, y=label, aug=True)        
+    d_fake_g_2 = netD(x=x_fake, y=label, aug=True)
+    loss_bcr = 10. * torch.mean((d_real_2 - d_real) ** 2, dim=[0, 1]) + 10. * torch.mean((d_fake_g_2 - d_fake_g) ** 2, dim=[0, 1]) 
+
+
+    loss_real = torch.mean(torch.relu(1.0 - d_real))
+    loss_fake_g = torch.mean(torch.relu(1.0 + d_fake_g))
+
+    if FLAGS.gan_traind_c == "argmax":
+        d_fake_c = netD(x_u, l_fake)
+        loss_fake_c = torch.mean(torch.relu(1.0 + d_fake_c))
+    elif FLAGS.gan_traind_c == "int":
+        d_fake_c = netD(x_u)
+        loss_fake_c = torch.mean(
+            torch.sum(torch.relu(1.0 + d_fake_c) * softmax(logits_c), dim=1)
+        )
+
+    return (
+        loss_real + 0.5 * loss_fake_g + 0.5 * loss_fake_c + loss_bcr,
+        d_real.mean(),
+        d_fake_g.mean(),
+        d_fake_c.mean(),
+    )
+
 def loss_hinge_dis(netD, netG, netC, netC_d, x_l, z_rand, label, x_u, x_u_d):
     with torch.no_grad():
         x_fake = netG(z_rand, label).detach()
@@ -176,10 +214,13 @@ def loss_hinge_gen(netD, netG, z_rand, label):
 
 g_loss_dict = {
     "hinge": loss_hinge_gen,
+    "bcr": loss_hinge_gen,
 }
 c_loss_dict = {
     "hinge": loss_hinge_cla,
+    "bcr": loss_hinge_cla,
 }
 d_loss_dict = {
     "hinge": loss_hinge_dis,
+    "bcr": loss_hinge_dis_bcr,
 }

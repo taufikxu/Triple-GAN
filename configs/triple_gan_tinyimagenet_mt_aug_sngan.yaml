@@ -12,7 +12,7 @@ bs_l_for_d: 40
 bs_u_for_d: 60
 clip_value: -1
 save_every: 10000
-gan_type: hinge
+gan_type: bcr
 gan_traind_c: int
 clc_reg: 0.
 consist_pdl: false

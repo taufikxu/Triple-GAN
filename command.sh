@@ -301,7 +301,6 @@ python train_triplegan_final_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml 
 python train_triplegan_final_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_CIFAR -n_labels 4000 -translate 0 -flip_horizontal false -bcr true -c_loss loss_elr_wrap -c_step regular -alpha_c_pdl 1.0 -ssl_seed 1001 -gpu 2 -key debuged
 python train_triplegan_final_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_CIFAR -n_labels 4000 -translate 0 -flip_horizontal false -bcr true -c_loss loss_elr_wrap -c_step regular -alpha_c_pdl 3.0 -ssl_seed 1001 -gpu 3 -key debuged
 
-
 # FINAL_TGAN_ELR_TINY
 
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 4 -flip_horizontal true -bcr true -alpha_c_pdl 1.0 -ssl_seed 1001 -gpu 1
@@ -315,3 +314,11 @@ python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 4 -c_loss loss_elr_wrap -c_step regular -flip_horizontal true -bcr true -alpha_c_pdl 3.0 -ssl_seed 1001 -gpu 3
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 2 -c_loss loss_elr_wrap -c_step regular -flip_horizontal true -bcr true -alpha_c_pdl 1.0 -ssl_seed 1001 -gpu 4
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder FINAL_TGAN_ELR_TINY -n_labels 2000 -translate 2 -c_loss loss_elr_wrap -c_step regular -flip_horizontal true -bcr true -alpha_c_pdl 3.0 -ssl_seed 1001 -gpu 5
+
+
+# retrain ssl tgan for generation.
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_aug_sngan.yaml -subfolder Tiny32_SSL_TGAN_BCR -gan_type bcr -n_labels 2000 -gpu 0
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml -subfolder Tiny32_SSL_TGAN_BCR -gan_type bcr -n_labels 2000 -gpu 1
+
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_aug_sngan.yaml -subfolder Tiny32_SSL_TGAN_BCR -gan_type bcr -n_labels 1000 -gpu 2
+python train_triplegan.py ./configs/triple_gan_tinyimagenet_mt_noaug_sngan.yaml -subfolder Tiny32_SSL_TGAN_BCR -gan_type bcr -n_labels 1000 -gpu 3
