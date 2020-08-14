@@ -66,6 +66,51 @@ class ZCA(object):
         ).reshape(s)
 
 
+class AugmentWrapper_DIS(object):
+    def __init__(self):
+        self.zca = None
+
+    def __call__(self, tensor, training):
+        assert isinstance(tensor, torch.Tensor)
+        assert len(tensor.shape) == 4
+        
+        if training is False:
+            exit('warning: bcr loss is true but evaluate dis. see AugmentWrapper_DIS in data_iters.py')
+            return tensor
+
+        if FLAGS.dataset == 'cifar10':
+            translate = 4
+            flip_horizontal = True
+        if FLAGS.dataset == 'tinyimagenet32':
+            translate = 4
+            flip_horizontal = True
+        if FLAGS.dataset == 'svhn':
+            translate = 2
+            flip_horizontal = False
+
+        if translate > 0:
+            bs, lenx, leny = tensor.shape[0], tensor.shape[2], tensor.shape[3]
+            pad = translate
+            tensor = F.pad(tensor, [pad, pad, pad, pad])
+            index = np.random.randint(0, pad * 2, size=[2, bs])
+            indexx, indexy = index[0], index[1]
+            inv_idx = torch.arange(leny - 1, -1, -1).long().cuda()
+
+            new_tensor_list = []
+            for i in range(bs):
+                ten = tensor[
+                    i : i + 1,
+                    :,
+                    indexx[i] : indexx[i] + lenx,
+                    indexy[i] : indexy[i] + leny,
+                ]
+                if flip_horizontal is True and np.random.randint(0, 2) == 1:
+                    ten = ten.index_select(3, inv_idx)
+                new_tensor_list.append(ten)
+            tensor = torch.cat(new_tensor_list, 0)
+        return tensor
+
+
 class AugmentWrapper(object):
     def __init__(self):
         zca = FLAGS.zca

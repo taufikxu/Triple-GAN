@@ -24,8 +24,8 @@ masked_pdl: false
 alpha_mse: 0.01
 bcr: true
 
-c_loss: mtssl
-c_step: ramp
+c_loss: loss_elr_wrap
+c_step: regular
 c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5

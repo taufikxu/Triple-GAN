@@ -75,7 +75,7 @@ class discriminator_wrapper(nn.Module):
     def __init__(self, discriminator):
         super().__init__()
         self.dis = discriminator
-        self.trans = dataset_iters.AugmentWrapper()
+        self.trans = dataset_iters.AugmentWrapper_DIS()
 
     def forward(self, x, y=None, aug=False):
         if aug:
