@@ -1,9 +1,9 @@
 dataset: SVHN
 
 # training arguments:
-n_iter_pretrain: 0
-n_iter: 150000
-num_label_per_batch: 1
+n_iter_pretrain: 20000
+n_iter: 220000
+num_label_per_batch: 100
 batch_size: 100
 bs_g: 100
 bs_c: 100
@@ -22,19 +22,20 @@ teach_for_d: false
 masked_pdl: false
 consist_pdl: false
 
-c_loss: loss_elr_wrap
-c_step: regular
+c_loss: mtssl
+c_step: ramp
 c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5
 c_beta2: 0.999
-alpha_c_adv: 0.03
+alpha_c_adv: 0.01
 alpha_c_pdl: 3.0
-adv_ramp_start: 30000
-adv_ramp_end: 50000
-pdl_ramp_start: 30000
-pdl_ramp_end: 50000
+adv_ramp_start: 50000
+adv_ramp_end: 70000
+pdl_ramp_start: 50000
+pdl_ramp_end: 70000
 bcr: true
+alpha_mse: 0.01
 
 # Lr schdule:
 lr_anneal_num: 1000000

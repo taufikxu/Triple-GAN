@@ -1,8 +1,8 @@
 dataset: cifar10
 
 # training arguments:
-n_iter_pretrain: 0
-n_iter: 150000
+n_iter_pretrain: 20000
+n_iter: 220000
 num_label_per_batch: 10
 batch_size: 100
 bs_g: 100
@@ -23,8 +23,9 @@ teach_for_d: false
 masked_pdl: false
 consist_pdl: false
 
-c_loss: loss_elr_wrap
-c_step: regular
+c_loss: mtssl
+c_step: ramp
+alpha_mse: 0.01
 c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5

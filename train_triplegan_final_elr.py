@@ -177,8 +177,6 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_d", "dfake_g", dfake_g.item(), i + 1)
     logger.add("training_d", "dfake_c", dfake_c.item(), i + 1)
 
-    data, _ = itr.__next__()
-    data = data.to(device)
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
     loss_g, fake_g = loss_func_g(netD, netG, sample_z, label)
     optim_G.zero_grad()
@@ -197,7 +195,14 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr, device)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-    tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(netC, netG, sample_z, label)
+    if FLAGS.consist_pdl:
+        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_MT(
+            netC, netG, netC_T, sample_z, label
+        )
+    else:
+        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
+            netC, netG, sample_z, label
+        )
     pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_ramp_start, FLAGS.pdl_ramp_end)
     loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
 
