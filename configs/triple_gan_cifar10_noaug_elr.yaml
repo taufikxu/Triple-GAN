@@ -32,10 +32,10 @@ c_beta1: 0.5
 c_beta2: 0.999
 alpha_c_adv: 0.03
 alpha_c_pdl: 3.0
-adv_ramp_start: 30000
-adv_ramp_end: 50000
-pdl_ramp_start: 30000
-pdl_ramp_end: 50000
+adv_ramp_start: 50000
+adv_ramp_end: 70000
+pdl_ramp_start: 50000
+pdl_ramp_end: 70000
 bcr: true
 
 # Lr schdule:

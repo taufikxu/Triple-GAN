@@ -1,9 +1,9 @@
 dataset: tinyimagenet32
 
 # training arguments:
-n_iter_pretrain: 0
-n_iter: 150000
-num_label_per_batch: 1
+n_iter_pretrain: 10000
+n_iter: 100000
+num_label_per_batch: 20
 batch_size: 100
 bs_g: 100
 bs_c: 100
@@ -24,8 +24,8 @@ masked_pdl: false
 alpha_mse: 0.01
 bcr: true
 
-c_loss: loss_elr_wrap
-c_step: regular
+c_loss: mtssl
+c_step: ramp
 c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5
@@ -51,8 +51,8 @@ adam_beta_1_after_rampdown: 0.5
 adam_beta_2_during_rampup: 0.99
 adam_beta_2_after_rampup: 0.999
 # Training schedule
-rampup_length: 40000
-rampup_length_lr: 40000
+rampup_length: 15000
+rampup_length_lr: 15000
 rampdown_length: 0
 
 # Preprocessing
@@ -60,7 +60,7 @@ zca: false
 norm: false
 translate: 0
 flip_horizontal: false
-ssl_seed: 1
+ssl_seed: 1001
 n_labels: 1000
 
 # arguments for G
