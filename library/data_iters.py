@@ -84,7 +84,7 @@ class AugmentWrapper_DIS(object):
         if FLAGS.dataset == 'tinyimagenet32':
             translate = 4
             flip_horizontal = True
-        if FLAGS.dataset == 'svhn':
+        if FLAGS.dataset == 'svhn' or FLAGS.dataset == 'SVHN':
             translate = 2
             flip_horizontal = False
 
