@@ -68,9 +68,21 @@
 
         python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 0.3 -n_labels 2000 -ssl_seed 1001 -translate 2 -flip_horizontal true -key slow -gpu 6
         python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 0.3 -n_labels 2000 -ssl_seed 1001 -translate 0 -flip_horizontal false -key slow -gpu 7
-    # g
-        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 1.0 -n_labels 2000 -ssl_seed 1001 -translate 2 -flip_horizontal true -key slow -gpu 0
-        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 1.0 -n_labels 2000 -ssl_seed 1001 -translate 0 -flip_horizontal false -key slow -gpu 0
+    # g18 g21
+        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 1.0 -n_labels 2000 -ssl_seed 1001 -translate 2 -flip_horizontal true -key slow -gpu 2
+        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 1.0 -n_labels 2000 -ssl_seed 1001 -translate 0 -flip_horizontal false -key slow -gpu 3
+
+        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 0.3 -n_labels 1000 -ssl_seed 1001 -translate 2 -flip_horizontal true -key slow -gpu 4
+        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 0.3 -n_labels 1000 -ssl_seed 1001 -translate 0 -flip_horizontal false -key slow -gpu 5
+        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 1.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -flip_horizontal true -key slow -gpu 6
+        python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder NEW_TINY -alpha_c_pdl 1.0 -n_labels 1000 -ssl_seed 1001 -translate 0 -flip_horizontal false -key slow -gpu 0
+
+    # baseline slow g23
+        python train_classifier_elr.py ./configs/classifier_tinyimagenet_slow_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 1000 -translate 0 -flip_horizontal false -ssl_seed 1001 -key slow -gpu 0
+        python train_classifier_elr.py ./configs/classifier_tinyimagenet_slow_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 1000 -translate 2 -flip_horizontal true -ssl_seed 1001 -key slow -gpu 1
+        
+        python train_classifier_elr.py ./configs/classifier_tinyimagenet_slow_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 2000 -translate 0 -flip_horizontal false -ssl_seed 1001 -key slow -gpu 2
+        python train_classifier_elr.py ./configs/classifier_tinyimagenet_slow_elr.yaml -subfolder FINAL_BASE_ELR_TINY -n_labels 2000 -translate 2 -flip_horizontal true -ssl_seed 1001 -key slow -gpu 3
 
 # report 
 # report 
