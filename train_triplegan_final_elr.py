@@ -157,9 +157,13 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         data_u = data_u.to(device)
         sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
 
-        if FLAGS.bcr:
+        if FLAGS.bcr and not FLAGS.icr:
             loss_d, dreal, dfake_g, dfake_c = loss_triplegan.loss_hinge_dis_elr_bcr(
                 netD, netG, netC, data, sample_z, label, data_u
+            )
+        elif FLAGS.icr:
+            loss_d, dreal, dfake_g, dfake_c = loss_triplegan.loss_hinge_dis_elr_icr(
+                netD, netG, netC, data, sample_z, label, data_u, device
             )
         else:
             loss_d, dreal, dfake_g, dfake_c = loss_triplegan.loss_hinge_dis_elr(
@@ -178,7 +182,14 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_d", "dfake_c", dfake_c.item(), i + 1)
 
     sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-    loss_g, fake_g = loss_func_g(netD, netG, sample_z, label)
+    
+    if FLAGS.icr:
+        loss_g, fake_g = loss_triplegan.loss_hinge_gen_icr(
+            netD, netG, sample_z, label, device
+            )
+    else:
+        loss_g, fake_g = loss_func_g(netD, netG, sample_z, label)
+
     optim_G.zero_grad()
     loss_g.backward()
     if FLAGS.clip_value > 0:
