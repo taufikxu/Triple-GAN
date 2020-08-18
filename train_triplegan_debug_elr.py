@@ -199,27 +199,25 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
     logger.add("training_g", "loss", loss_g.item(), i + 1)
     logger.add("training_g", "fake_g", fake_g.item(), i + 1)
 
-    tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data)
-    adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
-    loss_c_adv = tloss_c_adv * adv_ramp_coe
+    # tloss_c_adv, fake_c = loss_func_c_adv(netD, netC, data)
+    # adv_ramp_coe = sigmoid_rampup(i, FLAGS.adv_ramp_start, FLAGS.adv_ramp_end)
+    # loss_c_adv = tloss_c_adv * adv_ramp_coe
 
     loss_c_ssl, l_c_loss, u_c_loss = loss_func_c(netC, netC_T, i, itr, itr, device)
 
-    sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
-    if FLAGS.consist_pdl:
-        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_MT(
-            netC, netG, netC_T, sample_z, label
-        )
-    else:
-        tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
-            netC, netG, sample_z, label
-        )
-    pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_ramp_start, FLAGS.pdl_ramp_end)
-    loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
+    # sample_z = torch.randn(FLAGS.bs_g, FLAGS.g_z_dim).to(device)
+    # if FLAGS.consist_pdl:
+    #     tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss_MT(
+    #         netC, netG, netC_T, sample_z, label
+    #     )
+    # else:
+    #     tloss_c_pdl = loss_triplegan.pseudo_discriminative_loss(
+    #         netC, netG, sample_z, label
+    #     )
+    # pdl_ramp_coe = sigmoid_rampup(i, FLAGS.pdl_ramp_start, FLAGS.pdl_ramp_end)
+    # loss_c_pdl = tloss_c_pdl * pdl_ramp_coe
 
-    loss_c = (
-        FLAGS.alpha_c_adv * loss_c_adv + FLAGS.alpha_c_pdl * loss_c_pdl + loss_c_ssl
-    )
+    loss_c = loss_c_ssl
 
     if FLAGS.c_step == "ramp_swa":
         step_func(optim_c, swa_optim, netC, netC_T, i, loss_c)
@@ -227,10 +225,10 @@ for i in range(pretrain_inter, max_iter + pretrain_inter):
         step_func(optim_c, netC, netC_T, i, loss_c)
 
     logger.add("training_c", "loss", loss_c.item(), i + 1)
-    logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
+    # logger.add("training_c", "loss_adv", loss_c_adv.item(), i + 1)
     logger.add("training_c", "loss_ssl", loss_c_ssl.item(), i + 1)
-    logger.add("training_c", "loss_pdl", loss_c_pdl.item(), i + 1)
-    logger.add("training_c", "fake_c", fake_c.item(), i + 1)
+    # logger.add("training_c", "loss_pdl", loss_c_pdl.item(), i + 1)
+    # logger.add("training_c", "fake_c", fake_c.item(), i + 1)
 
     if (i + 1) % print_interval == 0:
         prefix = logger_prefix.format(i + 1, max_iter, (100 * i + 1) / max_iter)
