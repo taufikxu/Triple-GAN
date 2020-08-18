@@ -1,45 +1,55 @@
 # 
 # review code and results 
 # -> write command -> write tunner 
-# -> test new -> clear files -> clear gpu and run 
+# -> test new with 0 pretrain -> clear files -> clear gpu and run 
 # 
 
 # 
 # ELDR
+#  
+# DEBUG: check 20000. check 30000. check 50000. check 70000.
+#        check both teacher and student
+#        seems very different but why?
+# 
+# 
 # 
 # no adv loss and pdl loss before ramp start.
-# 
-# i.	PDL 0.0 ？10-4 10-3 10-2 10-1
-# ii.	ADV 0.0 ？10-4 10-3 10-2 10-1
-#  
-# sample from 0 to 9.
-# 
+# i pdl and adv
 # iii.	Time add ？
 # iv.	Time end ？
 # v.	N_iter TBD
-# vi.	N_pre_train = 0 to test for bugs
 
 
-# svhn
+# svhn g26
 python train_triplegan_debug_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 1
 
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0001 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.001 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.01 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.1 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0 -alpha_c_adv 0.001 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.001 -alpha_c_adv 0.001 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 3
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 4
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0001 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 5
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.001 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 6
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.01 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 7
+# g23
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.1 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0 -alpha_c_adv 0.001 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 1
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.001 -alpha_c_adv 0.001 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 2
 
+python train_triplegan_debug2_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder DEBUG_VN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -gpu 1
 
 
 # tiny
+python train_triplegan_debug_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder DEBUG_TN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 2
+
 python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder DEBUG_TN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 3
-python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder DEBUG_TN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 2000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 3
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder DEBUG_TN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 2000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 0
+
+# g22
+python train_triplegan_debug2_elr.py ./configs/triple_gan_tinyimagenet_noaug_elr.yaml -subfolder DEBUG_TN -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 1000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 2
 
 
 # cifar10
-python train_triplegan_final_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder DEBUG_CI -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 3
+# g12
+python train_triplegan_debug_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder DEBUG_CI -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 3
+
+python train_triplegan_final_elr.py ./configs/triple_gan_cifar10_noaug_elr.yaml -subfolder DEBUG_CI -alpha_c_pdl 0.0 -alpha_c_adv 0.0 -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal True -gpu 1
 
 
 # 
