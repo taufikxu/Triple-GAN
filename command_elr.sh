@@ -1,4 +1,10 @@
 # 
+# review code and results 
+# -> write command -> write tunner 
+# -> test new -> clear files -> clear gpu and run 
+# 
+
+# 
 # ELDR
 # 
 # i.	PDL 0.0 ？
@@ -7,6 +13,13 @@
 # iv.	Time end ？
 # v.	N_iter TBD
 # vi.	N_pre_train = 0 to test for bugs
+
+
+# svhn
+
+# tiny
+
+# cifar10 ?
 
 # 
 # SSL for TINY 1000
