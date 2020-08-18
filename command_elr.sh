@@ -27,7 +27,9 @@
 
 
 # 
-# Generation
+# Generation 
+# All scores
+# update conditional generation figures
 # 
 
 
