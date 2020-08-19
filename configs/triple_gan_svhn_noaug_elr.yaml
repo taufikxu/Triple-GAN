@@ -3,7 +3,7 @@ dataset: SVHN
 # training arguments:
 n_iter_pretrain: 20000
 n_iter: 220000
-num_label_per_batch: 100
+num_label_per_batch: 1
 batch_size: 100
 bs_g: 100
 bs_c: 100

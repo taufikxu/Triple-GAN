@@ -3,28 +3,148 @@
 # -> write command -> write tunner 
 # -> test new with 0 pretrain -> clear files -> clear gpu and run 
 # 
-# rerun baseline 
 
-# zca for baseline and ours
-
-
-
+# grad search
+# tiny zca for baseline and ours
+# tiny slow.. any chance?
 
 # the hyperparameters. adding epoch, learning rate decay. learning rate 0.03.
 
 # add adv later and longer. leverage 90%. see new baseline 20000
 
-# tiny slow.. any chance?
+
+# pdl 0.003 0.01 0.03 0.1 0.3
+# add 50000-70000, 100000-150000, 50000-150000
+# aug 30 gpus
+# adv 0.01 
+
+# mt 
+# iter 210000
+# ramp_lr 15000 v.s. 40000
+# pdl 0.01 0.03 0.1
+# add 50000-70000, 100000-150000, 50000-150000
+# aug 36
+
+# baseline
+
+# svhn 1000 xuan: g11
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder 819_D_VN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 0
+
+# svhn 1000 tgan
+
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.3 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.3 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.3 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
 
 
-# xuan g8
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder DEBUG_VN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.3 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 0
 
-python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder DEBUG_VN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 3
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.3 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
 
-python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder DEBUG_TN -n_labels 1000 -translate 2 -flip_horizontal true -ssl_seed 1001 -gpu 1
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.3 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 1000 -ssl_seed 1001 -gpu 0
 
-python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder DEBUG_CI -n_labels 4000 -translate 2 -flip_horizontal true -ssl_seed 1001 -gpu 2
+
+# Tiny
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 0 -flip_horizontal false  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.1 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.03 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.01 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.03 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI  -translate 2 -flip_horizontal true  -alpha_c_pdl 0.01 -pdl_ramp_start 50000 -pdl_ramp_end 150000 -adv_ramp_start 50000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+
+# 15000 or 40000
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI -rampup_length 15000 -rampup_length_lr 15000 -translate 2 -flip_horizontal true  -alpha_c_pdl 0.1 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI -rampup_length 15000 -rampup_length_lr 15000 -translate 2 -flip_horizontal true  -alpha_c_pdl 0.1 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_labels 2000 -ssl_seed 1001 -gpu 0
+
+
+
+
+
+# test
+# python train_triplegan_final_elr.py ./configs/triple_gan_tinyimagenet_slow_elr.yaml -subfolder 819_D_TI -rampup_length_lr 15000 -rampup_length 15000 -translate 2 -flip_horizontal true  -alpha_c_pdl 0.1 -pdl_ramp_start 100000 -pdl_ramp_end 150000 -adv_ramp_start 100000 -adv_ramp_end 150000 -n_iter_pretrain 0 -gpu 0
+# python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder 819_D_VN  -translate 2 -flip_horizontal false  -alpha_c_pdl 0.003 -pdl_ramp_start 50000 -pdl_ramp_end 70000 -adv_ramp_start 50000 -adv_ramp_end 70000 -n_labels 1000 -ssl_seed 1001 -gpu 2 -n_iter_pretrain 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 
 # ELDR

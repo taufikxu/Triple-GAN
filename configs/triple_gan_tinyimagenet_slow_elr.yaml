@@ -30,7 +30,7 @@ c_optim: adam
 c_lr: 0.003
 c_beta1: 0.5
 c_beta2: 0.999
-alpha_c_adv: 0.03
+alpha_c_adv: 0.01
 alpha_c_pdl: 3.0
 adv_ramp_start: 50000
 adv_ramp_end: 70000
