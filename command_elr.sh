@@ -3,6 +3,28 @@
 # -> write command -> write tunner 
 # -> test new with 0 pretrain -> clear files -> clear gpu and run 
 # 
+# rerun baseline 
+
+# zca for baseline and ours
+
+
+
+
+# the hyperparameters. adding epoch, learning rate decay. learning rate 0.03.
+
+# add adv later and longer. leverage 90%. see new baseline 20000
+
+# tiny slow.. any chance?
+
+
+# xuan g8
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder DEBUG_VN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 0
+
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder DEBUG_VN -n_labels 1000 -translate 2 -ssl_seed 1001 -gpu 3
+
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder DEBUG_TN -n_labels 1000 -translate 2 -flip_horizontal true -ssl_seed 1001 -gpu 1
+
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder DEBUG_CI -n_labels 4000 -translate 2 -flip_horizontal true -ssl_seed 1001 -gpu 2
 
 # 
 # ELDR
