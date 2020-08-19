@@ -107,9 +107,6 @@ def get_discriminator_optimizer():
     return D, optim
 
 
-
-
-
 class classifier_wrapper(nn.Module):
     def __init__(self, classifier):
         super().__init__()

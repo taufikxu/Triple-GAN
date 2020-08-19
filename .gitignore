@@ -1,4 +1,5 @@
 # User defined ignored files
+*.npz
 allresults
 results
 .vscode
