@@ -46,3 +46,21 @@ python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder 819
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder 819_D_VN -n_labels 1000 -translate 0 -ssl_seed 1001 -gpu 3
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder 819_D_VN -n_labels 1000 -translate 0 -ssl_seed 1002 -gpu 0
 python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder 819_D_VN -n_labels 1000 -translate 0 -ssl_seed 1003 -gpu 0
+
+# cifar10 baseline
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder RE_CI -n_labels 4000 -translate 0 -flip_horizontal true -ssl_seed 1001 -gpu 0
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder RE_CI -n_labels 4000 -translate 0 -flip_horizontal true -ssl_seed 1002 -gpu 1
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder RE_CI -n_labels 4000 -translate 0 -flip_horizontal true -ssl_seed 1003 -gpu 0
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder RE_CI -n_labels 4000 -translate 0 -flip_horizontal false -ssl_seed 1001 -gpu 1
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder RE_CI -n_labels 4000 -translate 0 -flip_horizontal false -ssl_seed 1002 -gpu 2
+python train_classifier_elr.py ./configs/classifier_cifar10_elr.yaml -subfolder RE_CI -n_labels 4000 -translate 0 -flip_horizontal false -ssl_seed 1003 -gpu 3
+
+# tiny baseline
+# 15000 v.s. 40000
+
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder RE_TI -n_labels 2000 -translate 0 -flip_horizontal false -ssl_seed 1001 -gpu 0
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder RE_TI -n_labels 2000 -translate 0 -flip_horizontal false -ssl_seed 1002 -gpu 1
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder RE_TI -n_labels 2000 -translate 0 -flip_horizontal false -ssl_seed 1003 -gpu 2
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder RE_TI -n_labels 2000 -translate 2 -flip_horizontal true -ssl_seed 1001 -gpu 3
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder RE_TI -n_labels 2000 -translate 2 -flip_horizontal true -ssl_seed 1002 -gpu 2
+python train_classifier_elr.py ./configs/classifier_tinyimagenet_elr.yaml -subfolder RE_TI -n_labels 2000 -translate 2 -flip_horizontal true -ssl_seed 1003 -gpu 2

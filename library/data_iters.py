@@ -8,6 +8,7 @@ from torchvision import datasets, transforms
 
 import Utils
 from Utils.flags import FLAGS
+from library.randaugment import RandomAugment
 
 
 class NumpyDataset(torch.utils.data.Dataset):
@@ -324,6 +325,63 @@ def get_dataset(train, subset):
         sets = torch.utils.data.Subset(sets, final_indices)
         assert len(sets) == subset
     return sets
+
+
+def get_dataset_randaug(train, subset):
+
+    transf = transforms.Compose(
+            [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),]
+        )
+    transf_strong = transforms.Compose([
+            transforms.PadandRandomCrop(border=4, cropsize=(32, 32)),
+            transforms.RandomHorizontalFlip(p=0.5),
+            RandomAugment(2, 10),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.ToTensor(),
+        ])
+
+    if FLAGS.dataset.lower() == "cifar10":
+        sets = datasets.CIFAR10(
+            "/home/LargeData/Regular/cifar",
+            train=train,
+            download=True,
+            transform=transf,
+        )
+    if train:
+        sets_strong = datasets.CIFAR10(
+            "/home/LargeData/Regular/cifar",
+            train=train,
+            download=True,
+            transform=transf_strong,
+        )
+
+    if subset > 0:
+        generator = np.random.default_rng(FLAGS.ssl_seed)
+        labels, indexs = [], []
+        for i in range(len(sets)):
+            _, lab = sets.__getitem__(i)
+            labels.append(lab)
+            indexs.append(i)
+        labels = np.array(labels)
+        indexs = np.array(indexs)
+        num_labels = np.max(labels) + 1
+
+        assert subset % num_labels == 0
+
+        final_indices = []
+        for i in range(num_labels):
+            tind = list(indexs[labels == i])
+            generator.shuffle(tind)
+            final_indices.extend(tind[: (subset // num_labels)])
+
+        sets = torch.utils.data.Subset(sets, final_indices)
+        if train:
+            sets_strong = torch.utils.data.Subset(sets_strong, final_indices)
+        assert len(sets) == subset
+    if train:
+        return sets, sets_strong
+    else:
+        return sets
 
 
 def inf_train_gen(batch_size, train=True, infinity=True, subset=0):
