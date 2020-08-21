@@ -16,6 +16,7 @@ from Utils import config
 import Torture
 from library import evaluation, eval_inception_score
 
+
 FLAGS = flags.FLAGS
 KEY_ARGUMENTS = config.load_config(FLAGS.config_file)
 FLAGS.subfolder = "Test"
