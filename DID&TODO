@@ -1,41 +1,27 @@
-1. combine mt and tgan
+> ablation 
 
-    ratios and learning rates
+> triple-gan generation
 
-    rampup
+> report elr cifar10
 
-    how to use data from g
+> tune elr svhn tiny-imagenet
+    - pdl and mask and consistent
 
-    some baselines
-        mt using triple-gan args
-        triple-gan use mt args
+> fix-match
+    - data iter
+        set 2 and set 1 share the same indices but different augments and return both
+      write a new data iter
+        now may have bug...
 
-    normalization
+    - hyperparameters and learning rate annealing
 
-2. mt resnet
-    normalization 
-        order is not right
+    - classifier aug true default
 
-    batch_size. 256. 
-        different
-        label parallel
-        bn
+    - but strong data set false
+    
+    - loss 
+    
+    - interleave 
+        > ?
 
-4. Triple-gan with resnet
-    1. Memory is enough for bs 256 and its correspoding lr
-    2. coefficient rampup (default sigmoid, 7w)
-    3. pdl coefficient (default 3.0), adv fix to 0.03
-    4. Use teacher or not (default True)
-
-
-5. cifar100, stl 10 and svhn.
-
-
-6. swa
-    1. bn. see repo https://github.com/benathi/fastswa-semi-sup
-
-DoubleHead CNN on CIFAR10
-
-7. extreme low data regime
-    1. total iters and ramp up
-
+> cnn elr and tgan baseline

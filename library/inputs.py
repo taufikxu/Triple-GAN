@@ -113,8 +113,9 @@ class classifier_wrapper(nn.Module):
         self.cla = classifier
         self.trans = dataset_iters.AugmentWrapper()
 
-    def forward(self, dat, double=False):
-        dat = self.trans(dat, self.training)
+    def forward(self, dat, double=False, aug=True):
+        if aug:
+            dat = self.trans(dat, self.training)
         logits = self.cla(dat)
         if len(logits) == 2:
             logits1, logits2 = logits[0], logits[1]
