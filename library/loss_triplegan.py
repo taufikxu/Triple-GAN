@@ -204,8 +204,9 @@ def pseudo_discriminative_loss_MT(netC, netG, netC_T, z_rand, label):
 
     # only use data corrected predicted by the model
     if FLAGS.masked_pdl == True:
-        _, pred = torch.max(logit_l, dim=1)
-        mask = label == pred
+        max_logit, pred = torch.max(logit_l, dim=1)
+        # mask = label == pred
+        mask = (max_logit > torch.log(0.95))
     else:
         mask = 1.0
 

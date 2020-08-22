@@ -6,22 +6,3 @@
 
 > tune elr svhn tiny-imagenet
     - pdl and mask and consistent
-
-> fix-match
-    - data iter
-        set 2 and set 1 share the same indices but different augments and return both
-      write a new data iter
-        now may have bug...
-
-    - hyperparameters and learning rate annealing
-
-    - classifier aug true default
-
-    - but strong data set false
-    
-    - loss 
-    
-    - interleave 
-        > ?
-
-> cnn elr and tgan baseline

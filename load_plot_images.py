@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from library import inputs, eval_inception_score
+from library import inputs
 from Utils.checkpoints import save_context, Logger
 from Utils import flags
 from Utils import config
@@ -55,9 +55,9 @@ checkpoint_io.register_modules(netG=netG, optim_G=optim_G)
 logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 
-torch.manual_seed(1234)
-torch.cuda.manual_seed(1234)
-np.random.seed(1234)
+torch.manual_seed(4567)
+torch.cuda.manual_seed(6666)
+np.random.seed(8888)
 
 
 checkpoint_io.load_file(model)
