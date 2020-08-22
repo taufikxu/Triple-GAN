@@ -12,6 +12,7 @@ from Utils import flags
 from Utils import config
 
 import Torture
+
 from library.chainer_evaluation.evaluation import calc_inception, calc_FID, FID
 import PIL.Image
 
@@ -84,7 +85,7 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 
 
 # max_ism, max_id = 0, 0
-# for iters in range(50000, 250001, 2000):
+# for iters in range(10000, 500001, 10000):
 #     torch.manual_seed(1235)
 #     torch.cuda.manual_seed(1235)
 #     np.random.seed(1235)
@@ -103,18 +104,18 @@ logger = Logger(log_dir=SUMMARIES_FOLDER)
 #             x_fake = netG(sample_z.to(device), label.to(device))
 #             img_list.append(x_fake.data.cpu().numpy() * 0.5 + 0.5)
 #         img_list = np.concatenate(img_list, axis=0) * 255
-#         # img_list = (np.transpose(img_list, [0, 2, 3, 1]) ).astype(np.uint8)
-#         # new_img_list = []
-#         # for i in range(img_list.shape[0]):
-#         # new_img_list.append(img_list[i])
-#         # ism, isvar = eval_inception_score.get_inception_score(new_img_list, 1, 100)
-#         ism, isvar = calc_inception(img_list, 100, 5000, 1)
+#         img_list = (np.transpose(img_list, [0, 2, 3, 1])).astype(np.uint8)
+#         new_img_list = []
+#         for i in range(img_list.shape[0]):
+#             new_img_list.append(img_list[i])
+#         ism, isvar = eval_inception_score.get_inception_score(new_img_list, 1, 100)
+#         # ism, isvar = calc_inception(img_list, 100, 5000, 1)
 #         if ism > max_ism:
 #             max_ism = ism
 #             max_id = iters
 #         text_logger.info(str((iters, ism, max_id, max_ism)))
 
-max_id = 72000
+max_id = 420000
 model_path = os.path.join(dirname, "model{}.pt".format(max_id))
 checkpoint_io.load_file(model_path)
 # # # # Inception score
@@ -125,7 +126,7 @@ with torch.no_grad():
 
     netG.eval()
     img_list, label_list = [], []
-    for _ in range(500):
+    for _ in range(50):
         sample_z = torch.randn(100, FLAGS.g_z_dim).to(device)
         data, label = itr.__next__()
         x_fake = netG(sample_z.to(device), label.to(device))
@@ -133,16 +134,16 @@ with torch.no_grad():
         label_list.append(label.data.cpu().numpy())
     img_list = np.concatenate(img_list, axis=0) * 255
     label_list = np.concatenate(label_list)
-    for iid, img in enumerate(img_list):
-        img = PIL.Image.fromarray(img.transpose([1, 2, 0]).astype(np.uint8))
-        img.save("/home/kunxu/cifar10_tmp/{}.png".format(iid))
-    # img_list = (np.transpose(img_list, [0, 2, 3, 1])).astype(np.uint8)
+    # for iid, img in enumerate(img_list):
+    #     img = PIL.Image.fromarray(img.transpose([1, 2, 0]).astype(np.uint8))
+    #     img.save("/home/kunxu/cifar10_tmp/{}.png".format(iid))
+    # img_list = np.transpose(img_list, [0, 2, 3, 1])
     # print(img_list.shape)
     # new_img_list = []
     # for i in range(img_list.shape[0]):
-    #     new_img_list.append(img_list[i])
-    # ism, isvar = calc_inception(img_list, 100, 50000, 10)
-    # text_logger.info(str((max_id, ism, isvar)))
+    #     new_img_list.append(img_list[i].astype(np.uint8))
+    ism, isvar = calc_inception(img_list, 100, 5000, 1)
+    text_logger.info(str((max_id, ism, isvar)))
 
-    fid = calc_FID(img_list, 100, "./cifar10_total_original.npz")
+    fid = calc_FID(img_list, 100, "./cifar10_total.npz")
     text_logger.info(str((max_id, fid)))

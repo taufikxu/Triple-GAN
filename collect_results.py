@@ -1,14 +1,17 @@
 import glob
 import pickle
 import os
+import numpy as np
 
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN"
-# model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_0)*/summary/00149999.pkl"
-model_path = '/home/kunxu/Workspace/Triple-GAN/allresults/elr_tgan_svhn_1000/*/summary/*.pkl'
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
+model_path = (
+    "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
+)
 # model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_2)*/summary/Model*.pkl"
 stat_paths = glob.glob(model_path)
 
+all_results = []
 for p in stat_paths:
     ckpt_path = os.path.join(os.path.dirname(p), "../source/configs_dict.pkl")
     with open(ckpt_path, "rb") as f:
@@ -17,9 +20,19 @@ for p in stat_paths:
         dat = pickle.load(f)
         # print(p, dat["training_pre"]["loss"][-1])
         test_dat = dat["testing"]["accuracy_t"]
+
+        plist = test_dat[-10:]
+        acc_list = [x[1] for x in plist]
         plist = []
-        # for itr, v in test_dat:
-        #     if itr == 50000:
-        #         plist.append(v)
-        plist.append(test_dat[-1])
-        print(p[len(basename) :], config["translate"], plist)
+        for itr, v in test_dat:
+            if itr % 10000 == 0:
+                plist.append((itr, v))
+
+        # print(p[len(basename) :], config["translate"], plist)
+        all_results.append([p, plist, np.mean(acc_list), plist[-1]])
+
+all_results.sort(key=lambda x: x[2])
+for x in all_results:
+    print(x[0][len(basename) :])
+    print(x[1], x[2], x[3])
+    print("")
