@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 # from torch.nn import functional as F
 
@@ -206,7 +207,7 @@ def pseudo_discriminative_loss_MT(netC, netG, netC_T, z_rand, label):
     if FLAGS.masked_pdl == True:
         max_logit, pred = torch.max(logit_l, dim=1)
         # mask = label == pred
-        mask = (max_logit > torch.log(0.95))
+        mask = (max_logit > np.log(0.95))
     else:
         mask = 1.0
 
