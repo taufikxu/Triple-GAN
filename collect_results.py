@@ -13,7 +13,7 @@ basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_2)*/summary/*.pkl"
 # )
 model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/summary/*.pkl"
+    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary/*.pkl"
 )
 # model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_2)*/summary/Model*.pkl"
 stat_paths = glob.glob(model_path)
