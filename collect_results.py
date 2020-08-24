@@ -4,7 +4,8 @@ import os
 import numpy as np
 
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
+# basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*/summary"
 model_path = (
     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
 )
