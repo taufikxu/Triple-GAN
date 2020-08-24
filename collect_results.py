@@ -26,7 +26,8 @@ for p in stat_paths:
     with open(p, "rb") as f:
         dat = pickle.load(f)
         # print(p, dat["training_pre"]["loss"][-1])
-        test_dat = dat["testing"]["accuracy"]
+        # test_dat = dat["testing"]["accuracy"]
+        test_dat = dat["testing"]["accuracy_t"]
 
         plist = test_dat[-10:]
         acc_list = [x[1] for x in plist]
