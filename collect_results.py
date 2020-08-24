@@ -4,14 +4,14 @@ import os
 import numpy as np
 
 # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
-# basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*/summary"
-model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
-)
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
+# basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*/summary"
 # model_path = (
-#     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_0)*/summary/*.pkl"
+#     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
 # )
+model_path = (
+    "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_0)*/summary/*.pkl"
+)
 # model_path = (
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary/*.pkl"
 # )
@@ -26,8 +26,8 @@ for p in stat_paths:
     with open(p, "rb") as f:
         dat = pickle.load(f)
         # print(p, dat["training_pre"]["loss"][-1])
-        # test_dat = dat["testing"]["accuracy"]
-        test_dat = dat["testing"]["accuracy_t"]
+        test_dat = dat["testing"]["accuracy"]
+        # test_dat = dat["testing"]["accuracy_t"]
 
         plist = test_dat[-10:]
         acc_list = [x[1] for x in plist]
