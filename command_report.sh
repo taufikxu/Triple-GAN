@@ -1,3 +1,13 @@
+# change # of iters 
+# change # of iters 
+# change # of iters 
+# change # of iters 
+# change # of iters 
+# change # of iters 
+# change # of iters 
+# change # of iters 
+# make sure baseline are changed as well
+# same for cifar10 and tiny
 # 
 # see 819 and 820 every day
 # 
