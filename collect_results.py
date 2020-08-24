@@ -3,18 +3,18 @@ import pickle
 import os
 import numpy as np
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
-# basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
+# basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
 # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*/summary"
 # model_path = (
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
 # )
-# model_path = (
-#     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_2)*/summary/*.pkl"
-# )
 model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary/*.pkl"
+    "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_0)*/summary/*.pkl"
 )
+# model_path = (
+#     "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary/*.pkl"
+# )
 # model_path = "/home/kunxu/Workspace/Triple-GAN/allresults/ELR_SVHN/*(n_labels_500)*(translate_2)*/summary/Model*.pkl"
 stat_paths = glob.glob(model_path)
 
