@@ -26,13 +26,13 @@ for p in stat_paths:
     with open(p, "rb") as f:
         dat = pickle.load(f)
         # print(p, dat["training_pre"]["loss"][-1])
-        test_dat = dat["testing"]["accuracy_t"]
+        test_dat = dat["testing"]["accuracy"]
 
         plist = test_dat[-10:]
         acc_list = [x[1] for x in plist]
         plist = []
         for itr, v in test_dat:
-            if itr % 50000 == 0:
+            if itr % 10000 == 0:
                 plist.append((itr, v))
 
         # print(p[len(basename) :], config["translate"], plist)
