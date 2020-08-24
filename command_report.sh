@@ -1,10 +1,4 @@
-# change # of iters 
-# change # of iters 
-# change # of iters 
-# change # of iters 
-# change # of iters 
-# change # of iters 
-# change # of iters 
+# student or teacher
 # change # of iters 
 # make sure baseline are changed as well
 # 
