@@ -6,8 +6,31 @@
 # same for tiny and cifar10
 # 
 # ablation and generation
-# 
-# 
+
+
+# ablation
+
+python train_classifier.py ./configs/classifier_ablation_cifar10.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -c_step regular -c_loss loss_elr_wrap -gpu 1
+python train_classifier.py ./configs/classifier_ablation_cifar10.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -c_step regular -c_loss entropyssl -gpu 0
+
+python train_classifier.py ./configs/classifier_ablation_cifar10.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -c_step regular -c_loss loss_elr_wrap -gpu 1
+python train_classifier.py ./configs/classifier_ablation_cifar10.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -c_step regular -c_loss entropyssl -gpu 0
+
+
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 3.0 -c_step regular -c_loss entropyssl -gpu 1
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 3.0 -c_step regular -c_loss entropyssl -gpu 2
+
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 3.0 -c_step regular -c_loss loss_elr_wrap -gpu 3
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 3.0 -c_step regular -c_loss loss_elr_wrap -gpu 4
+
+
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 1.0 -gpu 5
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 1.0 -gpu 6
+
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 10.0 -gpu 0
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 10.0 -gpu 0
+
+
 
 # g12 - g25
 # svhn -alpha_adv 0.03 
