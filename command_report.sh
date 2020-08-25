@@ -27,9 +27,11 @@ python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder 
 python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 1.0 -gpu 5
 python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 1.0 -gpu 6
 
-python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 10.0 -gpu 0
-python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 10.0 -gpu 0
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 10.0 -gpu 7
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 10.0 -gpu 2
 
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 0.0 -gpu 0
+python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 0.0 -gpu 0
 
 
 # g12 - g25
