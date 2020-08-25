@@ -7,7 +7,7 @@ import numpy as np
 # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
 basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
 model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-22**(tra_2)*/summary/*.pkl"
+    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-22**(tra_0)*/summary/*.pkl"
 )
 # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*/summary"
 # model_path = (
