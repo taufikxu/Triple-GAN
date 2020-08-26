@@ -16,7 +16,7 @@ basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-24*/summary"
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
 # )
 model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-24*(tra_0)*/summary/*.pkl"
+    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-24*(tra_2)*/summary/*.pkl"
 )
 # model_path = (
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_2)*/summary/*.pkl"
