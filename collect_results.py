@@ -51,5 +51,5 @@ for p in stat_paths:
 all_results.sort(key=lambda x: x[2])
 for x in all_results:
     print(x[0][len(basename) :])
-    print(x[1], x[2], x[3])
+    print(x[1], "&&",  x[2], "&&",  x[3])
     print("")
