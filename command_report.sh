@@ -6,9 +6,16 @@
 # same for tiny and cifar10
 # 
 # generation
+# tune generator learning rate and lambdas?
 
 # check all ablation
 # check all potential good results
+
+
+# see svhn 4000
+# test tiny 1000
+
+
 
 # ablation kun g35&g26; xuan g4
 python train_classifier.py ./configs/classifier_ablation_cifar10.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -c_step regular -c_loss loss_elr_wrap -gpu 1
@@ -33,6 +40,16 @@ python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder 
 
 python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -alpha_c_pdl 0.0 -gpu 0
 python train_triplegan.py ./configs/triple_gan_cifar10_ablation.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 0 -flip_horizontal false -alpha_c_pdl 0.0 -gpu 0
+
+
+# test svhn 4000
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder RE_VN_4000 -translate 2 -flip_horizontal false -alpha_c_pdl 0.3 -alpha_c_adv 0.03 -n_labels 4000 -ssl_seed 1001 -gpu 0
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder RE_VN_4000 -translate 2 -flip_horizontal false -alpha_c_pdl 0.3 -alpha_c_adv 0.03 -n_labels 4000 -ssl_seed 1002 -gpu 1
+python train_triplegan_final_elr.py ./configs/triple_gan_svhn_noaug_elr.yaml -subfolder RE_VN_4000 -translate 2 -flip_horizontal false -alpha_c_pdl 0.3 -alpha_c_adv 0.03 -n_labels 4000 -ssl_seed 1003 -gpu 2
+
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder RE_VN_4000 -n_labels 4000 -translate 2 -ssl_seed 1001 -gpu 3
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder RE_VN_4000 -n_labels 4000 -translate 2 -ssl_seed 1002 -gpu 0
+python train_classifier_elr.py ./configs/classifier_svhn_elr.yaml -subfolder RE_VN_4000 -n_labels 4000 -translate 2 -ssl_seed 1003 -gpu 1
 
 
 # g12 - g25
