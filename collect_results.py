@@ -16,7 +16,7 @@ basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
 # )
 model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-22*(tra_2)*/summary/*.pkl"
+    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-22*(tra_0)*/summary/*.pkl"
 )
 # model_path = (
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_2)*/summary/*.pkl"
@@ -51,5 +51,5 @@ for p in stat_paths:
 all_results.sort(key=lambda x: x[2])
 for x in all_results:
     print(x[0][len(basename) :])
-    print(x[1], "&&",  x[2], "&&",  x[3])
+    print(x[1], " && ",  x[2], " && ",  x[3])
     print("")
