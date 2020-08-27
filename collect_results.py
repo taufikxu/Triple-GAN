@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 
-basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
+basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
 # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
 # # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
 # basename = "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*/summary"
@@ -16,7 +16,7 @@ basename = "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*/summary"
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_TI/*(tra_2)*/summary/*.pkl"
 # )
 model_path = (
-    "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*08-22*(tra_2)*/summary/*.pkl"
+    "/home/kunxu/Workspace/Triple-GAN/allresults/RE_VN/*08-22*(tra_2)*/summary/*.pkl"
 )
 # model_path = (
 #     "/home/kunxu/Workspace/Triple-GAN/allresults/819_D_VN/*(tra_2)*/summary/*.pkl"
