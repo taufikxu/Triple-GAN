@@ -15,7 +15,12 @@
 # see svhn 4000
 # test tiny 1000
 
-
+# \(\(mas_True\)\(con_True\)\(tra_2\)\(alp_0.03\)\(n_l_1000\)\(ssl_1001\)\)_\(NotValid_Signature\)/
+# check config.
+# tune threshold
+# check svhn and tiny last time.
+# tiny 1000 svhn 4000.
+# tiny 4000
 
 # ablation kun g35&g26; xuan g4
 python train_classifier.py ./configs/classifier_ablation_cifar10.yaml -subfolder ABLATION -n_labels 4000 -ssl_seed 1001 -translate 2 -flip_horizontal true -c_step regular -c_loss loss_elr_wrap -gpu 1
