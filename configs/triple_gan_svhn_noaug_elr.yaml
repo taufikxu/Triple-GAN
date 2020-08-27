@@ -2,7 +2,7 @@ dataset: SVHN
 
 # training arguments:
 n_iter_pretrain: 20000
-n_iter: 220000
+n_iter: 100000
 num_label_per_batch: 1
 batch_size: 100
 bs_g: 100
@@ -29,7 +29,7 @@ c_lr: 0.003
 c_beta1: 0.5
 c_beta2: 0.999
 alpha_c_adv: 0.01
-alpha_c_pdl: 3.0
+alpha_c_pdl: 0.01
 adv_ramp_start: 50000
 adv_ramp_end: 70000
 pdl_ramp_start: 50000
