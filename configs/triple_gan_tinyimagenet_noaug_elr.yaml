@@ -31,11 +31,11 @@ c_lr: 0.003
 c_beta1: 0.5
 c_beta2: 0.999
 alpha_c_adv: 0.03
-alpha_c_pdl: 3.0
-adv_ramp_start: 30000
-adv_ramp_end: 50000
-pdl_ramp_start: 30000
-pdl_ramp_end: 50000
+alpha_c_pdl: 0.03
+adv_ramp_start: 50000
+adv_ramp_end: 70000
+pdl_ramp_start: 50000
+pdl_ramp_end: 70000
 
 # Lr schdule:
 lr_anneal_num: 1000000
