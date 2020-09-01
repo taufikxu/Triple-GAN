@@ -1,8 +1,0 @@
-> ablation 
-
-> triple-gan generation
-
-> report elr cifar10
-
-> tune elr svhn tiny-imagenet
-    - pdl and mask and consistent
