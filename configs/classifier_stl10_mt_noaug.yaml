@@ -1,0 +1,43 @@
+dataset: stl10
+
+# arguments for C
+c_model_name: stl10_cnn
+c_loss: mtssl
+c_step: ramp
+c_optim: adam
+c_lr: 0.003
+c_beta1: 0.5
+c_beta2: 0.999
+
+# Consistency hyperparameters
+max_consistency_cost: 50.0
+ema_decay_during_rampup: 0.99
+ema_decay_after_rampup: 0.999
+
+# Optimizer hyperparameters
+lr_anneal_num: 999999999
+lr_anneal_interval: 999999999
+lr_anneal_coe: 0.995
+adam_beta_1_before_rampdown: 0.9
+adam_beta_1_after_rampdown: 0.5
+adam_beta_2_during_rampup: 0.99
+adam_beta_2_after_rampup: 0.999
+# Training schedule
+rampup_length: 40000
+rampup_length_lr: 40000
+rampdown_length: 0
+
+# Preprocessing
+zca: true
+norm: false
+translate: 0
+flip_horizontal: false
+ssl_seed: 1
+
+# training arguments:
+n_iter: 150000
+batch_size: 100
+clip_value: -1
+save_every: 10000
+n_labels: 1000
+num_label_per_batch: 2

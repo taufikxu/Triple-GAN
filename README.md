@@ -5,7 +5,7 @@ PyTorch implementation of Triple-GAN built upon a mean teacher classifier and a 
 
 ## Envoronment settings and libs we used in our experiments
 
-Coming later.
+pip install -r requirement.txt 
 
 ## Results
 
