@@ -20,3 +20,10 @@ Besides, with only 8% labels, Triple-GAN-V2 achieves comparable Inception Score 
 ### Extreme low data regime
 
 We also provide preliminary results in the extreme low data regime where only a small subset of labeled data is available.
+
+
+## Run examples
+
+python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder cifar10 -key noaug -gpu 0
+
+python train_triplegan.py ./configs/triple_gan_cifar10_mt_noaug_sngan.yaml -subfolder cifar10 -key noaug -gpu 1
