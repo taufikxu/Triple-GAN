@@ -118,7 +118,10 @@ class AugmentWrapper(object):
 
         if zca is True:
             self.zca = ZCA()
-            dataset = get_dataset(train=True, subset=0)
+            if FLAGS.dataset == 'stl10':
+                dataset = get_dataset(train=True, subset=5000)
+            else:
+                dataset = get_dataset(train=True, subset=0)
             tloader = torch.utils.data.DataLoader(
                 dataset, 100, drop_last=False, shuffle=True, num_workers=8,
             )
