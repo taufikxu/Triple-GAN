@@ -41,7 +41,12 @@ class ZCA(object):
         x -= m
         sigma = np.dot(x.T, x) / x.shape[0]
         sigma += np.eye(sigma.shape[0], sigma.shape[1]) * 0.1
-        U, S, V = linalg.svd(sigma)
+        if np.prod(s[1:]) > 32 * 32 * 3: 
+            # the default driver cannot scale up to large images
+            # print (np.prod(s[1:]), 'xxx')
+            U, S, V = linalg.svd(sigma, lapack_driver = 'gesvd')
+        else:
+            U, S, V = linalg.svd(sigma)
         tmp = np.dot(U, np.diag(1.0 / np.sqrt(S + self.regularization)))
         tmp2 = np.dot(U, np.diag(np.sqrt(S + self.regularization)))
         self.ZCA_mat = np.dot(tmp, U.T)
@@ -119,7 +124,9 @@ class AugmentWrapper(object):
         if zca is True:
             self.zca = ZCA()
             if FLAGS.dataset == 'stl10':
+                # print('xxx')
                 dataset = get_dataset(train=True, subset=5000)
+                # print(len(dataset))
             else:
                 dataset = get_dataset(train=True, subset=0)
             tloader = torch.utils.data.DataLoader(
@@ -130,7 +137,10 @@ class AugmentWrapper(object):
                 tensor_list.append(img)
             tensors = torch.cat(tensor_list, dim=0)
             tensors = tensors.data.cpu().numpy()
+            # print (tensors.shape)
+            # exit(0)
             self.zca.fit(tensors)
+            # print ('lalala')
         else:
             self.zca = None
 
