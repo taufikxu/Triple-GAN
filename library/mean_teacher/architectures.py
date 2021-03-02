@@ -664,14 +664,14 @@ class CNN96(nn.Module):
 
         self.gn = GaussianNoise(0.15)
         self.activation = nn.LeakyReLU(0.1)
-        self.conv1a = weight_norm(nn.Conv2d(3, 64, 3, padding=1))
-        self.bn1a = nn.BatchNorm2d(64)
-        self.conv1b = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
-        self.bn1b = nn.BatchNorm2d(64)
-        self.conv1c = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
-        self.bn1c = nn.BatchNorm2d(64)
-        self.mp1 = nn.MaxPool2d(3, stride=3, padding=0)
-        self.drop1 = nn.Dropout(0.5)
+        self.conv0a = weight_norm(nn.Conv2d(3, 64, 3, padding=1))
+        self.bn0a = nn.BatchNorm2d(64)
+        self.conv0b = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
+        self.bn0b = nn.BatchNorm2d(64)
+        self.conv0c = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
+        self.bn0c = nn.BatchNorm2d(64)
+        self.mp0 = nn.MaxPool2d(3, stride=3, padding=0)
+        self.drop0 = nn.Dropout(0.5)
 
         self.conv1a = weight_norm(nn.Conv2d(64, 128, 3, padding=1))
         self.bn1a = nn.BatchNorm2d(128)
@@ -703,7 +703,12 @@ class CNN96(nn.Module):
         self.fc2 = weight_norm(nn.Linear(128, num_classes))
 
     def forward(self, x, debug=False):
-        x = self.activation(self.convpre(x))
+
+        x = self.activation(self.bn0a(self.conv0a(x)))
+        x = self.activation(self.bn0b(self.conv0b(x)))
+        x = self.activation(self.bn0c(self.conv0c(x)))
+        x = self.mp0(x)
+        x = self.drop0(x)
 
         x = self.activation(self.bn1a(self.conv1a(x)))
         x = self.activation(self.bn1b(self.conv1b(x)))
@@ -733,19 +738,18 @@ class CNN96WIDE(nn.Module):
     """
 
     def __init__(self, num_classes=10):
-        super(CNN96, self).__init__()
-
+        super(CNN96WIDE, self).__init__()
 
         self.gn = GaussianNoise(0.15)
         self.activation = nn.LeakyReLU(0.1)
-        self.conv1a = weight_norm(nn.Conv2d(3, 128, 3, padding=1))
-        self.bn1a = nn.BatchNorm2d(128)
-        self.conv1b = weight_norm(nn.Conv2d(128, 128, 3, padding=1))
-        self.bn1b = nn.BatchNorm2d(128)
-        self.conv1c = weight_norm(nn.Conv2d(128, 128, 3, padding=1))
-        self.bn1c = nn.BatchNorm2d(128)
-        self.mp1 = nn.MaxPool2d(3, stride=3, padding=0)
-        self.drop1 = nn.Dropout(0.5)
+        self.conv0a = weight_norm(nn.Conv2d(3, 64, 3, padding=1))
+        self.bn0a = nn.BatchNorm2d(64)
+        self.conv0b = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
+        self.bn0b = nn.BatchNorm2d(64)
+        self.conv0c = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
+        self.bn0c = nn.BatchNorm2d(64)
+        self.mp0 = nn.MaxPool2d(3, stride=3, padding=0)
+        self.drop0 = nn.Dropout(0.5)
 
         self.conv1a = weight_norm(nn.Conv2d(128, 256, 3, padding=1))
         self.bn1a = nn.BatchNorm2d(256)
@@ -777,7 +781,11 @@ class CNN96WIDE(nn.Module):
         self.fc2 = weight_norm(nn.Linear(256, num_classes))
 
     def forward(self, x, debug=False):
-        x = self.activation(self.convpre(x))
+        x = self.activation(self.bn0a(self.conv0a(x)))
+        x = self.activation(self.bn0b(self.conv0b(x)))
+        x = self.activation(self.bn0c(self.conv0c(x)))
+        x = self.mp0(x)
+        x = self.drop0(x)
 
         x = self.activation(self.bn1a(self.conv1a(x)))
         x = self.activation(self.bn1b(self.conv1b(x)))
