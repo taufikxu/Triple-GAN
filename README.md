@@ -7,9 +7,13 @@ PyTorch implementation of Triple-GAN built upon a mean teacher classifier and a 
 
 pip install -r requirement.txt 
 
-## Run examples
+## Examples on Cifar10
+
+### Baseline classifier
 
 python train_classifier.py ./configs/classifier_cifar10_mt_noaug.yaml -subfolder cifar10 -key noaug -gpu 0
+
+### Tirple-GAN
 
 python train_triplegan.py ./configs/triple_gan_cifar10_mt_noaug_sngan.yaml -subfolder cifar10 -key noaug -gpu 1
 

@@ -742,12 +742,12 @@ class CNN96WIDE(nn.Module):
 
         self.gn = GaussianNoise(0.15)
         self.activation = nn.LeakyReLU(0.1)
-        self.conv0a = weight_norm(nn.Conv2d(3, 64, 3, padding=1))
-        self.bn0a = nn.BatchNorm2d(64)
-        self.conv0b = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
-        self.bn0b = nn.BatchNorm2d(64)
-        self.conv0c = weight_norm(nn.Conv2d(64, 64, 3, padding=1))
-        self.bn0c = nn.BatchNorm2d(64)
+        self.conv0a = weight_norm(nn.Conv2d(3, 128, 3, padding=1))
+        self.bn0a = nn.BatchNorm2d(128)
+        self.conv0b = weight_norm(nn.Conv2d(128, 128, 3, padding=1))
+        self.bn0b = nn.BatchNorm2d(128)
+        self.conv0c = weight_norm(nn.Conv2d(128, 128, 3, padding=1))
+        self.bn0c = nn.BatchNorm2d(128)
         self.mp0 = nn.MaxPool2d(3, stride=3, padding=0)
         self.drop0 = nn.Dropout(0.5)
 

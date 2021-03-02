@@ -28,7 +28,7 @@ rampup_length_lr: 40000
 rampdown_length: 0
 
 # Preprocessing
-zca: true
+zca: false
 norm: false
 translate: 0
 flip_horizontal: false
