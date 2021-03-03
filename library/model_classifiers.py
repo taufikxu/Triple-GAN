@@ -6,7 +6,7 @@ classifier_dict = {
     "tinyimagenet_cnn": mean_teacher.architectures.tinyimagenet_cnn,
     "cifar10_cnn": mean_teacher.architectures.cifar_cnn,
     "stl10_cnn": mean_teacher.architectures.stl10_cnn,
-    "stl10_cnn_wide": mean_teacher.architectures.stl10_cnn_wide,
+    "stl10_cnn_vgg": mean_teacher.architectures.stl10_cnn_vgg,
     "cifar10_cnn_gaussian": mean_teacher.architectures.cifar_cnn_gauss,
     "vat_cnn": mean_teacher.architectures.vat_cnn,
     "cifar10_resnet_26": mean_teacher.architectures.cifar_shakeshake26,

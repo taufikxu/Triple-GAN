@@ -32,9 +32,9 @@ def stl10_cnn(pretrained=False, **kwargs):
     return model
 
 @export
-def stl10_cnn_wide(pretrained=False, **kwargs):
+def stl10_cnn_vgg(pretrained=False, **kwargs):
     assert not pretrained
-    model = CNN96WIDE(**kwargs)
+    model = CNN96VGG(**kwargs)
     return model
 
 
@@ -651,6 +651,70 @@ class CNN64(nn.Module):
 
         x = x.view(-1, 128)
         return self.fc1(x), self.fc2(x)
+
+
+class CNN96VGG(nn.Module):
+    """
+    CNN from Mean Teacher paper
+    """
+
+    def __init__(self, num_classes=10):
+        super(CNN96VGG, self).__init__()
+
+        self.activation = nn.ReLU()
+        self.conv0a = nn.Conv2d(3, 64, 3, padding=1)
+        self.bn0a = nn.BatchNorm2d(64)
+        self.mp0 = nn.MaxPool2d(2, stride=2, padding=0)
+
+        self.conv1a = nn.Conv2d(64, 128, 3, padding=1)
+        self.bn1a = nn.BatchNorm2d(128)
+        self.mp1 = nn.MaxPool2d(2, stride=2, padding=0)
+
+        self.conv2a = nn.Conv2d(128, 256, 3, padding=1)
+        self.bn2a = nn.BatchNorm2d(256)
+        self.conv2b = nn.Conv2d(256, 256, 3, padding=1)
+        self.bn2b = nn.BatchNorm2d(256)
+        self.mp2 = nn.MaxPool2d(2, stride=2, padding=0)
+
+        self.conv3a = nn.Conv2d(256, 512, 3, padding=1)
+        self.bn3a = nn.BatchNorm2d(512)
+        self.conv3b = nn.Conv2d(512, 512, 3, padding=1)
+        self.bn3b = nn.BatchNorm2d(512)
+        self.mp3 = nn.MaxPool2d(2, stride=2, padding=0)
+
+        self.conv4a = nn.Conv2d(512, 512, 3, padding=1)
+        self.bn4a = nn.BatchNorm2d(512)
+        self.conv4b = nn.Conv2d(512, 512, 3, padding=1)
+        self.bn4b = nn.BatchNorm2d(512)
+        self.mp4 = nn.MaxPool2d(2, stride=2, padding=0)
+
+        self.fc1 = nn.Conv2d(512, num_classes, 3, padding=0)
+        self.fc2 = nn.Conv2d(512, num_classes, 3, padding=0)
+
+    def forward(self, x, debug=False):
+
+        x = self.activation(self.bn0a(self.conv0a(x)))
+        x = self.mp0(x)
+
+        x = self.activation(self.bn1a(self.conv1a(x)))
+        x = self.mp1(x)
+
+        x = self.activation(self.bn2a(self.conv2a(x)))
+        x = self.activation(self.bn2b(self.conv2b(x)))
+        x = self.mp2(x)
+
+        x = self.activation(self.bn3a(self.conv3a(x)))
+        x = self.activation(self.bn3b(self.conv3b(x)))
+        x = self.mp3(x)
+
+        x = self.activation(self.bn3a(self.conv4a(x)))
+        x = self.activation(self.bn3b(self.conv4b(x)))
+        x = self.mp4(x)
+
+        x_1 = self.fc1(x)
+        x_2 = self.fc2(x)
+
+        return x_1.view(-1, 10), x_2.view(-1, 10)
 
 
 class CNN96(nn.Module):

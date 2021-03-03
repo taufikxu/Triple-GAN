@@ -30,7 +30,7 @@ rampdown_length: 0
 # Preprocessing
 zca: false
 norm: false
-translate: 6
+translate: 12
 flip_horizontal: true
 ssl_seed: 1
 
@@ -40,4 +40,4 @@ batch_size: 100
 clip_value: -1
 save_every: 10000
 n_labels: 1000
-num_label_per_batch: 2
+num_label_per_batch: 8
