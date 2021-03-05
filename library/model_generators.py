@@ -491,11 +491,85 @@ class ResNetGenerator96(nn.Module):
         return torch.tanh(self.conv7(h))
 
 
+class ResNetGenerator96_LI(nn.Module):
+    """Generator generates 128x128."""
+
+    def __init__(
+        self,
+        z_dim=256,
+        n_label=10,
+        im_size=32,
+        im_chan=3,
+        embed_size=256,
+        nfilter=64,
+        nfilter_max=512,
+        actvn=F.relu,
+        distribution="normal",
+        bottom_width=6,
+    ):
+        super(ResNetGenerator96_LI, self).__init__()
+        self.num_features = num_features = nfilter
+        self.dim_z = z_dim
+        self.bottom_width = bottom_width
+        self.activation = activation = actvn
+        self.num_classes = num_classes = n_label
+        self.distribution = distribution
+
+        width_coe = 8
+        self.l1 = nn.Linear(
+            self.dim_z, 1 * width_coe * num_features * bottom_width ** 2
+        )
+
+        self.block2 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            upsample=True,
+            num_classes=num_classes,
+        )
+        self.block3 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            upsample=True,
+            num_classes=num_classes,
+        )
+        self.block4 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            upsample=True,
+            num_classes=num_classes,
+        )
+        self.block5 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe,
+            activation=activation,
+            upsample=True,
+            num_classes=num_classes,
+        )
+        self.b7 = nn.BatchNorm2d(num_features * width_coe)
+        self.conv7 = nn.Conv2d(num_features * width_coe, 3, 1, 1)
+
+    def _initialize(self):
+        init.xavier_uniform_(self.l1.weight.tensor)
+        init.xavier_uniform_(self.conv7.weight.tensor)
+
+    def forward(self, z, y=None, **kwargs):
+        h = self.l1(z).view(z.size(0), -1, self.bottom_width, self.bottom_width)
+        for i in [2, 3, 4, 5]:
+            h = getattr(self, "block{}".format(i))(h, y, **kwargs)
+        h = self.activation(self.b7(h))
+        return torch.tanh(self.conv7(h))
+
+
+
 generator_dict = {
     "resnet_reggan": Generator,
     "resnet_sngan": ResNetGenerator,
     "resnet_sngan_un": ResNetUnconditionalGenerator,
     "resnet_sngan96": ResNetGenerator96,
     "resnet_sngan64": ResNetGenerator64,
+    "resnet_sngan96_li": ResNetGenerator96_LI,
 }
 

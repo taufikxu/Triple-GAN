@@ -93,6 +93,9 @@ class AugmentWrapper_DIS(object):
         if FLAGS.dataset == 'svhn' or FLAGS.dataset == 'SVHN':
             translate = 2
             flip_horizontal = False
+        if FLAGS.dataset == 'stl10':
+            translate = 12
+            flip_horizontal = True
 
         if translate > 0:
             bs, lenx, leny = tensor.shape[0], tensor.shape[2], tensor.shape[3]

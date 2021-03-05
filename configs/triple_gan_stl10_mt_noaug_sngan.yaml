@@ -1,0 +1,89 @@
+dataset: stl10
+
+# training arguments:
+n_iter_pretrain: 10000
+n_iter: 100000
+num_label_per_batch: 20
+batch_size: 100
+bs_g: 100
+bs_c: 100
+bs_c_for_d: 100
+bs_l_for_d: 40
+bs_u_for_d: 60
+clip_value: -1
+save_every: 10000
+gan_type: bcr
+gan_traind_c: int
+clc_reg: 0.
+consist_pdl: false
+masked_pdl: false
+
+# arguments for C
+c_model_name: stl10_cnn
+
+teach_for_d: false
+
+c_loss: mtssl
+c_step: ramp
+c_optim: adam
+c_lr: 0.003
+c_beta1: 0.5
+c_beta2: 0.999
+alpha_c_adv: 0.03
+alpha_c_pdl: 3.0
+adv_ramp_start: 30000
+adv_ramp_end: 50000
+pdl_ramp_start: 30000
+pdl_ramp_end: 50000
+
+# Lr schdule:
+lr_anneal_num: 100000000000
+lr_anneal_interval: 500
+lr_anneal_coe: 1
+# Consistency hyperparameters
+max_consistency_cost: 50.0
+ema_decay_during_rampup: 0.99
+ema_decay_after_rampup: 0.999
+# Optimizer hyperparameters
+adam_beta_1_before_rampdown: 0.9
+adam_beta_1_after_rampdown: 0.5
+adam_beta_2_during_rampup: 0.99
+adam_beta_2_after_rampup: 0.999
+# Training schedule
+rampup_length: 15000
+rampup_length_lr: 15000
+rampdown_length: 0
+
+# Preprocessing
+zca: false
+norm: false
+translate: 0
+flip_horizontal: false
+ssl_seed: 1001
+n_labels: 1000
+
+# arguments for G
+g_model_name: resnet_sngan96_li
+g_z_dim: 256
+g_embed_size: 256
+g_nfilter: 32
+g_nfilter_max: 256
+g_actvn: relu
+
+g_optim: adam
+g_lr: 0.0001
+g_beta1: 0.
+g_beta2: 0.99
+
+# arguments for D
+d_model_name: resnet_sngan96_li
+d_z_dim: 256
+d_embed_size: 256
+d_nfilter: 32
+d_nfilter_max: 256
+d_actvn: relu
+
+d_optim: adam
+d_lr: 0.0001
+d_beta1: 0.
+d_beta2: 0.99

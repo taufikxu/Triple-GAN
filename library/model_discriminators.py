@@ -286,6 +286,85 @@ class SNResNetUnconditionalDiscriminator(nn.Module):
         return output
 
 
+class SNResNetProjectionDiscriminator96_LI(nn.Module):
+    def __init__(
+        self,
+        z_dim=256,
+        n_label=10,
+        im_size=32,
+        im_chan=3,
+        embed_size=256,
+        nfilter=64,
+        nfilter_max=512,
+        actvn=nn.ReLU(),
+    ):
+        super(SNResNetProjectionDiscriminator96_LI, self).__init__()
+        self.num_features = num_features = nfilter
+        self.num_classes = num_classes = n_label
+        self.activation = activation = actvn
+
+        width_coe = 8
+        self.block1 = OptimizedBlock(3, num_features * width_coe)
+        self.block2 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            downsample=True,
+        )
+        self.block3 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            downsample=True,
+        )
+        self.block4 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            downsample=True,
+        )
+        self.block5 = Block(
+            num_features * width_coe * 1,
+            num_features * width_coe * 1,
+            activation=activation,
+            downsample=True,
+        )
+        self.l7 = utils.spectral_norm(nn.Linear(num_features * width_coe * 1, 1))
+        if num_classes > 0:
+            self.l_y = utils.spectral_norm(
+                nn.Embedding(num_classes, num_features * width_coe * 1)
+            )
+
+        self._initialize()
+
+    def _initialize(self):
+        init.xavier_uniform_(self.l7.weight.data)
+        optional_l_y = getattr(self, "l_y", None)
+        if optional_l_y is not None:
+            init.xavier_uniform_(optional_l_y.weight.data)
+
+    def forward(self, x, y=None):
+        bs = x.shape[0]
+        h = x
+        for i in range(1, 6):
+            h = getattr(self, "block{}".format(i))(h)
+        h = self.activation(h)
+        # Global pooling
+        h = torch.sum(h, dim=(2, 3))
+        output = self.l7(h)
+        if y is not None:
+            output += torch.sum(self.l_y(y) * h, dim=1, keepdim=True)
+        else:
+            output_list = []
+            for i in range(self.num_classes):
+                ty = torch.ones([bs,], dtype=torch.long) * i
+                toutput = output + torch.sum(
+                    self.l_y(ty.to(x.device)) * h, dim=1, keepdim=True
+                )
+                output_list.append(toutput)
+            output = torch.cat(output_list, dim=1)
+        return output
+
 class SNResNetProjectionDiscriminator96(nn.Module):
     def __init__(
         self,
@@ -452,5 +531,6 @@ discriminator_dict = {
     "resnet_sngan_un": SNResNetUnconditionalDiscriminator,
     "resnet_sngan96": SNResNetProjectionDiscriminator96,
     "resnet_sngan64": SNResNetProjectionDiscriminator64,
+    "resnet_sngan96_li": SNResNetProjectionDiscriminator96_LI,
 }
 
