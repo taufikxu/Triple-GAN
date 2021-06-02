@@ -54,6 +54,6 @@ torch==1.4.0
 torchvision==0.5.0
 tqdm==4.46.0
 traitlets==4.3.3
-urllib3==1.25.8
+urllib3==1.26.5
 wcwidth==0.2.5
 Werkzeug==1.0.1
